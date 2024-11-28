@@ -9,6 +9,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any
 
+
 ##############################################################################
 @dataclass
 class Collection:
@@ -24,11 +25,11 @@ class Collection:
     """The number of items in the collection."""
     cover: list[str]
     """Cover images for the collection."""
-    created: str                # TODO: Make datetime
+    created: str  # TODO: Make datetime
     """When the collection was created."""
     expanded: bool
     """Is the collection expanded?"""
-    last_update: str            # TODO: Make datetime
+    last_update: str  # TODO: Make datetime
     """When the collection was last updated."""
     public: bool
     """Is the collection visible to the public?"""
@@ -49,16 +50,17 @@ class Collection:
         """
         return Collection(
             identity=data["_id"],
-            color = data.get("color", ""),
-            count = data["count"],
-            cover = data["cover"],
-            created = data["created"],
-            expanded = data["expanded"],
-            last_update= data["lastUpdate"],
-            public = data["public"],
-            sort = data["sort"],
-            title = data["title"],
-            view = data["view"]
+            color=data.get("color", ""),
+            count=data["count"],
+            cover=data["cover"],
+            created=data["created"],
+            expanded=data["expanded"],
+            last_update=data["lastUpdate"],
+            public=data["public"],
+            sort=data["sort"],
+            title=data["title"],
+            view=data["view"],
         )
+
 
 ### collection.py ends here

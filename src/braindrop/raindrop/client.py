@@ -14,6 +14,7 @@ from httpx import AsyncClient, HTTPStatusError, RequestError
 # Local imports.
 from .collection import Collection
 
+
 ##############################################################################
 class Raindrop:
     """Client for raindrop.io."""
@@ -73,7 +74,10 @@ class Raindrop:
             response = await self._client.get(
                 self._api_url(*path),
                 params=params,
-                headers={"user-agent": self.AGENT, "Authorization": f"Bearer {self._token}"},
+                headers={
+                    "user-agent": self.AGENT,
+                    "Authorization": f"Bearer {self._token}",
+                },
             )
         except (RequestError, SSLCertVerificationError) as error:
             raise self.RequestError(str(error))
@@ -85,7 +89,9 @@ class Raindrop:
 
         return response.text
 
-    async def _result_of(self, *path: str, **params: str) -> tuple[bool, dict[str, Any] | None]:
+    async def _result_of(
+        self, *path: str, **params: str
+    ) -> tuple[bool, dict[str, Any] | None]:
         """Get the result of a call to the Raindrop API.
 
         Args:
@@ -96,7 +102,11 @@ class Raindrop:
             A tuple of a bool that is the result plus any data from the call.
         """
         result = loads(await self._call(*path, **params))
-        return (result["result"], result["items"]) if "items" in result else (result["result"], None)
+        return (
+            (result["result"], result["items"])
+            if "items" in result
+            else (result["result"], None)
+        )
 
     async def root_collections(self) -> list[Collection]:
         """Get the root-level collections.
@@ -105,6 +115,11 @@ class Raindrop:
             The list of root-level collections.
         """
         _, collections = await self._result_of("collections")
-        return [Collection.from_json(collection) for collection in collections or [] if isinstance(collection, dict)]
+        return [
+            Collection.from_json(collection)
+            for collection in collections or []
+            if isinstance(collection, dict)
+        ]
+
 
 ### client.py ends here
