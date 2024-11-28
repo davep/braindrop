@@ -5,6 +5,7 @@ description = "Coming soon"
 authors = [
     { name = "Dave Pearson", email = "davep@davep.org" }
 ]
+license = { text = "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)"}
 dependencies = [
     "httpx>=0.27.2",
 ]
