@@ -25,7 +25,7 @@ class Braindrop(App[None]):
         self._api = Raindrop(Path(".test_token").read_text().strip())
         """The API client for Raindrop."""
 
-    def get_default_screen(self) -> Screen:
+    def get_default_screen(self) -> Screen[None]:
         """Returns the `Main` screen."""
         return Main(self._api)
 
