@@ -12,7 +12,7 @@ from ...raindrop import Raindrop, User
 
 
 ##############################################################################
-class Main(Screen):
+class Main(Screen[None]):
     """The main screen of the application."""
 
     DEFAULT_CSS = """
