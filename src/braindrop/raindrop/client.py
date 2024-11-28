@@ -90,11 +90,12 @@ class Raindrop:
         return response.text
 
     async def _result_of(
-        self, *path: str, **params: str
+        self, value: str, *path: str, **params: str
     ) -> tuple[bool, dict[str, Any] | None]:
         """Get the result of a call to the Raindrop API.
 
         Args:
+            value: The name of the value to pull from the result.
             path: The path for the API call.
             params: The parameters for the call.
 
@@ -103,10 +104,24 @@ class Raindrop:
         """
         result = loads(await self._call(*path, **params))
         return (
-            (result["result"], result["items"])
-            if "items" in result
-            else (result["result"], None)
+            (result["result"], result[value])
+            if value in result
+            else (result[value], None)
         )
+
+    async def _items_of(
+        self, *path: str, **params: str
+    ) -> tuple[bool, dict[str, Any] | None]:
+        """Get the items of a call to the Raindrop API.
+
+        Args:
+            path: The path for the API call.
+            params: The parameters for the call.
+
+        Returns:
+            A tuple of a bool that is the result plus any items from the call.
+        """
+        return await self._result_of("items", *path, **params)
 
     async def collections(self, level: Literal["root", "children", "all"] = "all") -> list[Collection]:
         """Get collections from Raindrop.
@@ -119,7 +134,7 @@ class Raindrop:
         """
         if level == "all":
             return await self.collections("root") + await self.collections("children")
-        _, collections = await self._result_of(f"collections{'' if level == 'root' else '/childrens'}")
+        _, collections = await self._items_of(f"collections{'' if level == 'root' else '/childrens'}")
         return [
             Collection.from_json(collection)
             for collection in collections or []
