@@ -8,3 +8,5 @@ wheels/
 
 # venv
 .venv
+
+.test_token
