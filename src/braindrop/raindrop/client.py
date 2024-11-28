@@ -92,7 +92,7 @@ class Raindrop:
 
     async def _result_of(
         self, value: str, *path: str, **params: str
-    ) -> tuple[bool, dict[str, Any] | None]:
+    ) -> tuple[bool, Any]:
         """Get the result of a call to the Raindrop API.
 
         Args:
@@ -112,7 +112,7 @@ class Raindrop:
 
     async def _items_of(
         self, *path: str, **params: str
-    ) -> tuple[bool, dict[str, Any] | None]:
+    ) -> tuple[bool, list[Any] | None]:
         """Get the items of a call to the Raindrop API.
 
         Args:
