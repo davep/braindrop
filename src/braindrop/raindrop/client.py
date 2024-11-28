@@ -12,6 +12,7 @@ from httpx import AsyncClient, HTTPStatusError, RequestError
 
 ##############################################################################
 # Local imports.
+from ..raindrop.user import User
 from .collection import Collection
 
 
@@ -123,7 +124,9 @@ class Raindrop:
         """
         return await self._result_of("items", *path, **params)
 
-    async def collections(self, level: Literal["root", "children", "all"] = "all") -> list[Collection]:
+    async def collections(
+        self, level: Literal["root", "children", "all"] = "all"
+    ) -> list[Collection]:
         """Get collections from Raindrop.
 
         Args:
@@ -134,11 +137,24 @@ class Raindrop:
         """
         if level == "all":
             return await self.collections("root") + await self.collections("children")
-        _, collections = await self._items_of(f"collections{'' if level == 'root' else '/childrens'}")
+        _, collections = await self._items_of(
+            f"collections{'' if level == 'root' else '/childrens'}"
+        )
         return [
             Collection.from_json(collection)
             for collection in collections or []
             if isinstance(collection, dict)
         ]
+
+    async def user(self) -> User | None:
+        """Get the user details.
+
+        Returns:
+            The details of the current user, or `None` if the details could
+            not be fetched.
+        """
+        result, user = await self._result_of("user", "user")
+        return User.from_json(user) if result and user is not None else None
+
 
 ### client.py ends here

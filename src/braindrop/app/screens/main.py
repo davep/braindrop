@@ -8,7 +8,8 @@ from textual.widgets import Footer, Header, Tree
 
 ##############################################################################
 # Local imports.
-from ...raindrop import Raindrop
+from ...raindrop import Raindrop, User
+
 
 ##############################################################################
 class Main(Screen):
@@ -50,5 +51,10 @@ class Main(Screen):
         collections.show_root = False
         for collection in await self._api.collections("root"):
             collections.root.add(collection.title, expand=True)
+        collections.root.add_leaf("-----")
+        if user := await self._api.user():
+            for group in user.groups:
+                collections.root.add(group.title)
+
 
 ### main.py ends here
