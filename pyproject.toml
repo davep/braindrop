@@ -1,0 +1,27 @@
+[project]
+name = "braindrop"
+version = "0.0.1"
+description = "Coming soon"
+authors = [
+    { name = "Dave Pearson", email = "davep@davep.org" }
+]
+dependencies = []
+readme = "README.md"
+requires-python = ">= 3.8"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.rye]
+managed = true
+dev-dependencies = [
+    "mypy>=1.13.0",
+    "pre-commit>=4.0.1",
+]
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/braindrop"]
