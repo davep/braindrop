@@ -4,7 +4,7 @@
 # Python imports.
 from json import loads
 from ssl import SSLCertVerificationError
-from typing import Any, Final
+from typing import Any, Final, Literal
 
 ##############################################################################
 # HTTPX imports.
@@ -108,18 +108,22 @@ class Raindrop:
             else (result["result"], None)
         )
 
-    async def root_collections(self) -> list[Collection]:
-        """Get the root-level collections.
+    async def collections(self, level: Literal["root", "children", "all"] = "all") -> list[Collection]:
+        """Get collections from Raindrop.
+
+        Args:
+            level: Either `root`, `children` or `all`.
 
         Returns:
-            The list of root-level collections.
+            The collections.
         """
-        _, collections = await self._result_of("collections")
+        if level == "all":
+            return await self.collections("root") + await self.collections("children")
+        _, collections = await self._result_of(f"collections{'' if level == 'root' else '/childrens'}")
         return [
             Collection.from_json(collection)
             for collection in collections or []
             if isinstance(collection, dict)
         ]
-
 
 ### client.py ends here

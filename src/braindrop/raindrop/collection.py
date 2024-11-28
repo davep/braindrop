@@ -40,6 +40,8 @@ class Collection:
     # user
     view: str
     """The view method for the collection."""
+    parent: int | None
+    """The ID of the parent collection, if there is one."""
 
     @staticmethod
     def from_json(data: dict[str, Any]) -> Collection:
@@ -60,6 +62,7 @@ class Collection:
             sort=data["sort"],
             title=data["title"],
             view=data["view"],
+            parent=data.get("parent", {}).get("$id")
         )
 
 

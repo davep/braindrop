@@ -17,8 +17,8 @@ def main() -> None:
     async def tester() -> None:
         for collection in await Raindrop(
             Path(".test_token").read_text().strip()
-        ).root_collections():
-            print(collection.title)
+        ).collections("all"):
+            print(("\t" if collection.parent else "") + collection.title)
 
     run(tester())
 
