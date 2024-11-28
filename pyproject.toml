@@ -28,3 +28,6 @@ allow-direct-references = true
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/braindrop"]
+
+[project.scripts]
+braindrop = "braindrop.__main__:main"
