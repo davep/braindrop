@@ -19,7 +19,7 @@ from .screens import Main
 class Braindrop(App[None]):
     """The Braindrop application class."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialise the application."""
         super().__init__()
         self._api = Raindrop(Path(".test_token").read_text().strip())
