@@ -62,7 +62,7 @@ class Collection:
             sort=data["sort"],
             title=data["title"],
             view=data["view"],
-            parent=data.get("parent", {}).get("$id")
+            parent=data.get("parent", {}).get("$id"),
         )
 
 

@@ -14,6 +14,7 @@ from textual.screen import Screen
 from ..raindrop import Raindrop
 from .screens import Main
 
+
 ##############################################################################
 class Braindrop(App[None]):
     """The Braindrop application class."""
@@ -27,5 +28,6 @@ class Braindrop(App[None]):
     def get_default_screen(self) -> Screen:
         """Returns the `Main` screen."""
         return Main(self._api)
+
 
 ### app.py ends here
