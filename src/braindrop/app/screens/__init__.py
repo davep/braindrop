@@ -6,6 +6,6 @@ from .main import Main
 
 ##############################################################################
 # Exports.
-_all__ = ["Main"]
+__all__ = ["Main"]
 
 ### __init__.py ends here
