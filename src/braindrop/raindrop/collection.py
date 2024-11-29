@@ -7,7 +7,12 @@ from __future__ import annotations
 ##############################################################################
 # Python imports.
 from dataclasses import dataclass
+from datetime import datetime
 from typing import Any
+
+##############################################################################
+# Local imports.
+from .parse_time import get_time
 
 
 ##############################################################################
@@ -25,11 +30,11 @@ class Collection:
     """The number of items in the collection."""
     cover: list[str]
     """Cover images for the collection."""
-    created: str  # TODO: Make datetime
+    created: datetime | None
     """When the collection was created."""
     expanded: bool
     """Is the collection expanded?"""
-    last_update: str  # TODO: Make datetime
+    last_update: datetime | None
     """When the collection was last updated."""
     public: bool
     """Is the collection visible to the public?"""
@@ -55,9 +60,9 @@ class Collection:
             color=data.get("color", ""),
             count=data["count"],
             cover=data["cover"],
-            created=data["created"],
+            created=get_time(data, "created"),
             expanded=data["expanded"],
-            last_update=data["lastUpdate"],
+            last_update=get_time(data, "lastUpdate"),
             public=data["public"],
             sort=data["sort"],
             title=data["title"],
