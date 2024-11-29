@@ -41,13 +41,34 @@ class Group:
 
 ##############################################################################
 @dataclass
+class Toggle:
+    """Holds the details of a value that can be toggled."""
+
+    enabled: bool
+    """Is the toggle enabled?"""
+
+    @staticmethod
+    def from_json(data: Any) -> Toggle:
+        """Create a toggle from JSON-sourced data.
+
+        Returns:
+            A fresh `Group` instance.
+        """
+        return Toggle(enabled=data.get("enabled", False) if data else False)
+
+
+##############################################################################
+@dataclass
 class User:
     """Class that holds the details of a Raindrop user."""
 
     identity: int
     """The user's ID."""
     # config
-    # dropbox
+    dropbox: Toggle
+    """Is the user configured to backup to Dropbox?"""
+    gdrive: Toggle
+    """Is the user configured to backup to GDrive?"""
     email: str
     """The user's email address."""
     email_md5: str
@@ -55,11 +76,14 @@ class User:
     # files
     full_name: str
     """The user's full name."""
-    # gdrive
     groups: list[Group]
     """The user's groups."""
+    tfa: Toggle
+    """Is the user configured to use TFA?."""
+    apple: Toggle
+    """Is the user configured to login with an Apple ID?"""
     password: bool
-    """Password flag (docs don't seem to say what it's for)."""
+    """Is the user configured to login with a password?"""
     pro: bool
     """Is the user a pro user?"""
     pro_expire: str  # TODO make datetime
@@ -76,10 +100,14 @@ class User:
         """
         return User(
             identity=data["_id"],
+            dropbox=Toggle.from_json(data.get("dropbox")),
+            gdrive=Toggle.from_json(data.get("gdrive")),
             email=data["email"],
             email_md5=data.get("email_MD5", ""),
             full_name=data["fullName"],
             groups=[Group.from_json(group) for group in data["groups"]],
+            tfa=Toggle.from_json(data.get("fta")),
+            apple=Toggle.from_json(data.get("apple")),
             password=data["password"],
             pro=data["pro"],
             pro_expire=data.get("proExpire", ""),
