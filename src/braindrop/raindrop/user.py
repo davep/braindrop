@@ -91,6 +91,12 @@ class User:
     """Is the user configured to login with a password?"""
     pro: bool
     """Is the user a pro user?"""
+    last_action: datetime | None
+    """When the user last performed an action."""
+    last_visit: datetime | None
+    """When the user last visited the site."""
+    last_update: datetime | None
+    """When an update was last made."""
     pro_expire: datetime | None
     """When the current pro subscription expires."""
     registered: datetime | None
@@ -115,7 +121,10 @@ class User:
             apple=Toggle.from_json(data.get("apple")),
             password=data["password"],
             pro=data["pro"],
-            pro_expire=get_time(data, "pooExpire"),
+            last_action=get_time(data, "lastAction"),
+            last_visit=get_time(data, "lastVisit"),
+            last_update=get_time(data, "lastUpdate"),
+            pro_expire=get_time(data, "proExpire"),
             registered=get_time(data, "registered"),
         )
 
