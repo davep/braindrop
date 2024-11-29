@@ -4,11 +4,12 @@
 # Textual imports.
 from textual.app import ComposeResult
 from textual.screen import Screen
-from textual.widgets import Footer, Header, Tree
+from textual.widgets import Footer, Header
 
 ##############################################################################
 # Local imports.
 from ...raindrop import Raindrop, User
+from ..widgets import Groups
 
 
 ##############################################################################
@@ -42,19 +43,13 @@ class Main(Screen[None]):
     def compose(self) -> ComposeResult:
         """Compose the content of the screen."""
         yield Header()
-        yield Tree("")
+        yield Groups(self._api)
         yield Footer()
 
     async def on_mount(self) -> None:
         """Populate the screen when it mounts."""
-        collections = self.query_one(Tree)
-        collections.show_root = False
-        for collection in await self._api.collections("root"):
-            collections.root.add(collection.title, expand=True)
-        collections.root.add_leaf("-----")
         if user := await self._api.user():
-            for group in user.groups:
-                collections.root.add(group.title)
+            await self.query_one(Groups).show_for_user(user)
 
 
 ### main.py ends here

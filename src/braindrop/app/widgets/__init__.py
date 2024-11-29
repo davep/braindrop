@@ -1,13 +1,12 @@
-"""Wrapper library for the raindrop.io API."""
+"""Provides custom widgets for the application."""
 
 ##############################################################################
 # Local imports.
-from .client import Raindrop
-from .collection import Collection
-from .user import Group, User
+from .groups import Groups
 
 ##############################################################################
 # Exports.
-__all__ = ["Collection", "Group", "Raindrop", "User"]
+__all__ = ["Groups"]
+
 
 ### __init__.py ends here
