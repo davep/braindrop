@@ -7,7 +7,12 @@ from __future__ import annotations
 ##############################################################################
 # Python imports.
 from dataclasses import dataclass
+from datetime import datetime
 from typing import Any
+
+##############################################################################
+# Local imports.
+from .parse_time import get_time
 
 
 ##############################################################################
@@ -86,9 +91,9 @@ class User:
     """Is the user configured to login with a password?"""
     pro: bool
     """Is the user a pro user?"""
-    pro_expire: str  # TODO make datetime
+    pro_expire: datetime | None
     """When the current pro subscription expires."""
-    registered: str  # TODO make datetime
+    registered: datetime | None
     """When the user first registered their account."""
 
     @staticmethod
@@ -110,8 +115,8 @@ class User:
             apple=Toggle.from_json(data.get("apple")),
             password=data["password"],
             pro=data["pro"],
-            pro_expire=data.get("proExpire", ""),
-            registered=data["registered"],
+            pro_expire=get_time(data, "pooExpire"),
+            registered=get_time(data, "registered"),
         )
 
 
