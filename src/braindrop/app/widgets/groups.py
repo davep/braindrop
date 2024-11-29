@@ -1,6 +1,14 @@
 """Provides a widget for displaying and handling a user's groups."""
 
 ##############################################################################
+# Python imports.
+from typing import Final
+
+##############################################################################
+# Rich imports.
+from rich.emoji import Emoji
+
+##############################################################################
 # Textual imports.
 from textual.widgets import OptionList
 from textual.widgets.option_list import Option, Separator
@@ -14,6 +22,9 @@ from ...raindrop import Collection, Raindrop, User
 class CollectionOption(Option):
     """OptionList option class for holding details of a collection."""
 
+    COLLECTION_ICON: Final[str] = Emoji.replace(":file_folder:")
+    """The icon to use for a collection."""
+
     def __init__(self, collection: Collection, indent: int = 0) -> None:
         """Initialise the object.
 
@@ -21,7 +32,8 @@ class CollectionOption(Option):
             collection: The collection to display with this option.
         """
         super().__init__(
-            f"{'  ' * indent}{collection.title}", id=f"collection-{collection.identity}"
+            f"{'  ' * indent}{self.COLLECTION_ICON} {collection.title}",
+            id=f"collection-{collection.identity}",
         )
         self.collection = collection
         """The reference to the collection."""
