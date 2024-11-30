@@ -62,7 +62,7 @@ class Raindrop:
         return f"{self._BASE}{'/'.join(path)}"
 
     async def _call(self, *path: str, **params: str) -> str:
-        """Call on the Pinboard API.
+        """Call on the Raindrop API.
 
         Args:
             path: The path for the API call.
