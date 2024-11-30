@@ -8,7 +8,7 @@ from textual.widgets import Footer, Header
 
 ##############################################################################
 # Local imports.
-from ...raindrop import Raindrop, User
+from ...raindrop import Raindrop
 from ..widgets import Groups
 
 
