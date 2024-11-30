@@ -49,3 +49,5 @@ typing-extensions==4.12.2
     # via textual
 uc-micro-py==1.0.3
     # via linkify-it-py
+xdg-base-dirs==6.0.2
+    # via braindrop
