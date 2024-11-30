@@ -1,8 +1,13 @@
 """The main screen for the application."""
 
 ##############################################################################
+# Python imports.
+from webbrowser import open as open_url
+
+##############################################################################
 # Textual imports.
 from textual.app import ComposeResult
+from textual.binding import Binding
 from textual.screen import Screen
 from textual.widgets import Footer, Header
 
@@ -30,6 +35,10 @@ class Main(Screen[None]):
     }
     """
 
+    BINDINGS = [
+        Binding("f2", "goto_raindrop", "raindrop.io"),
+    ]
+
     def __init__(self, api: Raindrop) -> None:
         """Initialise the main screen.
 
@@ -50,6 +59,10 @@ class Main(Screen[None]):
         """Populate the screen when it mounts."""
         if user := await self._api.user():
             await self.query_one(Groups).show_for_user(user)
+
+    def action_goto_raindrop(self) -> None:
+        """Open the Rindrop application in the browser."""
+        open_url("https://app.raindrop.io/")
 
 
 ### main.py ends here
