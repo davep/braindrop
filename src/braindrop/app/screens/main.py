@@ -61,7 +61,7 @@ class Main(Screen[None]):
             await self.query_one(Groups).show_for_user(user)
 
     def action_goto_raindrop(self) -> None:
-        """Open the Rindrop application in the browser."""
+        """Open the Raindrop application in the browser."""
         open_url("https://app.raindrop.io/")
 
 
