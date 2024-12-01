@@ -17,8 +17,8 @@ from .collection import Collection
 
 
 ##############################################################################
-class Raindrop:
-    """Client for raindrop.io."""
+class API:
+    """API client class for raindrop.io."""
 
     AGENT: Final[str] = "Braindrop (https://github.com/davep/braindrop)"
     """The agent string to use when talking to the API."""
@@ -153,4 +153,4 @@ class Raindrop:
         return User.from_json(user) if result and user is not None else None
 
 
-### client.py ends here
+### api.py ends here

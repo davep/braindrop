@@ -10,7 +10,7 @@ from textual.app import App
 
 ##############################################################################
 # Local imports.
-from ..raindrop import Raindrop
+from ..raindrop import API
 from .data import ExitState, token_file
 from .screens import Main, TokenInput
 
@@ -52,7 +52,7 @@ class Braindrop(App[ExitState]):
         """
         if token:
             token_file().write_text(token, encoding="utf-8")
-            self.push_screen(Main(Raindrop(token)))
+            self.push_screen(Main(API(token)))
         else:
             self.exit(ExitState.TOKEN_NEEDED)
 
@@ -65,7 +65,7 @@ class Braindrop(App[ExitState]):
             once the token has been acquired.
         """
         if token := self.api_token:
-            self.push_screen(Main(Raindrop(token)))
+            self.push_screen(Main(API(token)))
         else:
             self.push_screen(TokenInput(), callback=self.token_bounce)
 

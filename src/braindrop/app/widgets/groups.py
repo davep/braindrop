@@ -15,7 +15,7 @@ from textual.widgets.option_list import Option, Separator
 
 ##############################################################################
 # Local imports.
-from ...raindrop import Collection, Raindrop, User
+from ...raindrop import API, Collection, User
 
 
 ##############################################################################
@@ -45,7 +45,7 @@ class Groups(OptionList):
 
     def __init__(
         self,
-        api: Raindrop,
+        api: API,
         id: str | None = None,
         classes: str | None = None,
         disabled: bool = False,

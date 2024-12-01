@@ -2,12 +2,13 @@
 
 ##############################################################################
 # Local imports.
-from .client import Raindrop
+from .api import API
 from .collection import Collection
+from .raindrop import Raindrop, RaindropType
 from .user import Group, User
 
 ##############################################################################
 # Exports.
-__all__ = ["Collection", "Group", "Raindrop", "User"]
+__all__ = ["Collection", "Group", "Raindrop", "Raindrop", "RaindropType", "User"]
 
 ### __init__.py ends here

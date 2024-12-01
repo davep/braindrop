@@ -13,7 +13,7 @@ from textual.widgets import Footer, Header
 
 ##############################################################################
 # Local imports.
-from ...raindrop import Raindrop
+from ...raindrop import API
 from ..widgets import Groups
 
 
@@ -39,7 +39,7 @@ class Main(Screen[None]):
         Binding("f2", "goto_raindrop", "raindrop.io"),
     ]
 
-    def __init__(self, api: Raindrop) -> None:
+    def __init__(self, api: API) -> None:
         """Initialise the main screen.
 
         Args:
