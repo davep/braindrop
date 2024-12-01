@@ -140,11 +140,7 @@ class Raindrop:
         _, collections = await self._items_of(
             f"collections{'' if level == 'root' else '/childrens'}"
         )
-        return [
-            Collection.from_json(collection)
-            for collection in collections or []
-            if isinstance(collection, dict)
-        ]
+        return [Collection.from_json(collection) for collection in collections or []]
 
     async def user(self) -> User | None:
         """Get the user details.
