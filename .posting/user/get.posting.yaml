@@ -1,0 +1,11 @@
+name: User
+description: Get my user information.
+method: GET
+url: https://api.raindrop.io/rest/v1/user
+headers:
+- name: Authorization
+  value: Bearer $API_TOKEN
+- name: Content-Type
+  value: application/json
+options:
+  timeout: 10.0

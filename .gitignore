@@ -9,4 +9,5 @@ wheels/
 # venv
 .venv
 
-.test_token
+# Testing files.
+.env

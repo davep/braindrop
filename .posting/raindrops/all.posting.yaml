@@ -1,0 +1,11 @@
+name: All
+description: Get all Raindrops
+method: GET
+url: https://api.raindrop.io/rest/v1/raindrops/0
+headers:
+- name: Authorization
+  value: Bearer $API_TOKEN
+- name: Content-Type
+  value: application/json
+options:
+  timeout: 10.0

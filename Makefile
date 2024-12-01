@@ -13,6 +13,10 @@ mypy   := $(run) mypy
 run:				# Run the code in a testing context
 	$(python) -m $(app)
 
+.PHONY: api
+api:				# Explore the API with Posting
+	posting --collection .posting --env .env
+
 ##############################################################################
 # Setup/update packages the system requires.
 .PHONY: setup
