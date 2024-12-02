@@ -14,6 +14,7 @@ from httpx import AsyncClient, HTTPStatusError, RequestError
 # Local imports.
 from ..raindrop.user import User
 from .collection import Collection
+from .raindrop import Raindrop
 
 
 ##############################################################################
@@ -151,6 +152,33 @@ class API:
         """
         result, user = await self._result_of("user", "user")
         return User.from_json(user) if result and user is not None else None
+
+    COLLECTION_ALL: Final[int] = 0
+    """The ID of the pseudo-collection that is all non-trashed Raindrops."""
+    COLLECTION_UNSORTED: Final[int] = -1
+    """The ID of the pseudo-collection that is all Raindrops not in a collection."""
+    COLLECTION_TRASH: Final[int] = -99
+    """The ID of the pseudo-collection thatg is all trashed Raindrops."""
+
+    async def raindrops(self, collection: int = COLLECTION_ALL) -> list[Raindrop]:
+        """Get a list of Raindrops.
+
+        Args:
+            collection: The collection to get the Raindrops from. Defaults
+                to all Raindrops.
+
+        Returns:
+            A list of Raindrops.
+
+        Note:
+            The following constants are available for specific pseudo-collections:
+
+            - `API.COLLECTION_ALL` - All non-trashed `Raindrop`s.
+            - `API.COLLECTION_UNSORTED` - All `Raindrop`s not in a `Collection`.
+            - `API.COLLECTION_TRASH` - All trashed `Raindrop`s.
+        """
+        _, raindrops = await self._items_of("raindrops", str(collection))
+        return [Raindrop.from_json(raindrop) for raindrop in raindrops or []]
 
 
 ### api.py ends here
