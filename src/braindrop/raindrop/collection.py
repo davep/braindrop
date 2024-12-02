@@ -16,10 +16,12 @@ from .parse_time import get_time
 
 
 ##############################################################################
-@dataclass
+@dataclass(frozen=True)
 class Collection:
     """Class that holds the details of a collection."""
 
+    raw: dict[str, Any]
+    """The raw data."""
     identity: int
     """The ID of the collection."""
     # access
@@ -56,6 +58,7 @@ class Collection:
             A fresh `Collection` instance.
         """
         return Collection(
+            raw=data,
             identity=data["_id"],
             color=data.get("color", ""),
             count=data["count"],

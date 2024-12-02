@@ -16,7 +16,7 @@ from .parse_time import get_time
 
 
 ##############################################################################
-@dataclass
+@dataclass(frozen=True)
 class Group:
     """The class that holds details of a user's group."""
 
@@ -45,7 +45,7 @@ class Group:
 
 
 ##############################################################################
-@dataclass
+@dataclass(frozen=True)
 class Toggle:
     """Holds the details of a value that can be toggled."""
 
@@ -63,10 +63,12 @@ class Toggle:
 
 
 ##############################################################################
-@dataclass
+@dataclass(frozen=True)
 class User:
     """Class that holds the details of a Raindrop user."""
 
+    raw: dict[str, Any]
+    """The raw data for the user."""
     identity: int
     """The user's ID."""
     # config
@@ -110,6 +112,7 @@ class User:
             A fresh `User` instance.
         """
         return User(
+            raw=data,
             identity=data["_id"],
             dropbox=Toggle.from_json(data.get("dropbox")),
             gdrive=Toggle.from_json(data.get("gdrive")),

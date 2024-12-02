@@ -22,7 +22,7 @@ RaindropType: TypeAlias = Literal[
 
 
 ##############################################################################
-@dataclass
+@dataclass(frozen=True)
 class Media:
     """Class that holds media details."""
 
@@ -42,10 +42,12 @@ class Media:
 
 
 ##############################################################################
-@dataclass
+@dataclass(frozen=True)
 class Raindrop:
     """Class that holds the details of a Raindrop."""
 
+    _raw: dict[str, Any]
+    """The raw data for the Raindrop."""
     identity: int
     """The ID of the raindrop."""
     collection: int
@@ -84,6 +86,7 @@ class Raindrop:
             A fresh `Raindrop` instance.
         """
         return Raindrop(
+            _raw=data,
             identity=data["_id"],
             collection=data["collection"]["$id"],
             cover=data["cover"],
