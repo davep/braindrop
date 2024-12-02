@@ -9,6 +9,6 @@ from .user import Group, User
 
 ##############################################################################
 # Exports.
-__all__ = ["Collection", "Group", "Raindrop", "Raindrop", "RaindropType", "User"]
+__all__ = ["API", "Collection", "Group", "Raindrop", "Raindrop", "RaindropType", "User"]
 
 ### __init__.py ends here
