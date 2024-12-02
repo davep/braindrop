@@ -158,7 +158,7 @@ class API:
     COLLECTION_UNSORTED: Final[int] = -1
     """The ID of the pseudo-collection that is all Raindrops not in a collection."""
     COLLECTION_TRASH: Final[int] = -99
-    """The ID of the pseudo-collection thatg is all trashed Raindrops."""
+    """The ID of the pseudo-collection that is all trashed Raindrops."""
 
     async def raindrops(self, collection: int = COLLECTION_ALL) -> list[Raindrop]:
         """Get a list of Raindrops.
