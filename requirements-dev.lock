@@ -84,6 +84,8 @@ propcache==0.2.0
     # via yarl
 pygments==2.18.0
     # via rich
+pytz==2024.2
+    # via braindrop
 pyyaml==6.0.2
     # via pre-commit
 rich==13.9.4
