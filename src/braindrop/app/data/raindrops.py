@@ -61,7 +61,7 @@ class Raindrops:
             Self.
         """
         self._all = await self._api.raindrops()
-        self._trash = await self._api.raindrops(API.COLLECTION_ALL)
+        self._trash = await self._api.raindrops(API.SpecialCollection.ALL)
         return self.mark_downloaded()
 
     @property
