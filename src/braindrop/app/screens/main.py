@@ -66,12 +66,6 @@ class Main(Screen[None]):
             yield Placeholder()
         yield Footer()
 
-    async def on_mount(self) -> None:
-        """Populate the screen when it mounts."""
-        return
-        if user := await self._api.user():
-            await self.query_one(Groups).show_for_user(user)
-
     def action_goto_raindrop(self) -> None:
         """Open the Raindrop application in the browser."""
         open_url("https://app.raindrop.io/")
