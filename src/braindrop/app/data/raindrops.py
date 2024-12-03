@@ -32,7 +32,11 @@ class Raindrops:
     """Holds and manages the local copy of all Raindrops."""
 
     def __init__(self, api: API) -> None:
-        """Initialise the object."""
+        """Initialise the object.
+
+        Args:
+            api: The Raindrop API client object.
+        """
         self._api = api
         """The API client object."""
         self._all: list[Raindrop] = []
