@@ -54,5 +54,15 @@ class Group(OptionList):
         """
         self.add_option(f"{'[dim]>[/dim] ' * indent}{collection.title}")
 
+    def add_collections(self, *collections: Collection, indent: int = 0) -> None:
+        """Add many collections to the widget.
+
+        Args:
+            collections: The collections to add to the widget.
+            indent: The indent level to add it at.
+        """
+        for collection in collections:
+            self.add_collection(collection, indent)
+
 
 ### group.py ends here
