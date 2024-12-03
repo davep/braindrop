@@ -2,6 +2,7 @@
 
 ##############################################################################
 # Textual imports.
+from textual import work
 from textual.app import ComposeResult
 from textual.containers import Vertical
 
@@ -55,6 +56,7 @@ class Navigation(Vertical):
                 group.add_collection(collection, indent)
                 self._add_children_for(collection, group, collections, indent)
 
+    @work
     async def refresh_user_groups(self) -> None:
         """Refresh the user groups display."""
         user_groups = self.query_one("#user-groups")
@@ -73,14 +75,14 @@ class Navigation(Vertical):
                         collections[collection], new_group, collections
                     )
 
-    async def on_mount(self) -> None:
+    def on_mount(self) -> None:
         """Configure the widget once the DOM is mounted."""
-        self.query_one("#special", Group).add_collection(API.SpecialCollection.ALL())
-        self.query_one("#special", Group).add_collection(
-            API.SpecialCollection.UNSORTED()
+        self.query_one("#special", Group).add_collections(
+            API.SpecialCollection.ALL(),
+            API.SpecialCollection.UNSORTED(),
+            API.SpecialCollection.TRASH(),
         )
-        self.query_one("#special", Group).add_collection(API.SpecialCollection.TRASH())
-        await self.refresh_user_groups()
+        self.refresh_user_groups()
 
 
 ### navigation.py ends here
