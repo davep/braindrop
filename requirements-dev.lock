@@ -101,6 +101,7 @@ textual==0.87.1
 textual-dev==1.7.0
 textual-serve==1.1.1
     # via textual-dev
+types-pytz==2024.2.0.20241003
 typing-extensions==4.12.2
     # via mypy
     # via textual
