@@ -2,9 +2,10 @@
 
 ##############################################################################
 # Python imports.
+from enum import Enum, IntEnum
 from json import loads
 from ssl import SSLCertVerificationError
-from typing import Any, Final, Literal
+from typing import Any, Final, Literal, TypeAlias
 
 ##############################################################################
 # HTTPX imports.
@@ -153,14 +154,37 @@ class API:
         result, user = await self._result_of("user", "user")
         return User.from_json(user) if result and user is not None else None
 
-    COLLECTION_ALL: Final[int] = 0
-    """The ID of the pseudo-collection that is all non-trashed Raindrops."""
-    COLLECTION_UNSORTED: Final[int] = -1
-    """The ID of the pseudo-collection that is all Raindrops not in a collection."""
-    COLLECTION_TRASH: Final[int] = -99
-    """The ID of the pseudo-collection that is all trashed Raindrops."""
+    class SpecialCollection(IntEnum):
+        """IDs of the special collections."""
 
-    async def raindrops(self, collection: int = COLLECTION_ALL) -> list[Raindrop]:
+        ALL = 0
+        """A collection that contains all non-trashed raindrops."""
+        UNSORTED = -1
+        """A collection that contains all non-trashed raindrops that haven't been sorted."""
+        TRASH = -99
+        """A collection that contains all trashed raindrops."""
+
+        def __call__(self) -> Collection:
+            """Turn a collection ID into a `Collection` object."""
+            return Collection(
+                raw={},
+                identity=self.value,
+                color="",
+                count=0,
+                cover=[],
+                created=None,
+                expanded=True,
+                last_update=None,
+                public=False,
+                sort=0,
+                title=self.name.title(),
+                view="",
+                parent=-1,
+            )
+
+    async def raindrops(
+        self, collection: int = SpecialCollection.ALL
+    ) -> list[Raindrop]:
         """Get a list of Raindrops.
 
         Args:
@@ -171,11 +195,11 @@ class API:
             A list of Raindrops.
 
         Note:
-            The following constants are available for specific pseudo-collections:
+            The following constants are available for specific special collections:
 
-            - `API.COLLECTION_ALL` - All non-trashed `Raindrop`s.
-            - `API.COLLECTION_UNSORTED` - All `Raindrop`s not in a `Collection`.
-            - `API.COLLECTION_TRASH` - All trashed `Raindrop`s.
+            - `API.SpecialCollection.ALL` - All non-trashed `Raindrop`s.
+            - `API.SpecialCollection.UNSORTED` - All `Raindrop`s not in a `Collection`.
+            - `API.SpecialCollection.TRASH` - All trashed `Raindrop`s.
         """
         _, raindrops = await self._items_of("raindrops", str(collection))
         return [Raindrop.from_json(raindrop) for raindrop in raindrops or []]

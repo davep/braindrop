@@ -8,13 +8,14 @@ from webbrowser import open as open_url
 # Textual imports.
 from textual.app import ComposeResult
 from textual.binding import Binding
+from textual.containers import Horizontal
 from textual.screen import Screen
-from textual.widgets import Footer, Header
+from textual.widgets import Footer, Header, Placeholder
 
 ##############################################################################
 # Local imports.
 from ...raindrop import API
-from ..widgets import Groups
+from ..widgets import Navigation
 
 
 ##############################################################################
@@ -32,6 +33,14 @@ class Main(Screen[None]):
         &.-tall {
             height: 1 !important;
         }
+    }
+
+    Navigation {
+        width: 1fr;
+    }
+
+    Placeholder {
+        width: 4fr;
     }
     """
 
@@ -52,11 +61,14 @@ class Main(Screen[None]):
     def compose(self) -> ComposeResult:
         """Compose the content of the screen."""
         yield Header()
-        yield Groups(self._api)
+        with Horizontal():
+            yield Navigation(self._api)
+            yield Placeholder()
         yield Footer()
 
     async def on_mount(self) -> None:
         """Populate the screen when it mounts."""
+        return
         if user := await self._api.user():
             await self.query_one(Groups).show_for_user(user)
 

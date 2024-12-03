@@ -2,11 +2,11 @@
 
 ##############################################################################
 # Local imports.
-from .groups import Groups
+from .navigation import Navigation
 
 ##############################################################################
 # Exports.
-__all__ = ["Groups"]
+__all__ = ["Navigation"]
 
 
 ### __init__.py ends here
