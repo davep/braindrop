@@ -82,10 +82,10 @@ class Main(Screen[None]):
         # figure out if we're out of date down here.
         try:
             self._user = await self._api.user()
-        except API.Error:
+        except API.Error as error:
             self.app.bell()
             self.notify(
-                "Unable to get the last updated time from the Raindrop server.",
+                f"Unable to get the last updated time from the Raindrop server.\n\n{error}",
                 title="Server Error",
                 severity="error",
                 timeout=8,
