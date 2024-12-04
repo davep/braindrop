@@ -3,11 +3,12 @@
 ##############################################################################
 # Local imports.
 from .exit_state import ExitState
+from .raindrops import Raindrops
 from .token import token_file
 
 ##############################################################################
 # Exports.
-__all__ = ["ExitState", "token_file"]
+__all__ = ["ExitState", "Raindrops", "token_file"]
 
 
 ### __init__.py ends here
