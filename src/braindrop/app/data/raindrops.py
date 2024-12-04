@@ -13,7 +13,7 @@ from pytz import UTC
 
 ##############################################################################
 # Local imports.
-from ...raindrop import API, Raindrop
+from ...raindrop import API, Collection, Raindrop, User, get_time
 from .locations import data_dir
 
 
@@ -39,33 +39,74 @@ class Raindrops:
         """
         self._api = api
         """The API client object."""
+        self._user: User | None = None
+        """The details of the user who is the owner of the Raindrops."""
         self._all: list[Raindrop] = []
         """All non-trashed Raindrops."""
         self._trash: list[Raindrop] = []
         """All Raindrops in trash."""
+        self._collections: dict[int, Collection] = {}
+        """An index of all of the Raindrops we know about."""
         self._last_downloaded: datetime | None = None
+        """The time the data was last downloaded from the server."""
 
     @property
     def last_downloaded(self) -> datetime | None:
         """The time the Raindrops were downloaded, or `None` if not yet."""
         return self._last_downloaded
 
+    @property
+    def user(self) -> User | None:
+        """The user that the data relates to."""
+        return self._user
+
+    @property
+    def all(self) -> list[Raindrop]:
+        """All non-trashed raindrops."""
+        return self._all
+
+    @property
+    def trash(self) -> list[Raindrop]:
+        """All trashed raindrops."""
+        return self._trash
+
+    def collection(self, identity: int) -> Collection:
+        """Get a collection from its ID.
+
+        Args:
+            identity: The identity of the collection.
+
+        Returns:
+            The collection with that identity.
+        """
+        return self._collections[identity]
+
+    @property
+    def collections(self) -> list[Collection]:
+        """A list of all known collections."""
+        return list(self._collections.values())
+
     def mark_downloaded(self) -> Self:
         """Mark the bookmarks as having being downloaded at the time of calling."""
         self._last_downloaded = datetime.now(UTC)
         return self
 
-    async def download(self) -> Self:
+    async def download(self, user: User) -> Self:
         """Download all available Raindrops from the server.
 
         Args:
-            api: The API to download via.
+            user: The user details we're downloading for.
 
         Returns:
             Self.
         """
-        self._all = await self._api.raindrops()
+        self._user = user
+        self._all = await self._api.raindrops(API.SpecialCollection.ALL)
         self._trash = await self._api.raindrops(API.SpecialCollection.TRASH)
+        self._collections = {
+            collection.identity: collection
+            for collection in await self._api.collections("all")
+        }
         return self.mark_downloaded()
 
     @property
@@ -75,8 +116,10 @@ class Raindrops:
             "last_downloaded": None
             if self._last_downloaded is None
             else self._last_downloaded.isoformat(),
+            "user": None if self._user is None else self._user.raw,
             "all": [raindrop.raw for raindrop in self._all],
             "trash": [raindrop.raw for raindrop in self._trash],
+            "collections": {k: v.raw for k, v in self._collections.items()},
         }
 
     def save(self) -> Self:
@@ -96,9 +139,18 @@ class Raindrops:
         """
         if raindrops_file().exists():
             data = loads(raindrops_file().read_text(encoding="utf-8"))
-            self._last_downloaded = data["last_downloaded"]
-            self._all = data["all"]
-            self._trash = data["trash"]
+            self._last_downloaded = get_time(data, "last_downloaded")
+            self._user = User.from_json(data.get("user", {}))
+            self._all = [
+                Raindrop.from_json(raindrop) for raindrop in data.get("all", [])
+            ]
+            self._trash = [
+                Raindrop.from_json(raindrop) for raindrop in data.get("trash", [])
+            ]
+            self._collections = {
+                int(k): Collection.from_json(v)
+                for k, v in data.get("collections", {}).items()
+            }
         return self
 
 
