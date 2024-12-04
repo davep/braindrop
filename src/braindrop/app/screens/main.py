@@ -11,13 +11,13 @@ from textual.app import ComposeResult
 from textual.binding import Binding
 from textual.containers import Horizontal
 from textual.screen import Screen
-from textual.widgets import Footer, Header, Placeholder
+from textual.widgets import Footer, Header
 
 ##############################################################################
 # Local imports.
 from ...raindrop import API, User
 from ..data import Raindrops
-from ..widgets import Navigation
+from ..widgets import Navigation, RaindropsView
 
 
 ##############################################################################
@@ -41,8 +41,9 @@ class Main(Screen[None]):
         width: 1fr;
     }
 
-    Placeholder {
+    RaindropsView {
         width: 4fr;
+        height: 1fr;
     }
     """
 
@@ -69,7 +70,7 @@ class Main(Screen[None]):
         yield Header()
         with Horizontal():
             yield Navigation()
-            yield Placeholder()
+            yield RaindropsView()
         yield Footer()
 
     @work
@@ -113,7 +114,7 @@ class Main(Screen[None]):
         else:
             # It doesn't look like we're in a situation where we need to
             # download data from the server. Display the local copy.
-            self.query_one(Navigation).data = self._data
+            self.populate_display()
             return
 
         # Having got to this point, it looks like we really do need to pull
@@ -168,11 +169,15 @@ class Main(Screen[None]):
             )
             return
 
-        self.query_one(Navigation).data = self._data
+        self.populate_display()
 
     def on_mount(self) -> None:
         """Start the process of loading up the Raindrop data."""
         self.load_data()
+
+    def populate_display(self) -> None:
+        self.query_one(Navigation).data = self._data
+        self.query_one(RaindropsView).show(self._data.all)
 
     def action_redownload(self) -> None:
         self.download_data()
