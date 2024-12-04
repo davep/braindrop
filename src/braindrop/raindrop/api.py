@@ -201,8 +201,18 @@ class API:
             - `API.SpecialCollection.UNSORTED` - All `Raindrop`s not in a `Collection`.
             - `API.SpecialCollection.TRASH` - All trashed `Raindrop`s.
         """
-        _, raindrops = await self._items_of("raindrops", str(collection))
-        return [Raindrop.from_json(raindrop) for raindrop in raindrops or []]
+        page = 0
+        raindrops: list[Raindrop] = []
+        while True:
+            _, data = await self._items_of(
+                "raindrops", str(collection), page=str(page), pagesize="50"
+            )
+            if data:
+                raindrops += [Raindrop.from_json(raindrop) for raindrop in data]
+                page += 1
+            else:
+                break
+        return raindrops
 
 
 ### api.py ends here
