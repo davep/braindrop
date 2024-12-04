@@ -1,6 +1,10 @@
 """Provides a widget for viewing a collection of Raindrops."""
 
 ##############################################################################
+# Rich imports.
+from rich.markup import escape
+
+##############################################################################
 # Textual imports.
 from textual.widgets import OptionList
 
@@ -19,7 +23,9 @@ class RaindropsView(OptionList):
         Args:
             raindrops: The raindrops to show.
         """
-        self.clear_options().add_options([raindrop.title for raindrop in raindrops])
+        self.clear_options().add_options(
+            [escape(raindrop.title) for raindrop in raindrops]
+        )
 
 
 ### raindrops_view.py ends here
