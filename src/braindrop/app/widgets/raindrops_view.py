@@ -49,7 +49,7 @@ class RaindropView(Option):
         title.add_column(ratio=1)
         title.add_row(escape(self._raindrop.title))
 
-        body: list[Table | Rule | str] = []
+        body: list[str] = []
         if self._raindrop.excerpt:
             body.append(f"[dim]{escape(self._raindrop.excerpt)}[/dim]")
 
