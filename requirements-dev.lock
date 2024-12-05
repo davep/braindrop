@@ -44,6 +44,8 @@ httpcore==1.0.7
     # via httpx
 httpx==0.27.2
     # via braindrop
+humanize==4.11.0
+    # via braindrop
 identify==2.6.3
     # via pre-commit
 idna==3.10

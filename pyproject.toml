@@ -11,6 +11,7 @@ dependencies = [
     "textual>=0.87.1",
     "xdg-base-dirs>=6.0.2",
     "pytz>=2024.2",
+    "humanize>=4.11.0",
 ]
 readme = "README.md"
 requires-python = ">= 3.8"
