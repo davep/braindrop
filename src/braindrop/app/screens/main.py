@@ -102,6 +102,9 @@ class Main(Screen[None]):
             )
             return
 
+        self.populate_display()
+        return
+
         if self._data.last_downloaded is None:
             self.notify("No local data found; checking in with the server.")
         elif (
