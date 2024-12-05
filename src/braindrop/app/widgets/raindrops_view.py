@@ -30,6 +30,7 @@ class RaindropView(Option):
     """An individual raindrop."""
 
     RULE: Final[Rule] = Rule(style="dim")
+    """The rule to place at the end of each view."""
 
     def __init__(self, raindrop: Raindrop) -> None:
         """Initialise the object.
