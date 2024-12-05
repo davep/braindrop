@@ -37,10 +37,10 @@ class Group:
             A fresh `Group` instance.
         """
         return Group(
-            title=data["title"],
-            hidden=data["hidden"],
-            sort=data["sort"],
-            collections=data["collections"],
+            title=data.get("title", ""),
+            hidden=data.get("hidden", False),
+            sort=data.get("sort", 0),
+            collections=data.get("collections", []),
         )
 
 
@@ -116,14 +116,14 @@ class User:
             identity=data["_id"],
             dropbox=Toggle.from_json(data.get("dropbox")),
             gdrive=Toggle.from_json(data.get("gdrive")),
-            email=data["email"],
+            email=data.get("email", ""),
             email_md5=data.get("email_MD5", ""),
-            full_name=data["fullName"],
+            full_name=data.get("fullName", ""),
             groups=[Group.from_json(group) for group in data["groups"]],
             tfa=Toggle.from_json(data.get("fta")),
             apple=Toggle.from_json(data.get("apple")),
-            password=data["password"],
-            pro=data["pro"],
+            password=data.get("password", False),
+            pro=data.get("pro", False),
             last_action=get_time(data, "lastAction"),
             last_visit=get_time(data, "lastVisit"),
             last_update=get_time(data, "lastUpdate"),
