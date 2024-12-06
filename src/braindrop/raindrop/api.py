@@ -2,10 +2,10 @@
 
 ##############################################################################
 # Python imports.
-from enum import Enum, IntEnum
+from enum import IntEnum
 from json import loads
 from ssl import SSLCertVerificationError
-from typing import Any, Final, Literal, TypeAlias
+from typing import Any, Final, Literal
 
 ##############################################################################
 # HTTPX imports.
