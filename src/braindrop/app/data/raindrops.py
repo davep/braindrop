@@ -79,6 +79,19 @@ class Raindrops:
         """All trashed raindrops."""
         return self._trash
 
+    def in_collection(self, collection: int | Collection) -> list[Raindrop]:
+        """Get all Raindrops within a given collection.
+
+        Args:
+            The collection to get the Raindrops for.
+
+        Returns:
+            The raindrops within that collection.
+        """
+        if isinstance(collection, Collection):
+            collection = collection.identity
+        return [raindrop for raindrop in self._all if raindrop.collection == collection]
+
     def collection(self, identity: int) -> Collection:
         """Get a collection from its ID.
 
