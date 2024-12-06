@@ -49,8 +49,18 @@ class Main(Screen[None]):
     """
 
     BINDINGS = [
-        Binding("f2", "goto_raindrop", "raindrop.io"),
-        Binding("ctrl+r", "redownload", "Redownload"),
+        Binding(
+            "f2",
+            "goto_raindrop",
+            "raindrop.io",
+            tooltip="Open the web-based raindrop.io application",
+        ),
+        Binding(
+            "ctrl+r",
+            "redownload",
+            "Redownload",
+            tooltip="Download a fresh copy of all data from raindrop.io",
+        ),
     ]
 
     def __init__(self, api: API) -> None:
