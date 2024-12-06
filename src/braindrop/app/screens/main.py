@@ -6,7 +6,7 @@ from webbrowser import open as open_url
 
 ##############################################################################
 # Textual imports.
-from textual import work
+from textual import on, work
 from textual.app import ComposeResult
 from textual.binding import Binding
 from textual.containers import Horizontal
@@ -16,6 +16,7 @@ from textual.widgets import Footer, Header
 ##############################################################################
 # Local imports.
 from ...raindrop import API, User
+from ..commands import ShowCollection
 from ..data import Raindrops
 from ..widgets import Navigation, RaindropsView
 
@@ -182,6 +183,25 @@ class Main(Screen[None]):
     def populate_display(self) -> None:
         self.query_one(Navigation).data = self._data
         self.query_one(RaindropsView).show(self._data.all)
+
+    @on(ShowCollection)
+    def command_show_collection(self, command: ShowCollection) -> None:
+        """Handle the command that requests we show a collection.
+
+        Args:
+            command: The command.
+        """
+        match command.collection.identity:
+            case API.SpecialCollection.ALL:
+                self.query_one(RaindropsView).show(self._data.all)
+            case API.SpecialCollection.UNSORTED:
+                self.query_one(RaindropsView).show(self._data.unsorted)
+            case API.SpecialCollection.TRASH:
+                self.query_one(RaindropsView).show(self._data.trash)
+            case specific_collection:
+                self.query_one(RaindropsView).show(
+                    self._data.in_collection(specific_collection)
+                )
 
     def action_redownload(self) -> None:
         self.download_data()
