@@ -66,6 +66,15 @@ class Raindrops:
         return self._all
 
     @property
+    def unsorted(self) -> list[Raindrop]:
+        """All unsorted raindrops."""
+        return [
+            raindrop
+            for raindrop in self._all
+            if raindrop.collection == API.SpecialCollection.UNSORTED
+        ]
+
+    @property
     def trash(self) -> list[Raindrop]:
         """All trashed raindrops."""
         return self._trash
