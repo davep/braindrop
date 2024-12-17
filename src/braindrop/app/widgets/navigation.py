@@ -174,10 +174,7 @@ class Navigation(OptionList):
             collection: The collection to show the tags for.
         """
         self._main_navigation()
-        if (
-            self.data is not None
-            and (tags := self.data.tags_of(collection)) is not None
-        ):
+        if self.data is not None and (tags := self.data.tags_of(collection)):
             self.add_option(Title("Tags"))
             for tag in tags:
                 self.add_option(TagView(tag))
