@@ -10,16 +10,16 @@
 #   universal: false
 
 -e file:.
-anyio==4.6.2.post1
+anyio==4.7.0
     # via httpx
-certifi==2024.8.30
+certifi==2024.12.14
     # via httpcore
     # via httpx
 h11==0.14.0
     # via httpcore
 httpcore==1.0.7
     # via httpx
-httpx==0.27.2
+httpx==0.28.1
     # via braindrop
 humanize==4.11.0
     # via braindrop
@@ -46,10 +46,10 @@ rich==13.9.4
     # via textual
 sniffio==1.3.1
     # via anyio
-    # via httpx
-textual==0.87.1
+textual==1.0.0
     # via braindrop
 typing-extensions==4.12.2
+    # via anyio
     # via textual
 uc-micro-py==1.0.3
     # via linkify-it-py
