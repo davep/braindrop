@@ -40,6 +40,7 @@ class Main(Screen[None]):
 
     Navigation {
         width: 1fr;
+        height: 1fr;
     }
 
     RaindropsView {
