@@ -61,14 +61,18 @@ class Navigation(OptionList):
     data: var[Raindrops | None] = var(None)
     """Holds a reference to the Raindrop data we're going to handle."""
 
-    def _add_collection(self, collection: Collection, indent: int = 0) -> None:
+    def _add_collection(self, collection: Collection, indent: int = 0) -> Collection:
         """Add a collection to the widget.
 
         Args:
             collection: The collection to add.
             indent: The indent level to add it at.
+
+        Returns:
+            The collection.
         """
         self.add_option(CollectionView(collection, indent))
+        return collection
 
     def _add_collections(self, *collections: Collection, indent: int = 0) -> None:
         """Add many collections to the widget.
@@ -122,8 +126,9 @@ class Navigation(OptionList):
         for group in self.data.user.groups:
             self.add_option(GroupTitle(group))
             for collection in group.collections:
-                self._add_collection(self.data.collection(collection))
-                self._add_children_for(self.data.collection(collection))
+                self._add_children_for(
+                    self._add_collection(self.data.collection(collection))
+                )
 
     @on(OptionList.OptionSelected)
     def _collection_selected(self, message: OptionList.OptionSelected) -> None:
