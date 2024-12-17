@@ -9,11 +9,11 @@ from rich.align import Align
 from textual import on
 from textual.reactive import var
 from textual.widgets import OptionList
-from textual.widgets.option_list import Option, OptionDoesNotExist
+from textual.widgets.option_list import Option
 
 ##############################################################################
 # Local imports.
-from ...raindrop import API, Collection, Group, Raindrop, Tag
+from ...raindrop import API, Collection, Raindrop, Tag
 from ..commands import ShowCollection
 from ..data import Raindrops
 
