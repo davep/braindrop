@@ -82,7 +82,7 @@ class Main(Screen[None]):
         """Compose the content of the screen."""
         yield Header()
         with Horizontal():
-            yield Navigation()
+            yield Navigation(self._api)
             yield RaindropsView()
         yield Footer()
 
@@ -192,8 +192,11 @@ class Main(Screen[None]):
         self.load_data()
 
     def populate_display(self) -> None:
+        """Populate the display."""
         self.query_one(Navigation).data = self._data
+        self.query_one(Navigation).highlighted = 0
         self.query_one(RaindropsView).show(self._data.all)
+        self.query_one(Navigation).now_showing(self._data.all)
 
     @on(ShowCollection)
     def command_show_collection(self, command: ShowCollection) -> None:
@@ -202,19 +205,12 @@ class Main(Screen[None]):
         Args:
             command: The command.
         """
-        match command.collection.identity:
-            case API.SpecialCollection.ALL:
-                self.query_one(RaindropsView).show(self._data.all)
-            case API.SpecialCollection.UNSORTED:
-                self.query_one(RaindropsView).show(self._data.unsorted)
-            case API.SpecialCollection.TRASH:
-                self.query_one(RaindropsView).show(self._data.trash)
-            case specific_collection:
-                self.query_one(RaindropsView).show(
-                    self._data.in_collection(specific_collection)
-                )
+        raindrops = self._data.in_collection(command.collection)
+        self.query_one(RaindropsView).show(raindrops)
+        self.query_one(Navigation).now_showing(raindrops)
 
     def action_redownload(self) -> None:
+        """Redownload data from the server."""
         self.download_data()
 
     def action_goto_raindrop(self) -> None:

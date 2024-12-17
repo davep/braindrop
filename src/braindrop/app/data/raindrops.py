@@ -5,7 +5,7 @@
 from datetime import datetime
 from json import dumps, loads
 from pathlib import Path
-from typing import Any, Self
+from typing import Any, Counter, Self
 
 ##############################################################################
 # pytz imports.
@@ -13,7 +13,7 @@ from pytz import UTC
 
 ##############################################################################
 # Local imports.
-from ...raindrop import API, Collection, Raindrop, User, get_time
+from ...raindrop import API, Collection, Raindrop, Tag, User, get_time
 from .locations import data_dir
 
 
@@ -90,7 +90,35 @@ class Raindrops:
         """
         if isinstance(collection, Collection):
             collection = collection.identity
-        return [raindrop for raindrop in self._all if raindrop.collection == collection]
+        match collection:
+            case API.SpecialCollection.ALL:
+                return self.all
+            case API.SpecialCollection.UNSORTED:
+                return self.unsorted
+            case API.SpecialCollection.TRASH:
+                return self.trash
+            case user_collection:
+                return [
+                    raindrop
+                    for raindrop in self._all
+                    if raindrop.collection == user_collection
+                ]
+
+    def tags_of(self, collection: int | Collection | list[Raindrop]) -> list[Tag]:
+        """Get the tags of a collection.
+
+        Args:
+            collection: The collection to get the tags of.
+
+        Returns:
+            A list of the tags found in the collection.
+        """
+        if isinstance(collection, (int, Collection)):
+            return self.tags_of(self.in_collection(collection))
+        tags: list[str] = []
+        for raindrop in collection:
+            tags.extend(set(raindrop.tags))
+        return [Tag(name, count) for name, count in Counter(tags).items()]
 
     def collection(self, identity: int) -> Collection:
         """Get a collection from its ID.

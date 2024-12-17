@@ -9,11 +9,11 @@ from rich.align import Align
 from textual import on
 from textual.reactive import var
 from textual.widgets import OptionList
-from textual.widgets.option_list import Option
+from textual.widgets.option_list import Option, OptionDoesNotExist
 
 ##############################################################################
 # Local imports.
-from ...raindrop import API, Collection, Group
+from ...raindrop import API, Collection, Group, Raindrop, Tag
 from ..commands import ShowCollection
 from ..data import Raindrops
 
@@ -40,18 +40,29 @@ class CollectionView(Option):
 
 
 ##############################################################################
-class GroupTitle(Option):
-    """Option for showing the title of a group."""
+class TagView(Option):
+    """Option for showing a tag."""
 
-    def __init__(self, group: Group) -> None:
+    def __init__(self, tag: Tag) -> None:
         """Initialise the object.
 
         Args:
-            group: The group to show the title for.
+            tag: The tag to show.
         """
-        super().__init__(Align.right(group.title), disabled=True)
-        self._group = group
-        """The group this title is associated with."""
+        super().__init__(f"{tag.name} [dim]({tag.count})[/]", id=f"_tag_{tag.name}")
+
+
+##############################################################################
+class Title(Option):
+    """Option for showing a title."""
+
+    def __init__(self, title: str) -> None:
+        """Initialise the object.
+
+        Args:
+            title: The title to show.
+        """
+        super().__init__(Align.right(title), disabled=True, id=title)
 
 
 ##############################################################################
@@ -60,6 +71,25 @@ class Navigation(OptionList):
 
     data: var[Raindrops | None] = var(None)
     """Holds a reference to the Raindrop data we're going to handle."""
+
+    def __init__(
+        self,
+        api: API,
+        id: str | None = None,
+        classes: str | None = None,
+        disabled: bool = False,
+    ):
+        """Initialise the object.
+
+        Args:
+            api: The API client object.
+            id: The ID of the widget description in the DOM.
+            classes: The CSS classes of the widget description.
+            disabled: Whether the widget description is disabled or not.
+        """
+        super().__init__(id=id, classes=classes, disabled=disabled)
+        self._api = api
+        """The API client object."""
 
     def _add_collection(self, collection: Collection, indent: int = 0) -> Collection:
         """Add a collection to the widget.
@@ -111,24 +141,54 @@ class Navigation(OptionList):
                 self._add_collection(collection, indent)
                 self._add_children_for(collection, indent)
 
+    def _main_navigation(self) -> None:
+        """Set up the main navigation."""
+        highlighted = self.highlighted
+        try:
+            # First off, clear out the display of the user's groups.
+            self.clear_options()._add_specials()
+
+            # If we don't have data or we don't know the user, we're all done
+            # here.
+            if self.data is None or self.data.user is None:
+                return
+
+            # Populate the groups.
+            for group in self.data.user.groups:
+                self.add_option(Title(group.title))
+                for collection in group.collections:
+                    self._add_children_for(
+                        self._add_collection(self.data.collection(collection))
+                    )
+        finally:
+            self.highlighted = highlighted
+
     def watch_data(self) -> None:
         """Handle the data being changed."""
+        self._main_navigation()
 
-        # First off, clear out the display of the user's groups.
-        self.clear_options()._add_specials()
+    def _show_tags_for(self, collection: list[Raindrop]) -> None:
+        """Show tags relating a given collection.
 
-        # If we don't have data or we don't know the user, we're all done
-        # here.
-        if self.data is None or self.data.user is None:
-            return
+        Args:
+            collection: The collection to show the tags for.
+        """
+        self._main_navigation()
+        if (
+            self.data is not None
+            and (tags := self.data.tags_of(collection)) is not None
+        ):
+            self.add_option(Title("Tags"))
+            for tag in tags:
+                self.add_option(TagView(tag))
 
-        # Populate the groups.
-        for group in self.data.user.groups:
-            self.add_option(GroupTitle(group))
-            for collection in group.collections:
-                self._add_children_for(
-                    self._add_collection(self.data.collection(collection))
-                )
+    def now_showing(self, collection: list[Raindrop]) -> None:
+        """Configure the navigation based on the given collection.
+
+        Args:
+            collection: The collection that is now showing.
+        """
+        self._show_tags_for(collection)
 
     @on(OptionList.OptionSelected)
     def _collection_selected(self, message: OptionList.OptionSelected) -> None:
@@ -137,9 +197,9 @@ class Navigation(OptionList):
         Args:
             message: The message associated with the request.
         """
-        assert isinstance(message.option, CollectionView)
         message.stop()
-        self.post_message(ShowCollection(message.option.collection))
+        if isinstance(message.option, CollectionView):
+            self.post_message(ShowCollection(message.option.collection))
 
 
 ### navigation.py ends here
