@@ -176,7 +176,7 @@ class Navigation(OptionList):
         self._main_navigation()
         if self.data is not None and (tags := self.data.tags_of(collection)):
             self.add_option(Title("Tags"))
-            for tag in tags:
+            for tag in sorted(tags, key=lambda tag: tag.name.casefold()):
                 self.add_option(TagView(tag))
 
     def now_showing(self, collection: list[Raindrop]) -> None:
