@@ -10,7 +10,7 @@ from textual.message import Message
 
 ##############################################################################
 # Local imports.
-from ..raindrop import Collection
+from ..raindrop import Collection, Tag
 
 
 ##############################################################################
@@ -20,6 +20,15 @@ class ShowCollection(Message):
 
     collection: Collection
     """The collection to show."""
+
+
+##############################################################################
+@dataclass
+class ShowTagged(Message):
+    """A message that requests that Raindrops with a particular tag are shown."""
+
+    tag: Tag
+    """The tag to show."""
 
 
 ### commands.py ends here
