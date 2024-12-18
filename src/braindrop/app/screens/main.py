@@ -16,7 +16,7 @@ from textual.widgets import Footer, Header
 ##############################################################################
 # Local imports.
 from ...raindrop import API, User
-from ..commands import ShowCollection
+from ..commands import ShowCollection, ShowTagged
 from ..data import Raindrops
 from ..widgets import Navigation, RaindropsView
 
@@ -206,6 +206,17 @@ class Main(Screen[None]):
             command: The command.
         """
         raindrops = self._data.in_collection(command.collection)
+        self.query_one(RaindropsView).show(raindrops)
+        self.query_one(Navigation).now_showing(raindrops)
+
+    @on(ShowTagged)
+    def command_show_tagged(self, command: ShowTagged) -> None:
+        """Handle the command that requests we show Raindrops with a given tag.
+
+        Args:
+            command: The command.
+        """
+        raindrops = self._data.tagged(command.tag)
         self.query_one(RaindropsView).show(raindrops)
         self.query_one(Navigation).now_showing(raindrops)
 
