@@ -13,8 +13,8 @@ from textual.widgets.option_list import Option
 
 ##############################################################################
 # Local imports.
-from ...raindrop import API, Collection, Raindrop, TagData
-from ..commands import ShowCollection
+from ...raindrop import API, Collection, Raindrop, Tag, TagData
+from ..commands import ShowCollection, ShowTagged
 from ..data import Raindrops
 
 
@@ -50,6 +50,18 @@ class TagView(Option):
             tag: The tag to show.
         """
         super().__init__(f"{tag.tag} [dim]({tag.count})[/]", id=f"_tag_{tag.tag}")
+        self._tag = tag
+        """The tag being viewed."""
+
+    @property
+    def tag_data(self) -> TagData:
+        """The tag data."""
+        return self._tag
+
+    @property
+    def tag(self) -> Tag:
+        """The tag."""
+        return self.tag_data.tag
 
 
 ##############################################################################
@@ -197,6 +209,8 @@ class Navigation(OptionList):
         message.stop()
         if isinstance(message.option, CollectionView):
             self.post_message(ShowCollection(message.option.collection))
+        elif isinstance(message.option, TagView):
+            self.post_message(ShowTagged(message.option.tag))
 
 
 ### navigation.py ends here
