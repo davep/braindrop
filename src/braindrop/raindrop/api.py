@@ -16,7 +16,7 @@ from httpx import AsyncClient, HTTPStatusError, RequestError
 from ..raindrop.user import User
 from .collection import Collection
 from .raindrop import Raindrop
-from .tag import Tag
+from .tag import TagData
 
 
 ##############################################################################
@@ -215,7 +215,7 @@ class API:
                 break
         return raindrops
 
-    async def tags(self, collection: int | None = None) -> list[Tag]:
+    async def tags(self, collection: int | None = None) -> list[TagData]:
         """Get a list of tags.
 
         Args:
@@ -227,7 +227,7 @@ class API:
         _, tags = await self._items_of(
             "/tags" if collection is None else f"/tags/{collection}"
         )
-        return [Tag.from_json(tag) for tag in tags or []]
+        return [TagData.from_json(tag) for tag in tags or []]
 
 
 ### api.py ends here

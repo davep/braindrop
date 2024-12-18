@@ -6,7 +6,7 @@ from .api import API
 from .collection import Collection
 from .parse_time import get_time
 from .raindrop import Raindrop, RaindropType
-from .tag import Tag
+from .tag import Tag, TagData
 from .user import Group, User
 
 ##############################################################################
@@ -18,6 +18,7 @@ __all__ = [
     "Raindrop",
     "RaindropType",
     "Tag",
+    "TagData",
     "User",
     "get_time",
 ]

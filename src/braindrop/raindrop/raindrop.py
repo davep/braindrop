@@ -13,6 +13,7 @@ from typing import Any, Literal, TypeAlias
 ##############################################################################
 # Local imports.
 from .parse_time import get_time
+from .tag import Tag
 
 ##############################################################################
 RaindropType: TypeAlias = Literal[
@@ -68,7 +69,7 @@ class Raindrop:
     """The URL of the link for the Raindrop."""
     media: list[Media]
     """A list of media associated with the Raindrop."""
-    tags: list[str]
+    tags: list[Tag]
     """The tags for the Raindrop."""
     title: str
     """The title of the Raindrop."""
@@ -97,7 +98,7 @@ class Raindrop:
             last_update=get_time(data, "lastUpdate"),
             link=data.get("link", ""),
             media=[Media.from_json(media) for media in data.get("media", [])],
-            tags=data.get("tags", []),
+            tags=[Tag(tag) for tag in data.get("tags", [])],
             title=data.get("title", ""),
             type=data.get("type", "link"),
             user=data.get("user", {}).get("$id", ""),

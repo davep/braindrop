@@ -13,7 +13,7 @@ from textual.widgets.option_list import Option
 
 ##############################################################################
 # Local imports.
-from ...raindrop import API, Collection, Raindrop, Tag
+from ...raindrop import API, Collection, Raindrop, TagData
 from ..commands import ShowCollection
 from ..data import Raindrops
 
@@ -43,13 +43,13 @@ class CollectionView(Option):
 class TagView(Option):
     """Option for showing a tag."""
 
-    def __init__(self, tag: Tag) -> None:
+    def __init__(self, tag: TagData) -> None:
         """Initialise the object.
 
         Args:
             tag: The tag to show.
         """
-        super().__init__(f"{tag.name} [dim]({tag.count})[/]", id=f"_tag_{tag.name}")
+        super().__init__(f"{tag.tag} [dim]({tag.count})[/]", id=f"_tag_{tag.tag}")
 
 
 ##############################################################################
@@ -176,7 +176,7 @@ class Navigation(OptionList):
         self._main_navigation()
         if self.data is not None and (tags := self.data.tags_of(collection)):
             self.add_option(Title("Tags"))
-            for tag in sorted(tags, key=lambda tag: tag.name.casefold()):
+            for tag in sorted(tags, key=lambda tag: tag.tag):
                 self.add_option(TagView(tag))
 
     def now_showing(self, collection: list[Raindrop]) -> None:

@@ -59,7 +59,7 @@ class RaindropView(Option):
         details.add_column()
         details.add_row(
             f"[dim][i]{naturaltime(self._raindrop.created) if self._raindrop.created else 'Unknown'}[/][/]",
-            f"[dim]{', '.join(sorted(self._raindrop.tags, key = str.casefold))}[/]",
+            f"[dim]{', '.join(str(tag) for tag in sorted(self._raindrop.tags))}[/]",
         )
 
         return Group(title, *body, details, self.RULE)

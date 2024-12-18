@@ -13,7 +13,7 @@ from pytz import UTC
 
 ##############################################################################
 # Local imports.
-from ...raindrop import API, Collection, Raindrop, Tag, User, get_time
+from ...raindrop import API, Collection, Raindrop, Tag, TagData, User, get_time
 from .locations import data_dir
 
 
@@ -104,7 +104,7 @@ class Raindrops:
                     if raindrop.collection == user_collection
                 ]
 
-    def tags_of(self, collection: int | Collection | list[Raindrop]) -> list[Tag]:
+    def tags_of(self, collection: int | Collection | list[Raindrop]) -> list[TagData]:
         """Get the tags of a collection.
 
         Args:
@@ -115,10 +115,10 @@ class Raindrops:
         """
         if isinstance(collection, (int, Collection)):
             return self.tags_of(self.in_collection(collection))
-        tags: list[str] = []
+        tags: list[Tag] = []
         for raindrop in collection:
             tags.extend(set(raindrop.tags))
-        return [Tag(name, count) for name, count in Counter(tags).items()]
+        return [TagData(name, count) for name, count in Counter(tags).items()]
 
     def collection(self, identity: int) -> Collection:
         """Get a collection from its ID.
