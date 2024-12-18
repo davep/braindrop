@@ -83,7 +83,7 @@ class Raindrops:
         """Get all Raindrops within a given collection.
 
         Args:
-            The collection to get the Raindrops for.
+            collection: The collection to get the Raindrops for.
 
         Returns:
             The raindrops within that collection.
