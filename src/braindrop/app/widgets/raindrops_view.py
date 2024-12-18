@@ -17,6 +17,7 @@ from rich.table import Table
 
 ##############################################################################
 # Textual imports.
+from textual.reactive import var
 from textual.widgets import OptionList
 from textual.widgets.option_list import Option
 
@@ -69,14 +70,13 @@ class RaindropView(Option):
 class RaindropsView(OptionList):
     """A widget for viewing a collection of Raindrops."""
 
-    def show(self, raindrops: list[Raindrop]) -> None:
-        """Show the given raindrops.
+    raindrops: var[list[Raindrop]] = var(list)
+    """The list of raindrops being shown."""
 
-        Args:
-            raindrops: The raindrops to show.
-        """
+    def watch_raindrops(self) -> None:
+        """React to the raindrops being changed."""
         self.clear_options().add_options(
-            [RaindropView(raindrop) for raindrop in raindrops]
+            [RaindropView(raindrop) for raindrop in self.raindrops]
         )
 
 

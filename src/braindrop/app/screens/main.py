@@ -195,7 +195,7 @@ class Main(Screen[None]):
         """Populate the display."""
         self.query_one(Navigation).data = self._data
         self.query_one(Navigation).highlighted = 0
-        self.query_one(RaindropsView).show(self._data.all)
+        self.query_one(RaindropsView).raindrops = self._data.all
         self.query_one(Navigation).now_showing(self._data.all)
 
     @on(ShowCollection)
@@ -206,7 +206,7 @@ class Main(Screen[None]):
             command: The command.
         """
         raindrops = self._data.in_collection(command.collection)
-        self.query_one(RaindropsView).show(raindrops)
+        self.query_one(RaindropsView).raindrops = raindrops
         self.query_one(Navigation).now_showing(raindrops)
 
     @on(ShowTagged)
@@ -216,8 +216,10 @@ class Main(Screen[None]):
         Args:
             command: The command.
         """
-        raindrops = self._data.tagged(command.tag)
-        self.query_one(RaindropsView).show(raindrops)
+        raindrops = self._data.tagged(
+            command.tag, within=self.query_one(RaindropsView).raindrops
+        )
+        self.query_one(RaindropsView).raindrops = raindrops
         self.query_one(Navigation).now_showing(raindrops)
 
     def action_redownload(self) -> None:
