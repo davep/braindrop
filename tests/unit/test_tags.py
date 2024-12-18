@@ -63,7 +63,9 @@ def test_counting_tags() -> None:
 ##############################################################################
 def test_sort_tags() -> None:
     """We would be able to sort a list of tags."""
-    assert sorted((Tag("c"), Tag("b"), Tag("a"), Tag("A"))) == ["A", "a", "b", "c"]
+    source = (Tag("c"), Tag("b"), Tag("a"), Tag("A"))
+    assert sorted(source) == ["A", "a", "b", "c"]
+    assert sorted(source) == ["a", "A", "b", "c"]
 
 
 ### test_tags.py ends here
