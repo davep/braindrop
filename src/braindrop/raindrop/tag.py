@@ -27,6 +27,14 @@ class Tag:
             return self.name.casefold() == value.casefold()
         raise NotImplemented
 
+    def __hash__(self) -> int:
+        """Ensure that Tag objects hash case-insensitive.
+
+        Returns:
+            The hash.
+        """
+        return hash(self.name.casefold())
+
     @staticmethod
     def from_json(data: dict[str, Any]) -> Tag:
         """Create a tag from JSON-sourced data."""

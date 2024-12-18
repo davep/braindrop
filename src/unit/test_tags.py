@@ -41,4 +41,10 @@ def test_tag_vs_tag_equality(tag0: str, tag1: str, count0: int, count1: int) -> 
     assert Tag(tag0, count0) == Tag(tag1, count1)
 
 
+##############################################################################
+def test_tags_in_set() -> None:
+    """A set of the same tag with different case should be one item."""
+    assert len({Tag(tag, 0) for tag in ("foo", "FOO", "Foo", "foO")}) == 1
+
+
 ### test_tags.py ends here
