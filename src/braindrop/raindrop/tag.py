@@ -20,6 +20,13 @@ class Tag:
     count: int
     """The number of Raindrops using this tag."""
 
+    def __eq__(self, value: object, /) -> bool:
+        if isinstance(value, Tag):
+            return self == value.name
+        if isinstance(value, str):
+            return self.name.casefold() == value.casefold()
+        raise NotImplemented
+
     @staticmethod
     def from_json(data: dict[str, Any]) -> Tag:
         """Create a tag from JSON-sourced data."""
