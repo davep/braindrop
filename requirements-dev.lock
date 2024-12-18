@@ -52,6 +52,8 @@ idna==3.10
     # via anyio
     # via httpx
     # via yarl
+iniconfig==2.0.0
+    # via pytest
 jinja2==3.1.4
     # via aiohttp-jinja2
     # via textual-serve
@@ -77,15 +79,20 @@ mypy-extensions==1.0.0
     # via mypy
 nodeenv==1.9.1
     # via pre-commit
+packaging==24.2
+    # via pytest
 platformdirs==4.3.6
     # via textual
     # via virtualenv
+pluggy==1.5.0
+    # via pytest
 pre-commit==4.0.1
 propcache==0.2.1
     # via aiohttp
     # via yarl
 pygments==2.18.0
     # via rich
+pytest==8.3.4
 pytz==2024.2
     # via braindrop
 pyyaml==6.0.2

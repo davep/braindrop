@@ -27,6 +27,7 @@ dev-dependencies = [
     "pre-commit>=4.0.1",
     "textual-dev>=1.7.0",
     "types-pytz>=2024.2.0.20241003",
+    "pytest>=8.3.4",
 ]
 
 [tool.hatch.metadata]
