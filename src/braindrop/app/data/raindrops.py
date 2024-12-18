@@ -104,6 +104,17 @@ class Raindrops:
                     if raindrop.collection == user_collection
                 ]
 
+    def tagged(self, *tags: Tag) -> list[Raindrop]:
+        """Get all Raindrops that have a given tag.
+
+        Args:
+            tags: The tags to look for.
+
+        Returns:
+            The list of raindrops that are tagged with the given tags.
+        """
+        return [raindrop for raindrop in self._all if set(tags) <= set(raindrop.tags)]
+
     def tags_of(self, collection: int | Collection | list[Raindrop]) -> list[TagData]:
         """Get the tags of a collection.
 
