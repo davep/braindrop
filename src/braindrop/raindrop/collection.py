@@ -54,6 +54,9 @@ class Collection:
     def from_json(data: dict[str, Any]) -> Collection:
         """Create a collection from JSON-sourced data.
 
+        Args:
+            data: The data to create the object from.
+
         Returns:
             A fresh `Collection` instance.
         """
