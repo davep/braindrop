@@ -16,8 +16,8 @@ from textual.widgets import Footer, Header
 ##############################################################################
 # Local imports.
 from ...raindrop import API, User
-from ..commands import ShowCollection, ShowTagged
 from ..data import Raindrops
+from ..messages import ShowCollection, ShowTagged
 from ..widgets import Navigation, RaindropsView
 
 

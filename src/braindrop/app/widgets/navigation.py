@@ -14,8 +14,8 @@ from textual.widgets.option_list import Option
 ##############################################################################
 # Local imports.
 from ...raindrop import API, Collection, Raindrop, Tag, TagData
-from ..commands import ShowCollection, ShowTagged
 from ..data import Raindrops
+from ..messages import ShowCollection, ShowTagged
 
 
 ##############################################################################

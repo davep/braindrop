@@ -10,7 +10,7 @@ from textual.message import Message
 
 ##############################################################################
 # Local imports.
-from ..raindrop import Collection, Tag
+from ...raindrop import Collection, Tag
 
 
 ##############################################################################
