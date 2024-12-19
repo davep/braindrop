@@ -89,6 +89,7 @@ delint:			# Fix linting issues.
 .PHONY: pep8ify
 pep8ify:			# Reformat the code to be as PEP8 as possible.
 	$(fmt) $(src)
+	$(lint) --fix
 
 .PHONY: tidy
 tidy: delint pep8ify		# Tidy up the code, fixing lint and format issues.
