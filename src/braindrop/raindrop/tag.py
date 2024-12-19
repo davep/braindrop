@@ -8,7 +8,7 @@ from __future__ import annotations
 # Python imports.
 from dataclasses import dataclass
 from functools import total_ordering
-from typing import Any
+from typing import Any, Callable
 
 
 ##############################################################################
@@ -92,6 +92,32 @@ class TagData:
             tag=Tag(data["_id"]),
             count=data.get("count", 0),
         )
+
+    @staticmethod
+    def the_tag() -> Callable[[TagData], Tag]:
+        """Returns a function for getting tag from a `TagData` instance.
+
+        Returns:
+            A function to get the tag of a `TagData` instance.
+        """
+
+        def _getter(data: TagData) -> Tag:
+            return data.tag
+
+        return _getter
+
+    @staticmethod
+    def the_count() -> Callable[[TagData], int]:
+        """Returns a function for getting count from a `TagData` instance.
+
+        Returns:
+            A function to get the count of a `TagData` instance.
+        """
+
+        def _getter(data: TagData) -> int:
+            return data.count
+
+        return _getter
 
 
 ### tag.py ends here
