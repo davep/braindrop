@@ -36,6 +36,9 @@ class Media:
     def from_json(data: dict[str, Any]) -> Media:
         """Create a `Media` instance from JSON-sourced data.
 
+        Args:
+            data: The data to create the object from.
+
         Returns:
             A fresh `Media` instance.
         """
@@ -82,6 +85,9 @@ class Raindrop:
     @staticmethod
     def from_json(data: dict[str, Any]) -> Raindrop:
         """Create a `Raindrop` instance from JSON-sourced data.
+
+        Args:
+            data: The data to create the object from.
 
         Returns:
             A fresh `Raindrop` instance.

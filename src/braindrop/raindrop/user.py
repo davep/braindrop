@@ -56,6 +56,9 @@ class Toggle:
     def from_json(data: Any) -> Toggle:
         """Create a toggle from JSON-sourced data.
 
+        Args:
+            data: The data to create the object from.
+
         Returns:
             A fresh `Group` instance.
         """
@@ -107,6 +110,9 @@ class User:
     @staticmethod
     def from_json(data: dict[str, Any]) -> User:
         """Create a user from JSON-sourced data.
+
+        Args:
+            data: The data to create the object from.
 
         Returns:
             A fresh `User` instance.
