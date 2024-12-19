@@ -19,6 +19,8 @@ from .screens import Main, TokenInput
 class Braindrop(App[ExitState]):
     """The Braindrop application class."""
 
+    BINDINGS = [("ctrl+c", "quit")]
+
     @staticmethod
     def environmental_token() -> str | None:
         """Try and get an API token from the environment.
