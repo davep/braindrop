@@ -95,7 +95,7 @@ class TagData:
 
     @staticmethod
     def the_tag() -> Callable[[TagData], Tag]:
-        """Returns a function for getting tag from a `TagData` instance.
+        """Returns a function for getting the tag from a `TagData` instance.
 
         Returns:
             A function to get the tag of a `TagData` instance.
@@ -108,7 +108,7 @@ class TagData:
 
     @staticmethod
     def the_count() -> Callable[[TagData], int]:
-        """Returns a function for getting count from a `TagData` instance.
+        """Returns a function for getting the count from a `TagData` instance.
 
         Returns:
             A function to get the count of a `TagData` instance.
