@@ -179,6 +179,30 @@ class Navigation(OptionList):
         """Handle the data being changed."""
         self._main_navigation()
 
+    @staticmethod
+    def _by_name(tags: list[TagData]) -> list[TagData]:
+        """Return a given list of tags sorted by tag name.
+
+        Args:
+            tags: The tags to sort.
+
+        Returns:
+            The sorted list of tags.
+        """
+        return sorted(tags, key=TagData.the_tag())
+
+    @staticmethod
+    def _by_count(tags: list[TagData]) -> list[TagData]:
+        """Return a given list of tags sorted by count.
+
+        Args:
+            tags: The tags to sort.
+
+        Returns:
+            The sorted list of tags.
+        """
+        return sorted(tags, key=TagData.the_count(), reverse=True)
+
     def _show_tags_for(self, collection: list[Raindrop]) -> None:
         """Show tags relating a given collection.
 
@@ -188,7 +212,7 @@ class Navigation(OptionList):
         self._main_navigation()
         if self.data is not None and (tags := self.data.tags_of(collection)):
             self.add_option(Title("Tags"))
-            for tag in sorted(tags, key=TagData.the_tag()):
+            for tag in self._by_count(tags):
                 self.add_option(TagView(tag))
 
     def now_showing(self, collection: list[Raindrop]) -> None:
