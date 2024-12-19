@@ -87,7 +87,14 @@ class TagData:
 
     @staticmethod
     def from_json(data: dict[str, Any]) -> TagData:
-        """Create a tag from JSON-sourced data."""
+        """Create a tag from JSON-sourced data.
+
+        Args:
+            data: The data to create the object from.
+
+        Returns:
+            A fresh `TagData` instance.
+        """
         return TagData(
             tag=Tag(data["_id"]),
             count=data.get("count", 0),
