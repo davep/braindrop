@@ -109,6 +109,7 @@ class PreservedHighlight:
             if self._highlighted is not None
             else None
         )
+        """The ID of the option to try and get back to, or `None`."""
 
     def __enter__(self) -> Self:
         """Handle entry to the context."""
