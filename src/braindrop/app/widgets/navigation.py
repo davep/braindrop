@@ -1,6 +1,15 @@
 """Provides the main navigation widget."""
 
 ##############################################################################
+# Backward compatibility.
+from __future__ import annotations
+
+##############################################################################
+# Python imports.
+from types import TracebackType
+from typing import Self
+
+##############################################################################
 # Rich imports.
 from rich.align import Align
 
@@ -9,7 +18,7 @@ from rich.align import Align
 from textual import on
 from textual.reactive import var
 from textual.widgets import OptionList
-from textual.widgets.option_list import Option
+from textual.widgets.option_list import Option, OptionDoesNotExist
 
 ##############################################################################
 # Local imports.
@@ -75,6 +84,52 @@ class Title(Option):
             title: The title to show.
         """
         super().__init__(Align.right(title), disabled=True, id=title)
+
+
+##############################################################################
+class PreservedHighlight:
+    """Context manager class to preserve an `OptionList` location.
+
+    If the highlighted option has an ID, an attempt will be made to get back
+    to that option; otherwise we return to the option in the same location.
+    """
+
+    def __init__(self, option_list: OptionList) -> None:
+        """Initialise the object.
+
+        Args:
+            option_list: The `OptionList` to preserve the location for.
+        """
+        self._option_list = option_list
+        """The option list we're preserving the location for."""
+        self._highlighted = option_list.highlighted
+        """The highlight that we should try to go back to."""
+        self._option_id = (
+            option_list.get_option_at_index(self._highlighted).id
+            if self._highlighted is not None
+            else None
+        )
+
+    def __enter__(self) -> Self:
+        """Handle entry to the context."""
+        return self
+
+    def __exit__(
+        self,
+        exc_type: type[BaseException] | None,
+        exc_val: BaseException | None,
+        exc_traceback: TracebackType | None,
+    ) -> None:
+        """Handle exit from the context."""
+        del exc_type, exc_val, exc_traceback
+        try:
+            self._option_list.highlighted = (
+                self._highlighted
+                if self._option_id is None
+                else self._option_list.get_option_index(self._option_id)
+            )
+        except OptionDoesNotExist:
+            self._option_list.highlighted = self._highlighted
 
 
 ##############################################################################
@@ -161,16 +216,13 @@ class Navigation(OptionList):
 
     def _main_navigation(self) -> None:
         """Set up the main navigation."""
-        highlighted = self.highlighted
-        try:
+        with PreservedHighlight(self):
             # First off, clear out the display of the user's groups.
             self.clear_options()._add_specials()
-
             # If we don't have data or we don't know the user, we're all done
             # here.
             if self.data is None or self.data.user is None:
                 return
-
             # Populate the groups.
             for group in self.data.user.groups:
                 self.add_option(Title(group.title))
@@ -178,8 +230,6 @@ class Navigation(OptionList):
                     self._add_children_for(
                         self._add_collection(self.data.collection(collection))
                     )
-        finally:
-            self.highlighted = highlighted
 
     @staticmethod
     def _by_name(tags: list[TagData]) -> list[TagData]:
@@ -211,11 +261,14 @@ class Navigation(OptionList):
         Args:
             collection: The collection to show the tags for.
         """
-        self._main_navigation()
-        if self.data is not None and (tags := self.data.tags_of(collection)):
-            self.add_option(Title("Tags"))
-            for tag in (self._by_count if self.tags_by_count else self._by_name)(tags):
-                self.add_option(TagView(tag))
+        with PreservedHighlight(self):
+            self._main_navigation()
+            if self.data is not None and (tags := self.data.tags_of(collection)):
+                self.add_option(Title("Tags"))
+                for tag in (self._by_count if self.tags_by_count else self._by_name)(
+                    tags
+                ):
+                    self.add_option(TagView(tag))
 
     def watch_data(self) -> None:
         """Handle the data being changed."""
