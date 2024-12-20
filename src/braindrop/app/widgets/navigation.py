@@ -84,6 +84,12 @@ class Navigation(OptionList):
     data: var[Raindrops | None] = var(None)
     """Holds a reference to the Raindrop data we're going to handle."""
 
+    active_collection: var[list[Raindrop]] = var(list, always_update=True)
+    """The currently-active collection being displayed."""
+
+    tags_by_count: var[bool] = var(False)
+    """Should the tags be sorted by count?"""
+
     def __init__(
         self,
         api: API,
@@ -175,10 +181,6 @@ class Navigation(OptionList):
         finally:
             self.highlighted = highlighted
 
-    def watch_data(self) -> None:
-        """Handle the data being changed."""
-        self._main_navigation()
-
     @staticmethod
     def _by_name(tags: list[TagData]) -> list[TagData]:
         """Return a given list of tags sorted by tag name.
@@ -212,16 +214,20 @@ class Navigation(OptionList):
         self._main_navigation()
         if self.data is not None and (tags := self.data.tags_of(collection)):
             self.add_option(Title("Tags"))
-            for tag in self._by_count(tags):
+            for tag in (self._by_count if self.tags_by_count else self._by_name)(tags):
                 self.add_option(TagView(tag))
 
-    def now_showing(self, collection: list[Raindrop]) -> None:
-        """Configure the navigation based on the given collection.
+    def watch_data(self) -> None:
+        """Handle the data being changed."""
+        self._main_navigation()
 
-        Args:
-            collection: The collection that is now showing.
-        """
-        self._show_tags_for(collection)
+    def watch_tags_by_count(self) -> None:
+        """React to the tags sort ordering being changed."""
+        self.active_collection = self.active_collection
+
+    def watch_active_collection(self) -> None:
+        """React to the currently-active collection being changed."""
+        self._show_tags_for(self.active_collection)
 
     @on(OptionList.OptionSelected)
     def _collection_selected(self, message: OptionList.OptionSelected) -> None:

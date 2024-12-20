@@ -57,6 +57,12 @@ class Main(Screen[None]):
             tooltip="Open the web-based raindrop.io application",
         ),
         Binding(
+            "f4",
+            "toggle_tag_order",
+            "Tag Order",
+            tooltip="Toggle the tags sort order between by-name and by-count",
+        ),
+        Binding(
             "ctrl+r",
             "redownload",
             "Redownload",
@@ -196,7 +202,7 @@ class Main(Screen[None]):
         self.query_one(Navigation).data = self._data
         self.query_one(Navigation).highlighted = 0
         self.query_one(RaindropsView).raindrops = self._data.all
-        self.query_one(Navigation).now_showing(self._data.all)
+        self.query_one(Navigation).active_collection = self._data.all
 
     @on(ShowCollection)
     def command_show_collection(self, command: ShowCollection) -> None:
@@ -207,7 +213,7 @@ class Main(Screen[None]):
         """
         raindrops = self._data.in_collection(command.collection)
         self.query_one(RaindropsView).raindrops = raindrops
-        self.query_one(Navigation).now_showing(raindrops)
+        self.query_one(Navigation).active_collection = raindrops
 
     @on(ShowTagged)
     def command_show_tagged(self, command: ShowTagged) -> None:
@@ -220,7 +226,7 @@ class Main(Screen[None]):
             command.tag, within=self.query_one(RaindropsView).raindrops
         )
         self.query_one(RaindropsView).raindrops = raindrops
-        self.query_one(Navigation).now_showing(raindrops)
+        self.query_one(Navigation).active_collection = raindrops
 
     def action_redownload(self) -> None:
         """Redownload data from the server."""
@@ -229,6 +235,12 @@ class Main(Screen[None]):
     def action_goto_raindrop(self) -> None:
         """Open the Raindrop application in the browser."""
         open_url("https://app.raindrop.io/")
+
+    def action_toggle_tag_order(self) -> None:
+        """Toggle the ordering of tags."""
+        self.query_one(Navigation).tags_by_count = not self.query_one(
+            Navigation
+        ).tags_by_count
 
 
 ### main.py ends here
