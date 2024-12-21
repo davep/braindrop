@@ -17,7 +17,7 @@ from textual.widgets import Footer, Header
 ##############################################################################
 # Local imports.
 from ...raindrop import API, Raindrop, User
-from ..data import Raindrops
+from ..data import LocalData
 from ..messages import ShowCollection, ShowTagged
 from ..widgets import Navigation, RaindropsView
 
@@ -110,7 +110,7 @@ class Main(Screen[None]):
         """The API client for Raindrop."""
         self._user: User | None = None
         """Details of the Raindrop user."""
-        self._data = Raindrops(api)
+        self._data = LocalData(api)
         """The local copy of the Raindrop data."""
 
     def compose(self) -> ComposeResult:

@@ -24,7 +24,7 @@ from textual.widgets.option_list import Option
 ##############################################################################
 # Local imports.
 from ...raindrop import API, Collection, Raindrop, Tag, TagData
-from ..data import Raindrops
+from ..data import LocalData
 from ..messages import ShowCollection, ShowTagged
 from .preserved_highlight import PreservedHighlight
 
@@ -142,7 +142,7 @@ class Title(Option):
 class Navigation(OptionList):
     """The main application navigation widget."""
 
-    data: var[Raindrops | None] = var(None)
+    data: var[LocalData | None] = var(None)
     """Holds a reference to the Raindrop data we're going to handle."""
 
     active_collection: var[list[Raindrop]] = var(list, always_update=True)

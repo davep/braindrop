@@ -1,4 +1,4 @@
-"""Class that holds all known Raindrops."""
+"""Class that handles the local Raindrop data."""
 
 ##############################################################################
 # Python imports.
@@ -18,7 +18,7 @@ from .locations import data_dir
 
 
 ##############################################################################
-def raindrops_file() -> Path:
+def local_data_file() -> Path:
     """The path to the file that the local Raindrops are held in.
 
     Returns:
@@ -28,8 +28,8 @@ def raindrops_file() -> Path:
 
 
 ##############################################################################
-class Raindrops:
-    """Holds and manages the local copy of all Raindrops."""
+class LocalData:
+    """Holds and manages the local copy of the Raindrop data."""
 
     def __init__(self, api: API) -> None:
         """Initialise the object.
@@ -52,7 +52,7 @@ class Raindrops:
 
     @property
     def last_downloaded(self) -> datetime | None:
-        """The time the Raindrops were downloaded, or `None` if not yet."""
+        """The time the data was downloaded, or `None` if not yet."""
         return self._last_downloaded
 
     @property
@@ -197,7 +197,9 @@ class Raindrops:
         Returns:
             Self.
         """
-        raindrops_file().write_text(dumps(self._local_json, indent=4), encoding="utf-8")
+        local_data_file().write_text(
+            dumps(self._local_json, indent=4), encoding="utf-8"
+        )
         return self
 
     def load(self) -> Self:
@@ -206,8 +208,8 @@ class Raindrops:
         Returns:
             Self.
         """
-        if raindrops_file().exists():
-            data = loads(raindrops_file().read_text(encoding="utf-8"))
+        if local_data_file().exists():
+            data = loads(local_data_file().read_text(encoding="utf-8"))
             self._last_downloaded = get_time(data, "last_downloaded")
             self._user = User.from_json(data.get("user", {}))
             self._all = [
@@ -223,4 +225,4 @@ class Raindrops:
         return self
 
 
-### raindrops.py ends here
+### local.py ends here
