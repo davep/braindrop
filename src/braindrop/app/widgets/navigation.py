@@ -5,6 +5,10 @@
 from __future__ import annotations
 
 ##############################################################################
+# Python imports.
+from typing import Final
+
+##############################################################################
 # Rich imports.
 from rich.align import Align
 from rich.console import RenderableType
@@ -29,21 +33,56 @@ from .preserved_highlight import PreservedHighlight
 class CollectionView(Option):
     """Class that holds details of the collection to view."""
 
-    def __init__(self, collection: Collection, indent: int = 0) -> None:
+    @staticmethod
+    def id_of(collection: Collection) -> str:
+        """Get the ID of a given collection.
+
+        Args:
+            collection: The collection to get an ID for.
+
+        Returns:
+            The ID to use for the collection.
+        """
+        return f"collection-{collection.identity}"
+
+    def __init__(
+        self, collection: Collection, indent: int = 0, key: str | None = None
+    ) -> None:
         """Initialise the object.
 
         Args:
             collection: The collection to show.
             indent: The indent level for the collection.
+            key: The associated with the collection.
         """
-        super().__init__(f"{'[dim]>[/dim] ' * indent}{collection.title}")
         self._collection = collection
         """The collection being viewed."""
+        self._indent = indent
+        """The indent level for the collection."""
+        self._key = key
+        """The key associated with this collection, if any."""
+        super().__init__(self.prompt, id=self.id_of(collection))
 
     @property
     def collection(self) -> Collection:
         """The collection."""
         return self._collection
+
+    @property
+    def prompt(self) -> RenderableType:
+        """The prompt for the collection.
+
+        Returns:
+            A renderable that is the prompt.
+        """
+        prompt = Table.grid(expand=True)
+        prompt.add_column(ratio=1)
+        prompt.add_column(justify="right")
+        prompt.add_row(
+            f"{'[dim]>[/dim] ' * self._indent}{self._collection.title}",
+            f"[dim]\\[{self._key}][/]" if self._key else "",
+        )
+        return prompt
 
 
 ##############################################################################
@@ -112,6 +151,12 @@ class Navigation(OptionList):
     tags_by_count: var[bool] = var(False)
     """Should the tags be sorted by count?"""
 
+    SHORTCUT_ALL: Final[str] = "a"
+    """The key to use as the shortcut for the all collection."""
+
+    SHORTCUT_UNSORTED: Final[str] = "u"
+    """The key to use as the shortcut for the unsorted collection."""
+
     def __init__(
         self,
         api: API,
@@ -131,7 +176,22 @@ class Navigation(OptionList):
         self._api = api
         """The API client object."""
 
-    def _add_collection(self, collection: Collection, indent: int = 0) -> Collection:
+    def select_collection(self, collection: Collection) -> None:
+        """Highlight and select a given collection."""
+        self.highlighted = self.get_option_index(CollectionView.id_of(collection))
+        self.call_later(self.run_action, "select")
+
+    def show_all(self) -> None:
+        """Show the special collection that is all the Raindrops."""
+        self.select_collection(API.SpecialCollection.ALL())
+
+    def show_unsorted(self) -> None:
+        """Show the special collection that is the unsorted Raindrops."""
+        self.select_collection(API.SpecialCollection.UNSORTED())
+
+    def _add_collection(
+        self, collection: Collection, indent: int = 0, key: str | None = None
+    ) -> Collection:
         """Add a collection to the widget.
 
         Args:
@@ -141,26 +201,16 @@ class Navigation(OptionList):
         Returns:
             The collection.
         """
-        self.add_option(CollectionView(collection, indent))
+        self.add_option(CollectionView(collection, indent, key))
         return collection
-
-    def _add_collections(self, *collections: Collection, indent: int = 0) -> None:
-        """Add many collections to the widget.
-
-        Args:
-            collections: The collections to add to the widget.
-            indent: The indent level to add it at.
-        """
-        for collection in collections:
-            self._add_collection(collection, indent)
 
     def _add_specials(self) -> None:
         """Add the special collections."""
-        self._add_collections(
-            API.SpecialCollection.ALL(),
-            API.SpecialCollection.UNSORTED(),
-            API.SpecialCollection.TRASH(),
+        self._add_collection(API.SpecialCollection.ALL(), key=self.SHORTCUT_ALL)
+        self._add_collection(
+            API.SpecialCollection.UNSORTED(), key=self.SHORTCUT_UNSORTED
         )
+        self._add_collection(API.SpecialCollection.TRASH())
 
     def _add_children_for(
         self,

@@ -66,6 +66,16 @@ class Main(Screen[None]):
 
     BINDINGS = [
         Binding(
+            Navigation.SHORTCUT_ALL,
+            "show_all",
+            tooltip="Show all Raindrops",
+        ),
+        Binding(
+            Navigation.SHORTCUT_UNSORTED,
+            "show_unsorted",
+            tooltip="Show all unsorted Raindrops",
+        ),
+        Binding(
             "f2",
             "goto_raindrop",
             "raindrop.io",
@@ -256,6 +266,14 @@ class Main(Screen[None]):
         self.query_one(Navigation).tags_by_count = not self.query_one(
             Navigation
         ).tags_by_count
+
+    def action_show_all(self) -> None:
+        """Select the collection that shows all Raindrops."""
+        self.query_one(Navigation).show_all()
+
+    def action_show_unsorted(self) -> None:
+        """Select the collection that shows all unsorted Raindrops."""
+        self.query_one(Navigation).show_unsorted()
 
 
 ### main.py ends here
