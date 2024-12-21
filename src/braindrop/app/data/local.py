@@ -40,6 +40,7 @@ class Raindrops:
         title: str = "",
         raindrops: Iterable[Raindrop] | None = None,
         tags: Sequence[Tag] | None = None,
+        source: Raindrops | None = None,
     ) -> None:
         """Initialise the Raindrop grouping.
 
@@ -53,6 +54,8 @@ class Raindrops:
         """The raindrops."""
         self._tags = () if tags is None else tags
         """The list of tags that resulted in this Raindrop group."""
+        self._source = source or self
+        """The original source for the Raindrops."""
 
     def set_to(self, raindrops: Iterable[Raindrop]) -> Self:
         """Set the group to the given group of Raindrops.
@@ -70,6 +73,11 @@ class Raindrops:
     def title(self) -> str:
         """The title of the group."""
         return self._title
+
+    @property
+    def unfiltered(self) -> Raindrops:
+        """The original source of the Raindrops, unfiltered."""
+        return self._source
 
     def tagged_with(self) -> tuple[Tag, ...]:
         """The tags associated with this Raindrop group."""
@@ -106,6 +114,7 @@ class Raindrops:
             self.title,
             (raindrop for raindrop in self if set(tags) <= set(raindrop.tags)),
             tuple(set((*self._tags, *tags))),
+            self._source,
         )
 
     def __iter__(self) -> Iterator[Raindrop]:
