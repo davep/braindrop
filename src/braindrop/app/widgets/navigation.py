@@ -5,11 +5,6 @@
 from __future__ import annotations
 
 ##############################################################################
-# Python imports.
-from types import TracebackType
-from typing import Self
-
-##############################################################################
 # Rich imports.
 from rich.align import Align
 from rich.console import RenderableType
@@ -20,13 +15,14 @@ from rich.table import Table
 from textual import on
 from textual.reactive import var
 from textual.widgets import OptionList
-from textual.widgets.option_list import Option, OptionDoesNotExist
+from textual.widgets.option_list import Option
 
 ##############################################################################
 # Local imports.
 from ...raindrop import API, Collection, Raindrop, Tag, TagData
 from ..data import Raindrops
 from ..messages import ShowCollection, ShowTagged
+from .preserved_highlight import PreservedHighlight
 
 
 ##############################################################################
@@ -99,53 +95,6 @@ class Title(Option):
             title: The title to show.
         """
         super().__init__(Align.right(title), disabled=True, id=title)
-
-
-##############################################################################
-class PreservedHighlight:
-    """Context manager class to preserve an `OptionList` location.
-
-    If the highlighted option has an ID, an attempt will be made to get back
-    to that option; otherwise we return to the option in the same location.
-    """
-
-    def __init__(self, option_list: OptionList) -> None:
-        """Initialise the object.
-
-        Args:
-            option_list: The `OptionList` to preserve the location for.
-        """
-        self._option_list = option_list
-        """The option list we're preserving the location for."""
-        self._highlighted = option_list.highlighted
-        """The highlight that we should try to go back to."""
-        self._option_id = (
-            option_list.get_option_at_index(self._highlighted).id
-            if self._highlighted is not None
-            else None
-        )
-        """The ID of the option to try and get back to, or `None`."""
-
-    def __enter__(self) -> Self:
-        """Handle entry to the context."""
-        return self
-
-    def __exit__(
-        self,
-        exc_type: type[BaseException] | None,
-        exc_val: BaseException | None,
-        exc_traceback: TracebackType | None,
-    ) -> None:
-        """Handle exit from the context."""
-        del exc_type, exc_val, exc_traceback
-        try:
-            self._option_list.highlighted = (
-                self._highlighted
-                if self._option_id is None
-                else self._option_list.get_option_index(self._option_id)
-            )
-        except OptionDoesNotExist:
-            self._option_list.highlighted = self._highlighted
 
 
 ##############################################################################
