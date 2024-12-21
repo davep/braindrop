@@ -24,6 +24,7 @@ from textual.widgets.option_list import Option
 ##############################################################################
 # Local imports.
 from ...raindrop import Raindrop
+from .preserved_highlight import PreservedHighlight
 
 
 ##############################################################################
@@ -75,9 +76,10 @@ class RaindropsView(OptionList):
 
     def watch_raindrops(self) -> None:
         """React to the raindrops being changed."""
-        self.clear_options().add_options(
-            [RaindropView(raindrop) for raindrop in self.raindrops]
-        )
+        with PreservedHighlight(self):
+            self.clear_options().add_options(
+                [RaindropView(raindrop) for raindrop in self.raindrops]
+            )
 
 
 ### raindrops_view.py ends here
