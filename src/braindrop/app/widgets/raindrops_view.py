@@ -72,7 +72,7 @@ class RaindropView(Option):
 class RaindropsView(OptionList):
     """A widget for viewing a collection of Raindrops."""
 
-    raindrops: var[Raindrops] = var(Raindrops())
+    raindrops: var[Raindrops] = var(Raindrops)
     """The list of raindrops being shown."""
 
     def watch_raindrops(self) -> None:

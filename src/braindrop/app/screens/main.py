@@ -96,7 +96,7 @@ class Main(Screen[None]):
         ),
     ]
 
-    active_collection: var[Raindrops] = var(Raindrops())
+    active_collection: var[Raindrops] = var(Raindrops)
     """The currently-active collection."""
 
     def __init__(self, api: API) -> None:
