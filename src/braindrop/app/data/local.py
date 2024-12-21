@@ -61,6 +61,11 @@ class Raindrops:
         self._raindrops = list(raindrops)
         return self
 
+    @property
+    def description(self) -> str:
+        """The description of the content of the Raindrop grouping."""
+        return f"{self.title} ({len(self)})"
+
     def __iter__(self) -> Iterator[Raindrop]:
         return iter(self._raindrops)
 
