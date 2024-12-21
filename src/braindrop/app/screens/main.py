@@ -230,6 +230,10 @@ class Main(Screen[None]):
         """Start the process of loading up the Raindrop data."""
         self.load_data()
 
+    def watch_active_collection(self) -> None:
+        """Handle the active collection being changed."""
+        self.sub_title = self.active_collection.title
+
     def populate_display(self) -> None:
         """Populate the display."""
         self.query_one(Navigation).data = self._data
