@@ -79,10 +79,6 @@ class Raindrops:
         """The original source of the Raindrops, unfiltered."""
         return self._source
 
-    def tagged_with(self) -> tuple[Tag, ...]:
-        """The tags associated with this Raindrop group."""
-        return tuple(self._tags)
-
     @property
     def description(self) -> str:
         """The description of the content of the Raindrop grouping."""
