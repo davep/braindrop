@@ -49,6 +49,9 @@ class Main(Screen[None]):
     RaindropsView {
         width: 4fr;
         height: 1fr;
+        &> .option-list--option {
+            padding: 0 1;
+        }
     }
 
     .focus {
