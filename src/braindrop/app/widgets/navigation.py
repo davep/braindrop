@@ -23,7 +23,7 @@ from textual.widgets.option_list import Option
 
 ##############################################################################
 # Local imports.
-from ...raindrop import API, Collection, Raindrop, Tag, TagData
+from ...raindrop import API, Collection, Tag, TagData
 from ..data import LocalData, Raindrops
 from ..messages import ShowCollection, ShowTagged
 from .preserved_highlight import PreservedHighlight
@@ -271,7 +271,7 @@ class Navigation(OptionList):
         """
         return sorted(tags, key=TagData.the_count(), reverse=True)
 
-    def _show_tags_for(self, collection: list[Raindrop]) -> None:
+    def _show_tags_for(self, collection: Raindrops) -> None:
         """Show tags relating a given collection.
 
         Args:
