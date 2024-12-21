@@ -94,7 +94,9 @@ class Title(Option):
         Args:
             title: The title to show.
         """
-        super().__init__(Align.right(title), disabled=True, id=title)
+        super().__init__(
+            Align.right(f"[bold italic underline]{title}[/]"), disabled=True, id=title
+        )
 
 
 ##############################################################################
