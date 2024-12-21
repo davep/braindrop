@@ -105,7 +105,7 @@ class Raindrops:
         return Raindrops(
             self.title,
             (raindrop for raindrop in self if set(tags) <= set(raindrop.tags)),
-            tags,
+            tuple(set((*self._tags, *tags))),
         )
 
     def __iter__(self) -> Iterator[Raindrop]:
