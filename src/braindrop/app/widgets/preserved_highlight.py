@@ -48,6 +48,8 @@ class PreservedHighlight:
     ) -> None:
         """Handle exit from the context."""
         del exc_type, exc_val, exc_traceback
+        # Attempt to get back to the same option, or an option in a similar
+        # location.
         try:
             self._option_list.highlighted = (
                 self._highlighted
@@ -56,6 +58,10 @@ class PreservedHighlight:
             )
         except OptionDoesNotExist:
             self._option_list.highlighted = self._highlighted
+        # If we still haven't landed anywhere and there are options, select
+        # the first one.
+        if self._option_list.highlighted is None and self._option_list.option_count:
+            self._option_list.highlighted = 0
 
 
 ### preserved_highlight.py ends here
