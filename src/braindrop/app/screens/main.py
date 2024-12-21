@@ -225,7 +225,6 @@ class Main(Screen[None]):
     def populate_display(self) -> None:
         """Populate the display."""
         self.query_one(Navigation).data = self._data
-        self.query_one(Navigation).highlighted = 0
         self.query_one(RaindropsView).raindrops = self._data.all
         self.query_one(Navigation).active_collection = self._data.all
 
