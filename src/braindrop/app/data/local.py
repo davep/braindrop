@@ -44,7 +44,7 @@ class Raindrops:
             title: The title for the Raindrop grouping.
             raindrops: The raindrops to hold in the group.
         """
-        self.title = title
+        self._title = title
         """The title for the group of Raindrops."""
         self._raindrops = [] if raindrops is None else list(raindrops)
         """The raindrops."""
@@ -60,6 +60,11 @@ class Raindrops:
         """
         self._raindrops = list(raindrops)
         return self
+
+    @property
+    def title(self) -> str:
+        """The title of the group."""
+        return self._title
 
     @property
     def description(self) -> str:
