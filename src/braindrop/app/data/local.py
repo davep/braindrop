@@ -9,7 +9,7 @@ from __future__ import annotations
 from datetime import datetime
 from json import dumps, loads
 from pathlib import Path
-from typing import Any, Counter, Iterable, Iterator, Self
+from typing import Any, Counter, Iterable, Iterator, Self, Sequence
 
 ##############################################################################
 # pytz imports.
@@ -36,7 +36,10 @@ class Raindrops:
     """Class that holds a group of Raindrops."""
 
     def __init__(
-        self, title: str = "", raindrops: Iterable[Raindrop] | None = None
+        self,
+        title: str = "",
+        raindrops: Iterable[Raindrop] | None = None,
+        tags: Sequence[Tag] | None = None,
     ) -> None:
         """Initialise the Raindrop grouping.
 
@@ -48,6 +51,8 @@ class Raindrops:
         """The title for the group of Raindrops."""
         self._raindrops = [] if raindrops is None else list(raindrops)
         """The raindrops."""
+        self._tags = () if tags is None else tags
+        """The list of tags that resulted in this Raindrop group."""
 
     def set_to(self, raindrops: Iterable[Raindrop]) -> Self:
         """Set the group to the given group of Raindrops.
@@ -66,10 +71,19 @@ class Raindrops:
         """The title of the group."""
         return self._title
 
+    def tagged_with(self) -> tuple[Tag, ...]:
+        """The tags associated with this Raindrop group."""
+        return tuple(self._tags)
+
     @property
     def description(self) -> str:
         """The description of the content of the Raindrop grouping."""
-        return f"{self.title} ({len(self)})"
+        tags = (
+            f"; tagged {', '.join(str(tag) for tag in self._tags)}"
+            if self._tags
+            else ""
+        )
+        return f"{self._title}{tags} ({len(self)})"
 
     @property
     def tags(self) -> list[TagData]:
@@ -91,6 +105,7 @@ class Raindrops:
         return Raindrops(
             self.title,
             (raindrop for raindrop in self if set(tags) <= set(raindrop.tags)),
+            tags,
         )
 
     def __iter__(self) -> Iterator[Raindrop]:
