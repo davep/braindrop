@@ -50,6 +50,15 @@ class Main(Screen[None]):
         width: 4fr;
         height: 1fr;
     }
+
+    .focus {
+        border: none;
+        border-left: tall $border-blurred;
+        &:focus {
+            border: none;
+            border-left: tall $border;
+        }
+    }
     """
 
     BINDINGS = [
@@ -91,8 +100,8 @@ class Main(Screen[None]):
         """Compose the content of the screen."""
         yield Header()
         with Horizontal():
-            yield Navigation(self._api)
-            yield RaindropsView()
+            yield Navigation(self._api, classes="focus")
+            yield RaindropsView(classes="focus")
         yield Footer()
 
     @work
