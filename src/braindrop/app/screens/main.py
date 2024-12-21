@@ -77,6 +77,11 @@ class Main(Screen[None]):
             tooltip="Show all unsorted Raindrops",
         ),
         Binding(
+            "c",
+            "clear_filters",
+            tooltip="Clear tags and other filters",
+        ),
+        Binding(
             "f2",
             "goto_raindrop",
             "raindrop.io",
@@ -278,6 +283,10 @@ class Main(Screen[None]):
     def action_show_unsorted(self) -> None:
         """Select the collection that shows all unsorted Raindrops."""
         self.query_one(Navigation).show_unsorted()
+
+    def action_clear_filters(self) -> None:
+        """Remove any filtering from the active collection."""
+        self.active_collection = self.active_collection.unfiltered
 
 
 ### main.py ends here
