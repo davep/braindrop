@@ -42,7 +42,7 @@ class RaindropView(Option):
         """
         self._raindrop = raindrop
         """The raindrop to view."""
-        super().__init__(self.prompt, id=str(raindrop.identity))
+        super().__init__(self.prompt, id=f"raindrop-{raindrop.identity}")
 
     @property
     def prompt(self) -> Group:
