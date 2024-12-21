@@ -12,6 +12,8 @@ from typing import Self
 ##############################################################################
 # Rich imports.
 from rich.align import Align
+from rich.console import RenderableType
+from rich.table import Table
 
 ##############################################################################
 # Textual imports.
@@ -58,9 +60,22 @@ class TagView(Option):
         Args:
             tag: The tag to show.
         """
-        super().__init__(f"{tag.tag} [dim]({tag.count})[/]", id=f"_tag_{tag.tag}")
         self._tag = tag
         """The tag being viewed."""
+        super().__init__(self.prompt, id=f"_tag_{tag.tag}")
+
+    @property
+    def prompt(self) -> RenderableType:
+        """The prompt for the tag.
+
+        Returns:
+            A renderable that is the prompt.
+        """
+        prompt = Table.grid(expand=True)
+        prompt.add_column(ratio=1)
+        prompt.add_column(justify="right")
+        prompt.add_row(str(self._tag.tag), f"[dim i]{self._tag.count}[/]")
+        return prompt
 
     @property
     def tag_data(self) -> TagData:
