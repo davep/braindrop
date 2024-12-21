@@ -232,7 +232,7 @@ class Main(Screen[None]):
 
     def watch_active_collection(self) -> None:
         """Handle the active collection being changed."""
-        self.sub_title = self.active_collection.title
+        self.sub_title = self.active_collection.description
 
     def populate_display(self) -> None:
         """Populate the display."""
