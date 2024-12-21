@@ -10,12 +10,13 @@ from textual import on, work
 from textual.app import ComposeResult
 from textual.binding import Binding
 from textual.containers import Horizontal
+from textual.reactive import var
 from textual.screen import Screen
 from textual.widgets import Footer, Header
 
 ##############################################################################
 # Local imports.
-from ...raindrop import API, User
+from ...raindrop import API, Raindrop, User
 from ..data import Raindrops
 from ..messages import ShowCollection, ShowTagged
 from ..widgets import Navigation, RaindropsView
@@ -95,6 +96,9 @@ class Main(Screen[None]):
         ),
     ]
 
+    active_collection: var[list[Raindrop]] = var(list)
+    """The currently-active collection."""
+
     def __init__(self, api: API) -> None:
         """Initialise the main screen.
 
@@ -113,8 +117,12 @@ class Main(Screen[None]):
         """Compose the content of the screen."""
         yield Header()
         with Horizontal():
-            yield Navigation(self._api, classes="focus")
-            yield RaindropsView(classes="focus")
+            yield Navigation(self._api, classes="focus").data_bind(
+                Main.active_collection
+            )
+            yield RaindropsView(classes="focus").data_bind(
+                raindrops=Main.active_collection
+            )
         yield Footer()
 
     @work
@@ -225,8 +233,7 @@ class Main(Screen[None]):
     def populate_display(self) -> None:
         """Populate the display."""
         self.query_one(Navigation).data = self._data
-        self.query_one(RaindropsView).raindrops = self._data.all
-        self.query_one(Navigation).active_collection = self._data.all
+        self.active_collection = self._data.all
 
     @on(ShowCollection)
     def command_show_collection(self, command: ShowCollection) -> None:
@@ -235,9 +242,7 @@ class Main(Screen[None]):
         Args:
             command: The command.
         """
-        raindrops = self._data.in_collection(command.collection)
-        self.query_one(RaindropsView).raindrops = raindrops
-        self.query_one(Navigation).active_collection = raindrops
+        self.active_collection = self._data.in_collection(command.collection)
 
     @on(ShowTagged)
     def command_show_tagged(self, command: ShowTagged) -> None:
@@ -246,11 +251,9 @@ class Main(Screen[None]):
         Args:
             command: The command.
         """
-        raindrops = self._data.tagged(
+        self.active_collection = self._data.tagged(
             command.tag, within=self.query_one(RaindropsView).raindrops
         )
-        self.query_one(RaindropsView).raindrops = raindrops
-        self.query_one(Navigation).active_collection = raindrops
 
     def action_redownload(self) -> None:
         """Redownload data from the server."""
