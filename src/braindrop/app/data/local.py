@@ -74,6 +74,20 @@ class Raindrops:
             tags.extend(set(raindrop.tags))
         return [TagData(name, count) for name, count in Counter(tags).items()]
 
+    def tagged(self, *tags: Tag) -> Raindrops:
+        """Get the raindrops with the given tags.
+
+        Args:
+            tags: The tags to look for.
+
+        Returns:
+            The subset of Raindrops that have the given tags.
+        """
+        return Raindrops(
+            self.title,
+            (raindrop for raindrop in self if set(tags) <= set(raindrop.tags)),
+        )
+
     def __iter__(self) -> Iterator[Raindrop]:
         return iter(self._raindrops)
 
@@ -161,28 +175,6 @@ class LocalData:
                         if raindrop.collection == user_collection
                     ],
                 )
-
-    def tagged(self, *tags: Tag, within: Raindrops | None = None) -> Raindrops:
-        """Get all Raindrops that have a given tag.
-
-        Args:
-            tags: The tags to look for.
-            within: Optional list of raindrops to look within. If not
-                supplied then all will be looked at.
-
-        Returns:
-            The list of raindrops that are tagged with the given tags.
-        """
-        if within is None:
-            within = self._all
-        return Raindrops(
-            within.title,
-            [
-                raindrop
-                for raindrop in (self._all if within is None else within)
-                if set(tags) <= set(raindrop.tags)
-            ],
-        )
 
     def collection(self, identity: int) -> Collection:
         """Get a collection from its ID.

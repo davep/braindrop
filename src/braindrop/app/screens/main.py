@@ -255,9 +255,7 @@ class Main(Screen[None]):
         Args:
             command: The command.
         """
-        self.active_collection = self._data.tagged(
-            command.tag, within=self.query_one(RaindropsView).raindrops
-        )
+        self.active_collection = self.active_collection.tagged(command.tag)
 
     def action_redownload(self) -> None:
         """Redownload data from the server."""
