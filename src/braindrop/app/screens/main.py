@@ -41,6 +41,9 @@ class Main(Screen[None]):
     Navigation {
         width: 1fr;
         height: 1fr;
+        &> .option-list--option {
+            padding: 0 1;
+        }
     }
 
     RaindropsView {
