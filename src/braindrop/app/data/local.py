@@ -66,6 +66,14 @@ class Raindrops:
         """The description of the content of the Raindrop grouping."""
         return f"{self.title} ({len(self)})"
 
+    @property
+    def tags(self) -> list[TagData]:
+        """The list of unique tags found amongst the Raindrops."""
+        tags: list[Tag] = []
+        for raindrop in self:
+            tags.extend(set(raindrop.tags))
+        return [TagData(name, count) for name, count in Counter(tags).items()]
+
     def __iter__(self) -> Iterator[Raindrop]:
         return iter(self._raindrops)
 
@@ -175,22 +183,6 @@ class LocalData:
                 if set(tags) <= set(raindrop.tags)
             ],
         )
-
-    def tags_of(self, collection: Collection | Raindrops) -> list[TagData]:
-        """Get the tags of a collection.
-
-        Args:
-            collection: The collection to get the tags of.
-
-        Returns:
-            A list of the tags found in the collection.
-        """
-        if isinstance(collection, (int, Collection)):
-            return self.tags_of(self.in_collection(collection))
-        tags: list[Tag] = []
-        for raindrop in collection:
-            tags.extend(set(raindrop.tags))
-        return [TagData(name, count) for name, count in Counter(tags).items()]
 
     def collection(self, identity: int) -> Collection:
         """Get a collection from its ID.

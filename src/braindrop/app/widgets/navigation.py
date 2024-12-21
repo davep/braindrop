@@ -279,7 +279,7 @@ class Navigation(OptionList):
         """
         with PreservedHighlight(self):
             self._main_navigation()
-            if self.data is not None and (tags := self.data.tags_of(collection)):
+            if self.data is not None and (tags := collection.tags):
                 self.add_option(Title("Tags"))
                 for tag in (self._by_count if self.tags_by_count else self._by_name)(
                     tags
