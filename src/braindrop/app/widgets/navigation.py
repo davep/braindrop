@@ -212,8 +212,7 @@ class Navigation(OptionList):
         indent += 1
         for collection in self.data.collections:
             if collection.parent == parent.identity:
-                self._add_collection(collection, indent)
-                self._add_children_for(collection, indent)
+                self._add_children_for(self._add_collection(collection, indent), indent)
 
     def _main_navigation(self) -> None:
         """Set up the main navigation."""
