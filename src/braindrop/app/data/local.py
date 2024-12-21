@@ -19,10 +19,10 @@ from .locations import data_dir
 
 ##############################################################################
 def local_data_file() -> Path:
-    """The path to the file that the local Raindrops are held in.
+    """The path to the file holds the local Raindrop data.
 
     Returns:
-        The path to the Raindrops file.
+        The path to the local data file.
     """
     return data_dir() / "raindrops.json"
 
