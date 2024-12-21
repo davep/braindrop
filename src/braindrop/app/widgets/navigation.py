@@ -24,7 +24,7 @@ from textual.widgets.option_list import Option
 ##############################################################################
 # Local imports.
 from ...raindrop import API, Collection, Raindrop, Tag, TagData
-from ..data import LocalData
+from ..data import LocalData, Raindrops
 from ..messages import ShowCollection, ShowTagged
 from .preserved_highlight import PreservedHighlight
 
@@ -145,7 +145,7 @@ class Navigation(OptionList):
     data: var[LocalData | None] = var(None)
     """Holds a reference to the Raindrop data we're going to handle."""
 
-    active_collection: var[list[Raindrop]] = var(list, always_update=True)
+    active_collection: var[Raindrops] = var(Raindrops("Loading..."), always_update=True)
     """The currently-active collection being displayed."""
 
     tags_by_count: var[bool] = var(False)

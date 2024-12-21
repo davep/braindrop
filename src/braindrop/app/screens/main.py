@@ -16,8 +16,8 @@ from textual.widgets import Footer, Header
 
 ##############################################################################
 # Local imports.
-from ...raindrop import API, Raindrop, User
-from ..data import LocalData
+from ...raindrop import API, User
+from ..data import LocalData, Raindrops
 from ..messages import ShowCollection, ShowTagged
 from ..widgets import Navigation, RaindropsView
 
@@ -96,7 +96,7 @@ class Main(Screen[None]):
         ),
     ]
 
-    active_collection: var[list[Raindrop]] = var(list)
+    active_collection: var[Raindrops] = var(Raindrops())
     """The currently-active collection."""
 
     def __init__(self, api: API) -> None:

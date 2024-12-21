@@ -24,6 +24,7 @@ from textual.widgets.option_list import Option
 ##############################################################################
 # Local imports.
 from ...raindrop import Raindrop
+from ..data import Raindrops
 from .preserved_highlight import PreservedHighlight
 
 
@@ -71,7 +72,7 @@ class RaindropView(Option):
 class RaindropsView(OptionList):
     """A widget for viewing a collection of Raindrops."""
 
-    raindrops: var[list[Raindrop]] = var(list)
+    raindrops: var[Raindrops] = var(Raindrops())
     """The list of raindrops being shown."""
 
     def watch_raindrops(self) -> None:
