@@ -64,6 +64,9 @@ class Raindrops:
     def __iter__(self) -> Iterator[Raindrop]:
         return iter(self._raindrops)
 
+    def __len__(self) -> int:
+        return len(self._raindrops)
+
 
 ##############################################################################
 class LocalData:
