@@ -2,7 +2,8 @@
 
 ##############################################################################
 # Python imports.
-from typing import Final
+from typing import Final, cast
+from webbrowser import open as open_url
 
 ##############################################################################
 # Humanize imports.
@@ -17,6 +18,7 @@ from rich.table import Table
 
 ##############################################################################
 # Textual imports.
+from textual.binding import Binding
 from textual.reactive import var
 from textual.widgets import OptionList
 from textual.widgets.option_list import Option
@@ -46,6 +48,11 @@ class RaindropView(Option):
         super().__init__(self.prompt, id=f"raindrop-{raindrop.identity}")
 
     @property
+    def raindrop(self) -> Raindrop:
+        """The Raindrop being displayed."""
+        return self._raindrop
+
+    @property
     def prompt(self) -> Group:
         """The prompt for the Raindrop."""
 
@@ -72,6 +79,15 @@ class RaindropView(Option):
 class RaindropsView(OptionList):
     """A widget for viewing a collection of Raindrops."""
 
+    BINDINGS = [
+        Binding(
+            "enter",
+            "visit",
+            description="Visit",
+            tooltip="Visit the currently-highlighted bookmark",
+        )
+    ]
+
     raindrops: var[Raindrops] = var(Raindrops)
     """The list of raindrops being shown."""
 
@@ -81,6 +97,27 @@ class RaindropsView(OptionList):
             self.clear_options().add_options(
                 [RaindropView(raindrop) for raindrop in self.raindrops]
             )
+
+    @property
+    def highlighted_raindrop(self) -> Raindrop | None:
+        """The currently-highlighted Raindrop, if there is one, or `None`."""
+        if self.highlighted is not None:
+            return cast(
+                RaindropView, self.get_option_at_index(self.highlighted)
+            ).raindrop
+        return None
+
+    def action_visit(self) -> None:
+        """Action that visits the currently-selected raindrop link, if there is one."""
+        if (raindrop := self.highlighted_raindrop) is not None:
+            if raindrop.link:
+                open_url(raindrop.link)
+            else:
+                self.notify(
+                    "There is no link associated with that Raindrop",
+                    title="No link",
+                    severity="error",
+                )
 
 
 ### raindrops_view.py ends here
