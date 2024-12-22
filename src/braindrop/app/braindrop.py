@@ -19,6 +19,14 @@ from .screens import Main, TokenInput
 class Braindrop(App[ExitState]):
     """The Braindrop application class."""
 
+    CSS = """
+    /* Textual went to a full-width command palette and it looks like garbage.
+       This makes it look less like it was unfinished and forgotten about. */
+    CommandPalette > Vertical {
+        width: 90%;
+    }
+    """
+
     BINDINGS = [("ctrl+c", "quit")]
 
     @staticmethod
