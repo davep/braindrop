@@ -17,6 +17,7 @@ from textual.widgets import Footer, Header
 ##############################################################################
 # Local imports.
 from ...raindrop import API, User
+from ..commands import TagCommands
 from ..data import LocalData, Raindrops
 from ..messages import ShowCollection, ShowTagged
 from ..widgets import Navigation, RaindropsView
@@ -101,6 +102,8 @@ class Main(Screen[None]):
         ),
         Binding("escape", "escape"),
     ]
+
+    COMMANDS = {TagCommands}
 
     active_collection: var[Raindrops] = var(Raindrops)
     """The currently-active collection."""
@@ -239,6 +242,7 @@ class Main(Screen[None]):
     def watch_active_collection(self) -> None:
         """Handle the active collection being changed."""
         self.sub_title = self.active_collection.description
+        TagCommands.active_collection = self.active_collection
 
     def populate_display(self) -> None:
         """Populate the display."""
