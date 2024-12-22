@@ -99,6 +99,7 @@ class Main(Screen[None]):
             "Redownload",
             tooltip="Download a fresh copy of all data from raindrop.io",
         ),
+        Binding("escape", "escape"),
     ]
 
     active_collection: var[Raindrops] = var(Raindrops)
@@ -287,6 +288,18 @@ class Main(Screen[None]):
     def action_clear_filters(self) -> None:
         """Remove any filtering from the active collection."""
         self.active_collection = self.active_collection.unfiltered
+
+    def action_escape(self) -> None:
+        """Handle escaping.
+
+        The action's approach is to step-by-step back out from the 'deepest'
+        level to the topmost, and if we're at the topmost then exit the
+        application.
+        """
+        if self.focused is self.query_one(RaindropsView):
+            self.set_focus(self.query_one(Navigation))
+        else:
+            self.app.exit()
 
 
 ### main.py ends here
