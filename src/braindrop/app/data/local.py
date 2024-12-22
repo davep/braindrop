@@ -75,6 +75,12 @@ class Raindrops:
         return self._title
 
     @property
+    def is_filtered(self) -> bool:
+        """Are the Raindrops filtered in some way?"""
+        # TODO: Add other filtering when it gets added.
+        return bool(self._tags)
+
+    @property
     def unfiltered(self) -> Raindrops:
         """The original source of the Raindrops, unfiltered."""
         return self._source
