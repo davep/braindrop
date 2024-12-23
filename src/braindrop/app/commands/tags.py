@@ -17,6 +17,8 @@ from ..messages import ShowTagged
 
 ##############################################################################
 class TagCommands(Provider):
+    """A command palette provider related to tags."""
+
     active_collection: Raindrops = Raindrops()
     """The currently-active collection to get the tags from."""
 
