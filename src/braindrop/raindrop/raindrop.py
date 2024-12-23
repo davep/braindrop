@@ -80,6 +80,8 @@ class Raindrop:
     """The type of the raindrop."""
     user: int
     """The ID of the owner of the Raindrop."""
+    broken: bool
+    """Is the Raindrop a broken link?"""
     # TODO: More fields here.
 
     @staticmethod
@@ -108,6 +110,7 @@ class Raindrop:
             title=data.get("title", ""),
             type=data.get("type", "link"),
             user=data.get("user", {}).get("$id", ""),
+            broken=data.get("broken", False),
         )
 
     def is_tagged(self, *tags: Tag) -> bool:
