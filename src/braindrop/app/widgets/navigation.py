@@ -134,7 +134,7 @@ class Title(Option):
             title: The title to show.
         """
         super().__init__(
-            Align.right(f"[bold italic underline]{title}[/]"), disabled=True, id=title
+            Align.right(f"\n[bold italic underline]{title}[/]"), disabled=True, id=title
         )
 
 
