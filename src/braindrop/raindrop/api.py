@@ -164,6 +164,15 @@ class API:
         """A collection that contains all non-trashed raindrops that haven't been sorted."""
         TRASH = -99
         """A collection that contains all trashed raindrops."""
+        BROKEN = -999
+        """A collection that contains all broken raindrops.
+
+        Note:
+            Unlike the other special collection IDs defined here, the broken
+            collection isn't one that is supported via the API; but it's
+            available here so that it can be treated as just another
+            collection, with special handling within the main application.
+        """
 
         def __call__(self) -> Collection:
             """Turn a collection ID into a `Collection` object."""
