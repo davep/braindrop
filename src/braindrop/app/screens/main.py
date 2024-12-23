@@ -252,8 +252,11 @@ class Main(Screen[None]):
 
     def watch_active_collection(self) -> None:
         """Handle the active collection being changed."""
-        self.sub_title = self.active_collection.description
-        TagCommands.active_collection = self.active_collection
+        if self.active_collection.title:
+            self.sub_title = self.active_collection.description
+            TagCommands.active_collection = self.active_collection
+        else:
+            self.sub_title = "Loading..."
 
     def populate_display(self) -> None:
         """Populate the display."""
