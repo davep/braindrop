@@ -13,6 +13,14 @@ mypy   := $(run) mypy
 run:				# Run the code in a testing context
 	$(python) -m $(app)
 
+.PHONY: debug
+debug:
+	TEXTUAL=devtools make
+
+.PHONY: console
+console:
+	$(run) textual console
+
 .PHONY: api
 api:				# Explore the API with Posting
 	posting --collection .posting --env .env
