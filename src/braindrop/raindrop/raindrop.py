@@ -121,5 +121,19 @@ class Raindrop:
         """
         return set(tags) <= set(self.tags)
 
+    def __contains__(self, search_text: str) -> bool:
+        """Performs a case-insensitive search for the text anywhere in the Raindrop.
+
+        Args:
+            search_text: The text to search for.
+
+        Returns:
+            `True` if the text can be found, `False` if not.
+        """
+        return search_text.casefold() in (
+            f"{self.excerpt.casefold()} {self.title.casefold()} {self.note.casefold()} "
+            f"{' '.join(str(tag) for tag in self.tags).casefold()}"
+        )
+
 
 ### raindrop.py ends here
