@@ -17,7 +17,7 @@ class SearchInput(ModalScreen[str]):
         align: center middle;
 
         Input, Input:focus {
-            border: round $accent;
+            border: round $border;
             width: 60%;
             padding: 1;
             height: auto;
