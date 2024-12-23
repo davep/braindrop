@@ -145,7 +145,7 @@ class Navigation(OptionList):
     data: var[LocalData | None] = var(None)
     """Holds a reference to the Raindrop data we're going to handle."""
 
-    active_collection: var[Raindrops] = var(Raindrops("Loading..."), always_update=True)
+    active_collection: var[Raindrops] = var(Raindrops(), always_update=True)
     """The currently-active collection being displayed."""
 
     tags_by_count: var[bool] = var(False)
