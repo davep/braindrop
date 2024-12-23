@@ -176,9 +176,17 @@ class Navigation(OptionList):
         self._api = api
         """The API client object."""
 
+    def highlight_collection(self, collection: Collection) -> None:
+        """Ensure the given collection is highlighted.
+
+        Args:
+            collection: The collection to highlight.
+        """
+        self.highlighted = self.get_option_index(CollectionView.id_of(collection))
+
     def select_collection(self, collection: Collection) -> None:
         """Highlight and select a given collection."""
-        self.highlighted = self.get_option_index(CollectionView.id_of(collection))
+        self.highlight_collection(collection)
         self.call_later(self.run_action, "select")
 
     def show_all(self) -> None:

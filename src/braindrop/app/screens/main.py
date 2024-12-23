@@ -17,7 +17,7 @@ from textual.widgets import Footer, Header
 ##############################################################################
 # Local imports.
 from ...raindrop import API, User
-from ..commands import TagCommands
+from ..commands import CollectionCommands, TagCommands
 from ..data import LocalData, Raindrops
 from ..messages import ShowCollection, ShowTagged
 from ..widgets import Navigation, RaindropsView
@@ -110,7 +110,7 @@ class Main(Screen[None]):
         Binding("escape", "escape"),
     ]
 
-    COMMANDS = {TagCommands}
+    COMMANDS = {CollectionCommands, TagCommands}
 
     active_collection: var[Raindrops] = var(Raindrops)
     """The currently-active collection."""
@@ -128,6 +128,7 @@ class Main(Screen[None]):
         """Details of the Raindrop user."""
         self._data = LocalData(api)
         """The local copy of the Raindrop data."""
+        CollectionCommands.data = self._data
 
     def compose(self) -> ComposeResult:
         """Compose the content of the screen."""
@@ -264,6 +265,7 @@ class Main(Screen[None]):
             command: The command.
         """
         self.active_collection = self._data.in_collection(command.collection)
+        self.query_one(Navigation).highlight_collection(command.collection)
 
     @on(ShowTagged)
     def command_show_tagged(self, command: ShowTagged) -> None:

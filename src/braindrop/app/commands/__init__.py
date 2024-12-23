@@ -2,10 +2,11 @@
 
 ##############################################################################
 # Local imports.
+from .collections import CollectionCommands
 from .tags import TagCommands
 
 ##############################################################################
 # Exports.
-__all__ = ["TagCommands"]
+__all__ = ["CollectionCommands", "TagCommands"]
 
 ### __init__.py ends here
