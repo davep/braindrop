@@ -110,5 +110,16 @@ class Raindrop:
             user=data.get("user", {}).get("$id", ""),
         )
 
+    def is_tagged(self, *tags: Tag) -> bool:
+        """Is the Raindrop tagged with the given tags?
+
+        Args:
+            tags: The tags to look for.
+
+        Returns:
+            `True` if the Raindrop contains those tags, `False` if not.
+        """
+        return set(tags) <= set(self.tags)
+
 
 ### raindrop.py ends here
