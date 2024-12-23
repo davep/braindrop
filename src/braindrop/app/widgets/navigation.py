@@ -239,6 +239,10 @@ class Navigation(OptionList):
             # here.
             if self.data is None or self.data.user is None:
                 return
+            # If the user is a pro user...
+            if self.data.user.pro:
+                # ...they have access to broken link checks.
+                self._add_collection(API.SpecialCollection.BROKEN())
             # Populate the groups.
             for group in self.data.user.groups:
                 self.add_option(Title(group.title))
