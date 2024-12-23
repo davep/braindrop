@@ -197,6 +197,14 @@ class LocalData:
         )
 
     @property
+    def broken(self) -> Raindrops:
+        """All non-trashed broken raindrops."""
+        return Raindrops(
+            "Broken",
+            (raindrop for raindrop in self._all if raindrop.broken),
+        )
+
+    @property
     def trash(self) -> Raindrops:
         """All trashed raindrops."""
         return self._trash
@@ -217,6 +225,8 @@ class LocalData:
                 return self.unsorted
             case API.SpecialCollection.TRASH:
                 return self.trash
+            case API.SpecialCollection.BROKEN:
+                return self.broken
             case user_collection:
                 return Raindrops(
                     collection.title,
