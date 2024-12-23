@@ -22,6 +22,7 @@ from ..commands import CollectionCommands, TagCommands
 from ..data import LocalData, Raindrops
 from ..messages import ShowCollection, ShowTagged
 from ..widgets import Navigation, RaindropsView
+from .downloading import Downloading
 from .search_input import SearchInput
 
 
@@ -115,7 +116,7 @@ class Main(Screen[None]):
 
     COMMANDS = {CollectionCommands, TagCommands}
 
-    active_collection: var[Raindrops] = var(Raindrops)
+    active_collection: var[Raindrops] = var(Raindrops, always_update=True)
     """The currently-active collection."""
 
     def __init__(self, api: API) -> None:
@@ -174,9 +175,6 @@ class Main(Screen[None]):
             )
             return
 
-        self.populate_display()
-        return
-
         if self._data.last_downloaded is None:
             self.notify("No local data found; checking in with the server.")
         elif (
@@ -210,40 +208,7 @@ class Main(Screen[None]):
         Note:
             As a side-effect the data is saved locally.
         """
-        if self._user is None:
-            self.app.bell()
-            self.notify(
-                "Request made to download Raindrop data when the user is unknown.",
-                title="Application Error",
-                severity="error",
-                timeout=8,
-            )
-            return
-
-        try:
-            await self._data.download(self._user)
-        except API.Error:
-            self.app.bell()
-            self.notify(
-                "Error downloading data from the server.",
-                title="Download Error",
-                severity="error",
-                timeout=8,
-            )
-            return
-
-        try:
-            self._data.save()
-        except OSError as error:
-            self.app.bell()
-            self.notify(
-                f"Error saving the data.\n\n{error}",
-                title="Save Error",
-                severity="error",
-                timeout=8,
-            )
-            return
-
+        await self.app.push_screen_wait(Downloading(self._user, self._data))
         self.populate_display()
 
     def on_mount(self) -> None:
@@ -262,6 +227,7 @@ class Main(Screen[None]):
         """Populate the display."""
         self.query_one(Navigation).data = self._data
         self.active_collection = self._data.all
+        self.query_one(Navigation).highlight_collection(API.SpecialCollection.ALL())
 
     @on(ShowCollection)
     def command_show_collection(self, command: ShowCollection) -> None:
