@@ -16,6 +16,7 @@ from textual.widgets import Footer, Header
 
 ##############################################################################
 # Local imports.
+from ... import __version__
 from ...raindrop import API, User
 from ..commands import CollectionCommands, TagCommands
 from ..data import LocalData, Raindrops
@@ -109,6 +110,8 @@ class Main(Screen[None]):
         ),
         Binding("escape", "escape"),
     ]
+
+    TITLE = f"Braindrop v{__version__}"
 
     COMMANDS = {CollectionCommands, TagCommands}
 
