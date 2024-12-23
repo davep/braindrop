@@ -122,7 +122,7 @@ class Raindrops:
             self._source,
         )
 
-    def contains(self, search_text: str) -> Raindrops:
+    def containing(self, search_text: str) -> Raindrops:
         """Get the raindrops containing the given text.
 
         Args:

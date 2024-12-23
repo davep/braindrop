@@ -321,7 +321,7 @@ class Main(Screen[None]):
     async def action_search(self) -> None:
         """Free-text search within the Raindrops."""
         if search_text := await self.app.push_screen_wait(SearchInput()):
-            self.active_collection = self.active_collection.contains(search_text)
+            self.active_collection = self.active_collection.containing(search_text)
 
 
 ### main.py ends here
