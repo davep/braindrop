@@ -26,7 +26,8 @@ class TagCommands(Provider):
         """Provide the tag-based command data for the command palette.
 
         Yields:
-            A tuple of the command, the tag and a command message to filter to the tag.
+            A tuple of the command, the command description and a command
+                message to filter to the tag.
         """
         help_prefix = "Also filter" if self.active_collection.is_filtered else "Filter"
         command_prefix = (
