@@ -21,6 +21,7 @@ from ..commands import TagCommands
 from ..data import LocalData, Raindrops
 from ..messages import ShowCollection, ShowTagged
 from ..widgets import Navigation, RaindropsView
+from .search_input import SearchInput
 
 
 ##############################################################################
@@ -81,6 +82,12 @@ class Main(Screen[None]):
             "c",
             "clear_filters",
             tooltip="Clear tags and other filters",
+        ),
+        Binding(
+            "/",
+            "search",
+            "Search",
+            tooltip="Search for text anywhere in the raindrops",
         ),
         Binding(
             "f2",
@@ -304,6 +311,12 @@ class Main(Screen[None]):
             self.set_focus(self.query_one(Navigation))
         else:
             self.app.exit()
+
+    @work
+    async def action_search(self) -> None:
+        """Free-text search within the Raindrops."""
+        if search_text := await self.app.push_screen_wait(SearchInput()):
+            self.active_collection = self.active_collection.contains(search_text)
 
 
 ### main.py ends here

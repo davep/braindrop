@@ -40,6 +40,7 @@ class Raindrops:
         title: str = "",
         raindrops: Iterable[Raindrop] | None = None,
         tags: Sequence[Tag] | None = None,
+        search_text: tuple[str, ...] | None = None,
         source: Raindrops | None = None,
     ) -> None:
         """Initialise the Raindrop grouping.
@@ -54,6 +55,8 @@ class Raindrops:
         """The raindrops."""
         self._tags = () if tags is None else tags
         """The list of tags that resulted in this Raindrop group."""
+        self._search_text = () if search_text is None else search_text
+        """The search text related to this Raindrop group."""
         self._source = source or self
         """The original source for the Raindrops."""
 
@@ -77,8 +80,7 @@ class Raindrops:
     @property
     def is_filtered(self) -> bool:
         """Are the Raindrops filtered in some way?"""
-        # TODO: Add other filtering when it gets added.
-        return bool(self._tags)
+        return bool(self._tags) or bool(self._search_text)
 
     @property
     def unfiltered(self) -> Raindrops:
@@ -88,12 +90,12 @@ class Raindrops:
     @property
     def description(self) -> str:
         """The description of the content of the Raindrop grouping."""
-        tags = (
-            f"; tagged {', '.join(str(tag) for tag in self._tags)}"
-            if self._tags
-            else ""
-        )
-        return f"{self._title}{tags} ({len(self)})"
+        filters = []
+        if search_text := [f'"{text}"' for text in self._search_text]:
+            filters.append(f"contains {' and '.join(search_text)}")
+        if self._tags:
+            filters.append(f"tagged {', '.join(str(tag) for tag in self._tags)}")
+        return f"{'; '.join((self._title, *filters))} ({len(self)})"
 
     @property
     def tags(self) -> list[TagData]:
@@ -114,8 +116,26 @@ class Raindrops:
         """
         return Raindrops(
             self.title,
-            (raindrop for raindrop in self if set(tags) <= set(raindrop.tags)),
+            (raindrop for raindrop in self if raindrop.is_tagged(*tags)),
             tuple(set((*self._tags, *tags))),
+            self._search_text,
+            self._source,
+        )
+
+    def contains(self, search_text: str) -> Raindrops:
+        """Get the raindrops containing the given text.
+
+        Args:
+            search_text: The text to search for.
+
+        Returns:
+            The subset of Raindrops that contain the given text.
+        """
+        return Raindrops(
+            self.title,
+            (raindrop for raindrop in self if search_text in raindrop),
+            self._tags,
+            (*self._search_text, search_text),
             self._source,
         )
 
