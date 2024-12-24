@@ -279,7 +279,7 @@ class LocalData:
         return list(self._collections.values())
 
     def mark_downloaded(self) -> Self:
-        """Mark the bookmarks as having being downloaded at the time of calling."""
+        """Mark the raindrops as having being downloaded at the time of calling."""
         self._last_downloaded = datetime.now(UTC)
         return self
 
