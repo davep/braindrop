@@ -37,7 +37,7 @@ class RaindropView(Option):
     RULE: Final[Rule] = Rule(style="dim")
     """The rule to place at the end of each view."""
 
-    def __init__(self, raindrop: Raindrop) -> None:
+    def __init__(self, raindrop: Raindrop, compact: bool = False) -> None:
         """Initialise the object.
 
         Args:
@@ -45,6 +45,8 @@ class RaindropView(Option):
         """
         self._raindrop = raindrop
         """The raindrop to view."""
+        self._compact = compact
+        """Use a compact view?"""
         super().__init__(self.prompt, id=f"raindrop-{raindrop.identity}")
 
     @property
@@ -56,13 +58,16 @@ class RaindropView(Option):
     def prompt(self) -> Group:
         """The prompt for the Raindrop."""
 
-        title = Table.grid(expand=True)
-        title.add_column(ratio=1)
+        title = Table.grid()
+        title.add_column(ratio=1, no_wrap=self._compact)
         title.add_row(escape(self._raindrop.title))
 
-        body: list[str] = []
+        body: list[Table] = []
         if self._raindrop.excerpt:
-            body.append(f"[dim]{escape(self._raindrop.excerpt)}[/dim]")
+            excerpt = Table.grid()
+            excerpt.add_column(ratio=1, no_wrap=self._compact)
+            excerpt.add_row(f"[dim]{escape(self._raindrop.excerpt)}[/dim]")
+            body.append(excerpt)
 
         details = Table.grid(expand=True)
         details.add_column(ratio=1)
@@ -85,18 +90,34 @@ class RaindropsView(OptionList):
             "visit",
             description="Visit",
             tooltip="Visit the currently-highlighted Raindrop",
-        )
+        ),
+        Binding(
+            "c",
+            "toggle_compact",
+            description="Compact",
+            tooltip="Toggle the compact view of the Raindrops",
+        ),
     ]
 
     raindrops: var[Raindrops] = var(Raindrops)
     """The list of raindrops being shown."""
 
-    def watch_raindrops(self) -> None:
-        """React to the raindrops being changed."""
+    compact: var[bool] = var(False)
+    """Toggle to say if we should use a compact view or not."""
+
+    def _add_raindrops(self) -> None:
         with PreservedHighlight(self):
             self.clear_options().add_options(
-                [RaindropView(raindrop) for raindrop in self.raindrops]
+                [RaindropView(raindrop, self.compact) for raindrop in self.raindrops]
             )
+
+    def watch_raindrops(self) -> None:
+        """React to the raindrops being changed."""
+        self._add_raindrops()
+
+    def watch_compact(self) -> None:
+        """React to the compact setting being toggled."""
+        self._add_raindrops()
 
     @property
     def highlighted_raindrop(self) -> Raindrop | None:
@@ -118,6 +139,10 @@ class RaindropsView(OptionList):
                     title="No link",
                     severity="error",
                 )
+
+    def action_toggle_compact(self) -> None:
+        """Action that toggles the compact setting."""
+        self.compact = not self.compact
 
 
 ### raindrops_view.py ends here
