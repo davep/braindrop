@@ -237,6 +237,21 @@ class LocalData:
                     ],
                 )
 
+    def collection_size(self, collection: Collection) -> int:
+        """Get the size of a given collection.
+
+        Args:
+            collection: The collection to get the count for.
+
+        Returns:
+            The count of raindrops in the collection.
+        """
+        # Favour the collection's own idea of its count, but if it doesn't
+        # have one then do an actual count. The main reason for this is that
+        # real collections have real counts, "special" ones don't (but we
+        # can work it out).
+        return collection.count or len(self.in_collection(collection))
+
     def collection(self, identity: int) -> Collection:
         """Get a collection from its ID.
 
