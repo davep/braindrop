@@ -205,6 +205,7 @@ class Navigation(OptionList):
         Args:
             collection: The collection to add.
             indent: The indent level to add it at.
+            key: The shortcut key to use, if any.
 
         Returns:
             The collection.
