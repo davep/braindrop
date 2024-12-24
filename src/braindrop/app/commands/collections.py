@@ -30,6 +30,7 @@ class CollectionCommands(CommandsProvider):
         collections = (
             API.SpecialCollection.ALL(),
             API.SpecialCollection.UNSORTED(),
+            API.SpecialCollection.UNTAGGED(),
             API.SpecialCollection.TRASH(),
             *pro_features,
             *self.data.collections,

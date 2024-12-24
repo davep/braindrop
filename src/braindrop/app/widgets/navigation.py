@@ -233,6 +233,7 @@ class Navigation(OptionList):
         self._add_collection(
             API.SpecialCollection.UNSORTED(), key=self.SHORTCUT_UNSORTED
         )
+        self._add_collection(API.SpecialCollection.UNTAGGED())
         if self.data is not None and self.data.user is not None and self.data.user.pro:
             self._add_collection(API.SpecialCollection.BROKEN())
         self._add_collection(API.SpecialCollection.TRASH())

@@ -197,6 +197,14 @@ class LocalData:
         )
 
     @property
+    def untagged(self) -> Raindrops:
+        """A non-trashed untagged raindrops."""
+        return Raindrops(
+            "Untagged",
+            (raindrop for raindrop in self._all if not raindrop.tags),
+        )
+
+    @property
     def broken(self) -> Raindrops:
         """All non-trashed broken raindrops."""
         return Raindrops(
@@ -223,6 +231,8 @@ class LocalData:
                 return self.all
             case API.SpecialCollection.UNSORTED:
                 return self.unsorted
+            case API.SpecialCollection.UNTAGGED:
+                return self.untagged
             case API.SpecialCollection.TRASH:
                 return self.trash
             case API.SpecialCollection.BROKEN:

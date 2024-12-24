@@ -164,6 +164,8 @@ class API:
         """A collection that contains all non-trashed raindrops that haven't been sorted."""
         TRASH = -99
         """A collection that contains all trashed raindrops."""
+        UNTAGGED = -998
+        """A collection that contains all untagged raindrops."""
         BROKEN = -999
         """A collection that contains all broken raindrops.
 
@@ -212,6 +214,7 @@ class API:
             - `API.SpecialCollection.TRASH` - All trashed `Raindrop`s.
         """
         assert collection not in (
+            self.SpecialCollection.UNTAGGED,
             self.SpecialCollection.BROKEN,
         ), f"{collection} is not a valid collection ID"
         page = 0
