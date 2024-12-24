@@ -211,6 +211,9 @@ class API:
             - `API.SpecialCollection.UNSORTED` - All `Raindrop`s not in a `Collection`.
             - `API.SpecialCollection.TRASH` - All trashed `Raindrop`s.
         """
+        assert collection not in (
+            self.SpecialCollection.BROKEN,
+        ), f"{collection} is not a valid collection ID"
         page = 0
         raindrops: list[Raindrop] = []
         while True:
