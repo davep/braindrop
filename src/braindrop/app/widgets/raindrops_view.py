@@ -84,7 +84,7 @@ class RaindropsView(OptionList):
             "enter",
             "visit",
             description="Visit",
-            tooltip="Visit the currently-highlighted bookmark",
+            tooltip="Visit the currently-highlighted Raindrop",
         )
     ]
 
