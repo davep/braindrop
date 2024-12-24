@@ -46,7 +46,11 @@ class CollectionView(Option):
         return f"collection-{collection.identity}"
 
     def __init__(
-        self, collection: Collection, indent: int = 0, key: str | None = None
+        self,
+        collection: Collection,
+        indent: int = 0,
+        key: str | None = None,
+        count: int = 0,
     ) -> None:
         """Initialise the object.
 
@@ -61,6 +65,8 @@ class CollectionView(Option):
         """The indent level for the collection."""
         self._key = key
         """The key associated with this collection, if any."""
+        self._count = count or collection.count
+        """The count of raindrops in this collection."""
         super().__init__(self.prompt, id=self.id_of(collection))
 
     @property
@@ -79,8 +85,9 @@ class CollectionView(Option):
         prompt.add_column(ratio=1)
         prompt.add_column(justify="right")
         prompt.add_row(
-            f"{'[dim]>[/dim] ' * self._indent}{self._collection.title}",
-            f"[dim]\\[{self._key}][/]" if self._key else "",
+            f"{'[dim]>[/dim] ' * self._indent}{self._collection.title}"
+            + (f" [dim]\\[{self._key or ''}][/]" if self._key else ""),
+            f"[dim i]{self._count}[/]",
         )
         return prompt
 
@@ -210,7 +217,14 @@ class Navigation(OptionList):
         Returns:
             The collection.
         """
-        self.add_option(CollectionView(collection, indent, key))
+        self.add_option(
+            CollectionView(
+                collection,
+                indent,
+                key,
+                0 if self.data is None else self.data.collection_size(collection),
+            )
+        )
         return collection
 
     def _add_specials(self) -> None:
