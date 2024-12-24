@@ -7,6 +7,8 @@ import os
 ##############################################################################
 # Textual imports.
 from textual.app import App
+from textual.binding import Binding
+from textual.widgets import HelpPanel
 
 ##############################################################################
 # Local imports.
@@ -27,7 +29,15 @@ class Braindrop(App[ExitState]):
     }
     """
 
-    BINDINGS = [("ctrl+c", "quit")]
+    BINDINGS = [
+        Binding("ctrl+c", "quit"),
+        Binding(
+            "f1",
+            "help",
+            description="Help",
+            tooltip="Toggle the display of the key binding help panel",
+        ),
+    ]
 
     @staticmethod
     def environmental_token() -> str | None:
@@ -78,6 +88,12 @@ class Braindrop(App[ExitState]):
             self.push_screen(Main(API(token)))
         else:
             self.push_screen(TokenInput(), callback=self.token_bounce)
+
+    async def action_help(self) -> None:
+        """Toggle the display of the help panel."""
+        await self.run_action(
+            f"{'hide' if self.screen.query(HelpPanel) else 'show'}_help_panel"
+        )
 
 
 ### app.py ends here
