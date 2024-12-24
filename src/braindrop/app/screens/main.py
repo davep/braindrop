@@ -21,7 +21,7 @@ from ...raindrop import API, User
 from ..commands import CollectionCommands, TagCommands
 from ..data import LocalData, Raindrops
 from ..messages import ShowCollection, ShowTagged
-from ..widgets import Navigation, RaindropsView
+from ..widgets import Navigation, RaindropDetails, RaindropsView
 from .downloading import Downloading
 from .search_input import SearchInput
 
@@ -44,7 +44,7 @@ class Main(Screen[None]):
     }
 
     Navigation {
-        width: 1fr;
+        width: 2fr;
         height: 1fr;
         &> .option-list--option {
             padding: 0 1;
@@ -52,11 +52,16 @@ class Main(Screen[None]):
     }
 
     RaindropsView {
-        width: 4fr;
+        width: 5fr;
         height: 1fr;
         &> .option-list--option {
             padding: 0 1;
         }
+    }
+
+    RaindropDetails {
+        width: 3fr;
+        height: 1fr;
     }
 
     .focus {
@@ -144,6 +149,7 @@ class Main(Screen[None]):
             yield RaindropsView(classes="focus").data_bind(
                 raindrops=Main.active_collection
             )
+            yield RaindropDetails(classes="focus")
         yield Footer()
 
     @work
@@ -247,6 +253,13 @@ class Main(Screen[None]):
             command: The command.
         """
         self.active_collection = self.active_collection.tagged(command.tag)
+
+    @on(RaindropsView.OptionHighlighted)
+    def update_details(self) -> None:
+        """Update the details panel to show the current raindrop."""
+        self.query_one(RaindropDetails).raindrop = self.query_one(
+            RaindropsView
+        ).highlighted_raindrop
 
     def action_redownload(self) -> None:
         """Redownload data from the server."""
