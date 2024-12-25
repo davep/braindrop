@@ -27,7 +27,6 @@ from textual.widgets.option_list import Option
 from ...raindrop import Raindrop
 from ..data import Raindrops
 from .extended_option_list import OptionListEx
-from .preserved_highlight import PreservedHighlight
 
 
 ##############################################################################
@@ -100,7 +99,7 @@ class RaindropsView(OptionListEx):
     """Toggle to say if we should use a compact view or not."""
 
     def _add_raindrops(self) -> None:
-        with PreservedHighlight(self):
+        with self.preserved_highlight:
             self.clear_options().add_options(
                 [RaindropView(raindrop, self.compact) for raindrop in self.raindrops]
             )

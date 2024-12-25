@@ -27,7 +27,6 @@ from ...raindrop import API, Collection, Tag, TagData
 from ..data import LocalData, Raindrops
 from ..messages import ShowCollection, ShowTagged
 from .extended_option_list import OptionListEx
-from .preserved_highlight import PreservedHighlight
 
 
 ##############################################################################
@@ -259,7 +258,7 @@ class Navigation(OptionListEx):
 
     def _main_navigation(self) -> None:
         """Set up the main navigation."""
-        with PreservedHighlight(self):
+        with self.preserved_highlight:
             # First off, clear out the display of the user's groups.
             self.clear_options()._add_specials()
             # If we don't have data or we don't know the user, we're all done
@@ -304,7 +303,7 @@ class Navigation(OptionListEx):
         Args:
             collection: The collection to show the tags for.
         """
-        with PreservedHighlight(self):
+        with self.preserved_highlight:
             self._main_navigation()
             if self.data is not None and (tags := collection.tags):
                 self.add_option(Title("Tags"))
