@@ -109,6 +109,12 @@ class Main(Screen[None]):
             tooltip="Toggle the tags sort order between by-name and by-count",
         ),
         Binding(
+            "f5",
+            "toggle_compact_mode",
+            "Compact",
+            tooltip="Toggle the compact mode for the Raindrop list",
+        ),
+        Binding(
             "ctrl+r",
             "redownload",
             "Redownload",
@@ -298,6 +304,12 @@ class Main(Screen[None]):
             self.set_focus(self.query_one(Navigation))
         else:
             self.app.exit()
+
+    def action_toggle_compact_mode(self) -> None:
+        """Toggle the compact mode for the list of raindrops."""
+        self.query_one(RaindropsView).compact = not self.query_one(
+            RaindropsView
+        ).compact
 
     @work
     async def action_search(self) -> None:

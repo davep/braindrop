@@ -91,12 +91,6 @@ class RaindropsView(OptionList):
             description="Visit",
             tooltip="Visit the currently-highlighted Raindrop",
         ),
-        Binding(
-            "c",
-            "toggle_compact",
-            description="Compact",
-            tooltip="Toggle the compact view of the Raindrops",
-        ),
     ]
 
     raindrops: var[Raindrops] = var(Raindrops)
@@ -139,10 +133,6 @@ class RaindropsView(OptionList):
                     title="No link",
                     severity="error",
                 )
-
-    def action_toggle_compact(self) -> None:
-        """Action that toggles the compact setting."""
-        self.compact = not self.compact
 
 
 ### raindrops_view.py ends here
