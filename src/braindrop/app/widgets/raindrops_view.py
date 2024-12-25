@@ -20,7 +20,6 @@ from rich.table import Table
 # Textual imports.
 from textual.binding import Binding
 from textual.reactive import var
-from textual.widgets import OptionList
 from textual.widgets.option_list import Option
 
 ##############################################################################
