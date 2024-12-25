@@ -19,7 +19,7 @@ from textual.widgets import Footer, Header
 from ... import __version__
 from ...raindrop import API, User
 from ..commands import CollectionCommands, TagCommands
-from ..data import LocalData, Raindrops
+from ..data import LocalData, Raindrops, load_configuration, save_configuration
 from ..messages import ShowCollection, ShowTagged
 from ..widgets import Navigation, RaindropDetails, RaindropsView
 from .downloading import Downloading
@@ -243,6 +243,8 @@ class Main(Screen[None]):
 
     def on_mount(self) -> None:
         """Start the process of loading up the Raindrop data."""
+        config = load_configuration()
+        self.set_class(not config.details_visible, "details-hidden")
         self.load_data()
 
     def watch_active_collection(self) -> None:
@@ -326,6 +328,9 @@ class Main(Screen[None]):
     def action_toggle_details_view(self) -> None:
         """Toggle the details of the raindrop details view."""
         self.toggle_class("details-hidden")
+        config = load_configuration()
+        config.details_visible = not self.has_class("details-hidden")
+        save_configuration(config)
 
     def action_toggle_compact_mode(self) -> None:
         """Toggle the compact mode for the list of raindrops."""
