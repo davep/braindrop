@@ -316,14 +316,14 @@ class Navigation(OptionList):
         """Handle the data being changed."""
         self._main_navigation()
 
-    def watch_tags_by_count(self) -> None:
-        """React to the tags sort ordering being changed."""
-        self.active_collection = self.active_collection
-
     def watch_active_collection(self) -> None:
         """React to the currently-active collection being changed."""
         self._show_tags_for(self.active_collection)
         self._refresh_lines()  # https://github.com/Textualize/textual/issues/5431
+
+    def watch_tags_by_count(self) -> None:
+        """React to the tags sort ordering being changed."""
+        self.active_collection = self.active_collection
 
     @on(OptionList.OptionSelected)
     def _collection_selected(self, message: OptionList.OptionSelected) -> None:
