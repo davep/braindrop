@@ -27,6 +27,7 @@ from textual.widgets.option_list import Option
 # Local imports.
 from ...raindrop import Raindrop
 from ..data import Raindrops
+from .extended_option_list import OptionListEx
 from .preserved_highlight import PreservedHighlight
 
 
@@ -81,7 +82,7 @@ class RaindropView(Option):
 
 
 ##############################################################################
-class RaindropsView(OptionList):
+class RaindropsView(OptionListEx):
     """A widget for viewing a collection of Raindrops."""
 
     BINDINGS = [

@@ -26,6 +26,7 @@ from textual.widgets.option_list import Option
 from ...raindrop import API, Collection, Tag, TagData
 from ..data import LocalData, Raindrops
 from ..messages import ShowCollection, ShowTagged
+from .extended_option_list import OptionListEx
 from .preserved_highlight import PreservedHighlight
 
 
@@ -146,7 +147,7 @@ class Title(Option):
 
 
 ##############################################################################
-class Navigation(OptionList):
+class Navigation(OptionListEx):
     """The main application navigation widget."""
 
     data: var[LocalData | None] = var(None)
