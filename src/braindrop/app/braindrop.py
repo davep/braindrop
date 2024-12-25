@@ -39,7 +39,7 @@ class Braindrop(App[ExitState]):
         ),
     ]
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialise the application."""
         super().__init__()
         configuration = load_configuration()
