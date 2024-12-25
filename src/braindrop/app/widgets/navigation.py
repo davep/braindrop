@@ -323,6 +323,7 @@ class Navigation(OptionList):
     def watch_active_collection(self) -> None:
         """React to the currently-active collection being changed."""
         self._show_tags_for(self.active_collection)
+        self._refresh_lines()  # https://github.com/Textualize/textual/issues/5431
 
     @on(OptionList.OptionSelected)
     def _collection_selected(self, message: OptionList.OptionSelected) -> None:
