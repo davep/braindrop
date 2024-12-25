@@ -32,7 +32,7 @@ class Braindrop(App[ExitState]):
     BINDINGS = [
         Binding("ctrl+c", "quit"),
         Binding(
-            "f1",
+            "f1, ?",
             "help",
             description="Help",
             tooltip="Toggle the display of the key binding help panel",
