@@ -20,6 +20,9 @@ class Configuration:
     details_visible: bool = True
     """Show the details pane be visible?"""
 
+    show_tags_by_count: bool = False
+    """Show the tags ordered by their count?"""
+
 
 ##############################################################################
 def configuration_file() -> Path:

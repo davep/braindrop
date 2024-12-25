@@ -245,6 +245,7 @@ class Main(Screen[None]):
         """Start the process of loading up the Raindrop data."""
         config = load_configuration()
         self.set_class(not config.details_visible, "details-hidden")
+        self.query_one(Navigation).tags_by_count = config.show_tags_by_count
         self.load_data()
 
     def watch_active_collection(self) -> None:
@@ -297,9 +298,12 @@ class Main(Screen[None]):
 
     def action_toggle_tag_order(self) -> None:
         """Toggle the ordering of tags."""
-        self.query_one(Navigation).tags_by_count = not self.query_one(
-            Navigation
-        ).tags_by_count
+        self.query_one(Navigation).tags_by_count = (
+            by_count := not self.query_one(Navigation).tags_by_count
+        )
+        config = load_configuration()
+        config.show_tags_by_count = by_count
+        save_configuration(config)
 
     def action_show_all(self) -> None:
         """Select the collection that shows all Raindrops."""
