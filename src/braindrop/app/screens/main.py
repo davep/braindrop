@@ -43,33 +43,45 @@ class Main(Screen[None]):
         }
     }
 
-    Navigation {
-        width: 2fr;
-        height: 1fr;
-        &> .option-list--option {
-            padding: 0 1;
+    Main {
+        Navigation {
+            width: 2fr;
+            height: 1fr;
+            &> .option-list--option {
+                padding: 0 1;
+            }
         }
-    }
 
-    RaindropsView {
-        width: 5fr;
-        height: 1fr;
-        &> .option-list--option {
-            padding: 0 1;
+        RaindropsView {
+            width: 5fr;
+            height: 1fr;
+            &> .option-list--option {
+                padding: 0 1;
+            }
         }
-    }
 
-    RaindropDetails {
-        width: 3fr;
-        height: 1fr;
-    }
+        RaindropDetails {
+            width: 3fr;
+            height: 1fr;
+        }
 
-    .focus {
-        border: none;
-        border-left: tall $border-blurred;
-        &:focus {
+        .focus {
             border: none;
-            border-left: tall $border;
+            border-left: tall $border-blurred;
+            &:focus {
+                border: none;
+                border-left: tall $border;
+            }
+        }
+
+        /* For when the details are hidden. */
+        &.details-hidden {
+            RaindropsView {
+                width: 8fr;
+            }
+            RaindropDetails {
+                display: none;
+            }
         }
     }
     """
@@ -101,6 +113,12 @@ class Main(Screen[None]):
             "goto_raindrop",
             "raindrop.io",
             tooltip="Open the web-based raindrop.io application",
+        ),
+        Binding(
+            "f3",
+            "toggle_details_view",
+            "Details",
+            tooltip="Toggle the display of the Raindrop details panel",
         ),
         Binding(
             "f4",
@@ -304,6 +322,10 @@ class Main(Screen[None]):
             self.set_focus(self.query_one(Navigation))
         else:
             self.app.exit()
+
+    def action_toggle_details_view(self) -> None:
+        """Toggle the details of the raindrop details view."""
+        self.toggle_class("details-hidden")
 
     def action_toggle_compact_mode(self) -> None:
         """Toggle the compact mode for the list of raindrops."""
