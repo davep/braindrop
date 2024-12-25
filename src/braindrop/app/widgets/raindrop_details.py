@@ -59,25 +59,22 @@ class RaindropDetails(VerticalScroll):
 
         Label {
             margin: 0 2 1 2;
+            padding: 1 2 1 2;
             width: 1fr;
             color: $text;
         }
 
         .detail {
             background: $panel;
-            padding: 1 2 1 2;
         }
 
         #title {
             background: $primary;
-            padding: 1 2 1 2;
             text-align: center;
-            margin: 0 2 0 2;
         }
 
         #excerpt {
             background: $primary;
-            padding: 0 2 1 2;
             color: $text-muted;
         }
 
@@ -87,7 +84,6 @@ class RaindropDetails(VerticalScroll):
         }
 
         .exact {
-            margin: 0 2 1 2;
             padding: 0 2 1 2;
             text-align: right;
             color: $text-muted;
