@@ -6,14 +6,14 @@ import os
 
 ##############################################################################
 # Textual imports.
-from textual.app import App
+from textual.app import App, InvalidThemeError
 from textual.binding import Binding
 from textual.widgets import HelpPanel
 
 ##############################################################################
 # Local imports.
 from ..raindrop import API
-from .data import ExitState, token_file
+from .data import ExitState, load_configuration, save_configuration, token_file
 from .screens import Main, TokenInput
 
 
@@ -38,6 +38,22 @@ class Braindrop(App[ExitState]):
             tooltip="Toggle the display of the key binding help panel",
         ),
     ]
+
+    def __init__(self):
+        """Initialise the application."""
+        super().__init__()
+        configuration = load_configuration()
+        if configuration.theme is not None:
+            try:
+                self.theme = configuration.theme
+            except InvalidThemeError:
+                pass
+
+    def watch_theme(self) -> None:
+        """Save the application's theme when it's changed."""
+        configuration = load_configuration()
+        configuration.theme = self.theme
+        save_configuration(configuration)
 
     @staticmethod
     def environmental_token() -> str | None:

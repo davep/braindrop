@@ -17,6 +17,9 @@ from .locations import config_dir
 class Configuration:
     """The configuration data for the application."""
 
+    theme: str | None = None
+    """The theme for the application."""
+
     details_visible: bool = True
     """Show the details pane be visible?"""
 
