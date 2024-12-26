@@ -50,12 +50,12 @@ class Tags(OptionListEx):
         """
         with self.preserved_highlight:
             self.clear_options().add_options(
-                (
+                []
+                if self.raindrop is None
+                else (
                     Option(f"{self._ICON} {tag}", id=str(tag))
                     for tag in sorted(self.raindrop.tags)
                 )
-                if self.raindrop is not None
-                else []
             )
         self.set_class(not bool(self.option_count), "empty")
 
