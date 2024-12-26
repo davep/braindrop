@@ -2,6 +2,8 @@
 
 ##############################################################################
 # Python imports.
+from datetime import datetime
+from typing import Any, Callable
 from webbrowser import open as open_url
 
 ##############################################################################
@@ -130,6 +132,32 @@ class RaindropDetails(VerticalScroll):
         self.query_one(f"#{widget}", Label).update(value)
         self.query_one(f"#{widget}").set_class(not bool(value), "empty")
 
+    @staticmethod
+    def _time(
+        prefix: str,
+        time: datetime | None,
+        strify: Callable[[Any], str] = str,
+        if_different_to: datetime | None = None,
+    ) -> str:
+        """Format a time.
+
+        Args:
+            prefix: The prefix to give the time.
+            time: The time to format.
+            strify: The function to use to `str` the `time`.
+            if_different_to: Only return the time if it's different to this.
+
+        Returns:
+            The formatted time.
+        """
+        if time is not None:
+            time = time.replace(microsecond=0)
+        if if_different_to is not None:
+            if_different_to = if_different_to.replace(microsecond=0)
+        return (
+            "" if time == if_different_to else f"{prefix} {strify(time or 'Unknown')}"
+        )
+
     def _watch_raindrop(self) -> None:
         """React to the raindrop being changed."""
         try:
@@ -139,13 +167,26 @@ class RaindropDetails(VerticalScroll):
             self._set("excerpt", self.raindrop.excerpt)
             self._set("note", self.raindrop.note)
             self._set(
-                "created-ish", f"Created {naturaltime(self.raindrop.created or 0)}"
+                "created-ish", self._time("Created", self.raindrop.created, naturaltime)
             )
-            self._set("created", str(self.raindrop.created or "Unknown"))
+            self._set("created", self._time("Created", self.raindrop.created))
             self._set(
-                "updated-ish", f"Updated {naturaltime(self.raindrop.last_update or 0)}"
+                "updated-ish",
+                self._time(
+                    "Updated",
+                    self.raindrop.last_update,
+                    naturaltime,
+                    self.raindrop.created,
+                ),
             )
-            self._set("updated", str(self.raindrop.last_update or "Unknown"))
+            self._set(
+                "updated",
+                self._time(
+                    "Updated",
+                    self.raindrop.last_update,
+                    if_different_to=self.raindrop.created,
+                ),
+            )
             self._set(
                 "link",
                 f"[@click=visit]{self.raindrop.link}[/]" if self.raindrop.link else "",
