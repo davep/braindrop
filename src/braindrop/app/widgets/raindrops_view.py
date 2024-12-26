@@ -12,6 +12,7 @@ from humanize import naturaltime
 ##############################################################################
 # Rich imports.
 from rich.console import Group
+from rich.emoji import Emoji
 from rich.markup import escape
 from rich.rule import Rule
 from rich.table import Table
@@ -32,6 +33,9 @@ from .extended_option_list import OptionListEx
 ##############################################################################
 class RaindropView(Option):
     """An individual raindrop."""
+
+    BROKEN_ICON: Final[str] = Emoji.replace(":skull:")
+    """The icon for broken links."""
 
     RULE: Final[Rule] = Rule(style="dim")
     """The rule to place at the end of each view."""
@@ -57,9 +61,13 @@ class RaindropView(Option):
     def prompt(self) -> Group:
         """The prompt for the Raindrop."""
 
-        title = Table.grid()
+        title = Table.grid(expand=True)
         title.add_column(ratio=1, no_wrap=self._compact)
-        title.add_row(escape(self._raindrop.title))
+        title.add_column(justify="right")
+        title.add_row(
+            escape(self._raindrop.title),
+            self.BROKEN_ICON if self._raindrop.broken else "",
+        )
 
         body: list[Table] = []
         if self._raindrop.excerpt:
