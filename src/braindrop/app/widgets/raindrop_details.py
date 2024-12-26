@@ -23,10 +23,12 @@ from textual.containers import VerticalScroll
 from textual.message import Message
 from textual.reactive import var
 from textual.widgets import Label
+from textual.widgets.option_list import Option
 
 ##############################################################################
 # Local imports.
-from ...raindrop import Raindrop
+from ...raindrop import Raindrop, Tag
+from ..messages import ShowTagged
 from .extended_option_list import OptionListEx
 
 
@@ -48,11 +50,20 @@ class Tags(OptionListEx):
         """
         with self.preserved_highlight:
             self.clear_options().add_options(
-                (f"{self._ICON} {tag}" for tag in sorted(self.raindrop.tags))
+                (
+                    Option(f"{self._ICON} {tag}", id=str(tag))
+                    for tag in sorted(self.raindrop.tags)
+                )
                 if self.raindrop is not None
                 else []
             )
         self.set_class(not bool(self.option_count), "empty")
+
+    @on(OptionListEx.OptionSelected)
+    def show_tag(self, message: OptionListEx.OptionSelected) -> None:
+        """Filter on a given tag when one is selected."""
+        if message.option_id is not None:
+            self.post_message(ShowTagged(Tag(message.option_id)))
 
 
 ##############################################################################
