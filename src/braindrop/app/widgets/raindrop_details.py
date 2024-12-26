@@ -80,6 +80,11 @@ class RaindropDetails(VerticalScroll):
             color: $text-muted;
         }
 
+        #borked {
+            background: $error;
+            text-align: center;
+        }
+
         .ish {
             margin: 0 2 0 2;
             padding: 1 2 0 2;
@@ -114,6 +119,7 @@ class RaindropDetails(VerticalScroll):
             The content of the widget.
         """
         yield Label(id="title")
+        yield Label(id="borked")
         yield Label(id="excerpt")
         yield Label(id="note", classes="detail")
         yield Label(id="created-ish", classes="detail ish")
@@ -164,6 +170,7 @@ class RaindropDetails(VerticalScroll):
             if self.raindrop is None:
                 return
             self._set("title", self.raindrop.title)
+            self._set("borked", "Broken link!" if self.raindrop.broken else "")
             self._set("excerpt", self.raindrop.excerpt)
             self._set("note", self.raindrop.note)
             self._set(
