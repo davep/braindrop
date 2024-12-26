@@ -2,6 +2,7 @@
 
 ##############################################################################
 # Local imports.
+from ...raindrop import TagData
 from ..data import Raindrops
 from ..messages import ShowTagged
 from .commands_provider import CommandHit, CommandHits, CommandsProvider
@@ -25,7 +26,7 @@ class TagCommands(CommandsProvider):
         command_prefix = (
             "Also tagged" if self.active_collection.is_filtered else "Tagged"
         )
-        for tag in self.active_collection.tags:
+        for tag in sorted(self.active_collection.tags, key=TagData.the_tag()):
             yield CommandHit(
                 f"{command_prefix} {tag.tag}",
                 f"{help_prefix} to Raindrops tagged with {tag.tag} (narrows down to {tag.count})",
