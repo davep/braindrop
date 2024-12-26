@@ -245,7 +245,6 @@ class Navigation(OptionListEx):
 
         Args:
             parent: The parent collection to add the children for.
-            group: The group to add the children to.
             indent: The indent level of the parent.
         """
         assert self.data is not None
