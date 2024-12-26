@@ -3,12 +3,16 @@
 ##############################################################################
 # Python imports.
 from datetime import datetime
-from typing import Any, Callable
+from typing import Any, Callable, Final
 from webbrowser import open as open_url
 
 ##############################################################################
 # Humanize imports.
 from humanize import naturaltime
+
+##############################################################################
+# Rich imports.
+from rich.emoji import Emoji
 
 ##############################################################################
 # Textual imports.
@@ -23,6 +27,32 @@ from textual.widgets import Label
 ##############################################################################
 # Local imports.
 from ...raindrop import Raindrop
+from .extended_option_list import OptionListEx
+
+
+##############################################################################
+class Tags(OptionListEx):
+    """Show the tags for a Raindrop."""
+
+    _ICON: Final[str] = Emoji.replace(":bookmark: ")
+    """The icon to show before tags."""
+
+    raindrop: var[Raindrop | None] = var(None)
+    """The raindrop to show the tags for."""
+
+    def watch_raindrop(self) -> None:
+        """Show the tags for the given raindrop.
+
+        Args:
+            raindrop: The raindrop to show the tags for.
+        """
+        with self.preserved_highlight:
+            self.clear_options().add_options(
+                (f"{self._ICON} {tag}" for tag in sorted(self.raindrop.tags))
+                if self.raindrop is not None
+                else []
+            )
+        self.set_class(not bool(self.option_count), "empty")
 
 
 ##############################################################################
@@ -97,6 +127,12 @@ class RaindropDetails(VerticalScroll):
             text-style: italic;
         }
 
+        Tags, Tags:focus {
+            border: none;
+            background: $panel;
+            margin: 1 2 1 2;
+            padding: 1 2 1 2;
+        }
     }
     """
 
@@ -127,6 +163,7 @@ class RaindropDetails(VerticalScroll):
         yield Label(id="updated-ish", classes="detail ish")
         yield Label(id="updated", classes="detail exact")
         yield Link(id="link", classes="detail")
+        yield Tags().data_bind(RaindropDetails.raindrop)
 
     def _set(self, widget: str, value: str) -> None:
         """Set the value of a detail widget.
