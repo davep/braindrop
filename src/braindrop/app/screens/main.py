@@ -324,7 +324,13 @@ class Main(Screen[None]):
         level to the topmost, and if we're at the topmost then exit the
         application.
         """
-        if self.focused is self.query_one(RaindropsView):
+        if self.focused is not None and self.focused.parent is self.query_one(
+            RaindropDetails
+        ):
+            self.set_focus(self.query_one(RaindropDetails))
+        elif self.focused is self.query_one(RaindropDetails):
+            self.set_focus(self.query_one(RaindropsView))
+        elif self.focused is self.query_one(RaindropsView):
             self.set_focus(self.query_one(Navigation))
         else:
             self.app.exit()
