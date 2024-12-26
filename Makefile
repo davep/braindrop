@@ -11,14 +11,14 @@ mypy   := $(run) mypy
 # Local "interactive testing" of the code.
 .PHONY: run
 run:				# Run the code in a testing context
-	$(python) -m $(app)
+	$(run) $(app)
 
 .PHONY: debug
-debug:
+debug:				# Run the code with Textual devtools enabled
 	TEXTUAL=devtools make
 
 .PHONY: console
-console:
+console:			# Run the textual console
 	$(run) textual console
 
 .PHONY: api
