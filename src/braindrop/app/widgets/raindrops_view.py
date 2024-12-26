@@ -25,7 +25,7 @@ from textual.widgets.option_list import Option
 
 ##############################################################################
 # Local imports.
-from ...raindrop import Raindrop
+from ...raindrop import API, Raindrop
 from ..data import Raindrops
 from .extended_option_list import OptionListEx
 
@@ -36,6 +36,9 @@ class RaindropView(Option):
 
     BROKEN_ICON: Final[str] = Emoji.replace(":skull:")
     """The icon for broken links."""
+
+    UNSORTED_ICON: Final[str] = Emoji.replace(":thinking_face:")
+    """The icon for unsorted raindrops."""
 
     RULE: Final[Rule] = Rule(style="dim")
     """The rule to place at the end of each view."""
@@ -66,7 +69,8 @@ class RaindropView(Option):
         title.add_column(justify="right")
         title.add_row(
             escape(self._raindrop.title),
-            self.BROKEN_ICON if self._raindrop.broken else "",
+            f"{self.BROKEN_ICON if self._raindrop.broken else ''}"
+            f"{self.UNSORTED_ICON if self._raindrop.collection == API.SpecialCollection.UNSORTED else ''}",
         )
 
         body: list[Table] = []
