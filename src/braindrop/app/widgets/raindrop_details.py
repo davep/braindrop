@@ -99,6 +99,11 @@ class RaindropDetails(VerticalScroll):
     DEFAULT_CSS = """
     RaindropDetails {
         scrollbar-gutter: stable;
+        background: $surface;
+
+        &:focus, &:focus-within {
+            background-tint: $foreground 5%;
+        }
 
         .hidden {
             visibility: hidden;
@@ -149,6 +154,7 @@ class RaindropDetails(VerticalScroll):
         Tags, Tags:focus {
             border: none;
             background: $panel;
+            background-tint: transparent;
             margin: 1 2 1 2;
             padding: 1 2 1 2;
         }
