@@ -205,16 +205,16 @@ class RaindropDetails(VerticalScroll):
 
     @staticmethod
     def _time(
-        prefix: str,
         time: datetime | None,
+        prefix: str = "",
         strify: Callable[[Any], str] = str,
         if_different_to: datetime | None = None,
     ) -> str:
         """Format a time.
 
         Args:
-            prefix: The prefix to give the time.
             time: The time to format.
+            prefix: The prefix to give the time.
             strify: The function to use to `str` the `time`.
             if_different_to: Only return the time if it's different to this.
 
@@ -239,14 +239,14 @@ class RaindropDetails(VerticalScroll):
             self._set("excerpt", self.raindrop.excerpt)
             self._set("note", self.raindrop.note)
             self._set(
-                "created-ish", self._time("Created", self.raindrop.created, naturaltime)
+                "created-ish", self._time(self.raindrop.created, "Created", naturaltime)
             )
-            self._set("created", self._time("Created", self.raindrop.created))
+            self._set("created", self._time(self.raindrop.created))
             self._set(
                 "updated-ish",
                 self._time(
-                    "Updated",
                     self.raindrop.last_update,
+                    "Updated",
                     naturaltime,
                     self.raindrop.created,
                 ),
@@ -254,7 +254,6 @@ class RaindropDetails(VerticalScroll):
             self._set(
                 "updated",
                 self._time(
-                    "Updated",
                     self.raindrop.last_update,
                     if_different_to=self.raindrop.created,
                 ),
