@@ -157,6 +157,9 @@ class RaindropDetails(VerticalScroll):
             background-tint: transparent;
             margin: 1 2 1 2;
             padding: 1 2 1 2;
+            height: auto;
+            /* Stop a flash of unnecessary scrollbar. */
+            scrollbar-size-vertical: 0;
         }
     }
     """
