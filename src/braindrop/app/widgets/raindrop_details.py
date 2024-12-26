@@ -48,15 +48,14 @@ class Tags(OptionListEx):
         Args:
             raindrop: The raindrop to show the tags for.
         """
-        with self.preserved_highlight:
-            self.clear_options().add_options(
-                []
-                if self.raindrop is None
-                else (
-                    Option(f"{self._ICON} {tag}", id=str(tag))
-                    for tag in sorted(self.raindrop.tags)
-                )
+        self.clear_options().add_options(
+            []
+            if self.raindrop is None
+            else (
+                Option(f"{self._ICON} {tag}", id=str(tag))
+                for tag in sorted(self.raindrop.tags)
             )
+        )
         self.set_class(not bool(self.option_count), "empty")
 
     @on(OptionListEx.OptionSelected)
@@ -64,6 +63,15 @@ class Tags(OptionListEx):
         """Filter on a given tag when one is selected."""
         if message.option_id is not None:
             self.post_message(ShowTagged(Tag(message.option_id)))
+
+    def on_focus(self) -> None:
+        """Ensure the highlight appears when we get focus."""
+        if self.highlighted is None and self.option_count:
+            self.highlighted = 0
+
+    def on_blur(self) -> None:
+        """Remove the highlight when we no longer have focus."""
+        self.highlighted = None
 
 
 ##############################################################################
