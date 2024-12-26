@@ -12,6 +12,7 @@ from typing import Any, Literal, TypeAlias
 
 ##############################################################################
 # Local imports.
+from .collection import SpecialCollection
 from .parse_time import get_time
 from .tag import Tag
 
@@ -112,6 +113,11 @@ class Raindrop:
             user=data.get("user", {}).get("$id", ""),
             broken=data.get("broken", False),
         )
+
+    @property
+    def is_unsorted(self) -> bool:
+        """Is this raidnrop unsorted?"""
+        return self.collection == SpecialCollection.UNSORTED
 
     def is_tagged(self, *tags: Tag) -> bool:
         """Is the Raindrop tagged with the given tags?

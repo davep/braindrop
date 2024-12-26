@@ -17,7 +17,16 @@ from pytz import UTC
 
 ##############################################################################
 # Local imports.
-from ...raindrop import API, Collection, Raindrop, Tag, TagData, User, get_time
+from ...raindrop import (
+    API,
+    Collection,
+    Raindrop,
+    SpecialCollection,
+    Tag,
+    TagData,
+    User,
+    get_time,
+)
 from .locations import data_dir
 
 
@@ -189,11 +198,7 @@ class LocalData:
         """All unsorted raindrops."""
         return Raindrops(
             "Unsorted",
-            (
-                raindrop
-                for raindrop in self._all
-                if raindrop.collection == API.SpecialCollection.UNSORTED
-            ),
+            (raindrop for raindrop in self._all if raindrop.is_unsorted),
         )
 
     @property
@@ -227,15 +232,15 @@ class LocalData:
             The raindrops within that collection.
         """
         match collection.identity:
-            case API.SpecialCollection.ALL:
+            case SpecialCollection.ALL:
                 return self.all
-            case API.SpecialCollection.UNSORTED:
+            case SpecialCollection.UNSORTED:
                 return self.unsorted
-            case API.SpecialCollection.UNTAGGED:
+            case SpecialCollection.UNTAGGED:
                 return self.untagged
-            case API.SpecialCollection.TRASH:
+            case SpecialCollection.TRASH:
                 return self.trash
-            case API.SpecialCollection.BROKEN:
+            case SpecialCollection.BROKEN:
                 return self.broken
             case user_collection:
                 return Raindrops(
@@ -293,8 +298,8 @@ class LocalData:
             Self.
         """
         self._user = user
-        self._all.set_to(await self._api.raindrops(API.SpecialCollection.ALL))
-        self._trash.set_to(await self._api.raindrops(API.SpecialCollection.TRASH))
+        self._all.set_to(await self._api.raindrops(SpecialCollection.ALL))
+        self._trash.set_to(await self._api.raindrops(SpecialCollection.TRASH))
         self._collections = {
             collection.identity: collection
             for collection in await self._api.collections("all")

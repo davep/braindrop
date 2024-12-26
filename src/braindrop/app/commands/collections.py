@@ -2,7 +2,7 @@
 
 ##############################################################################
 # Local imports.
-from ...raindrop import API, Collection
+from ...raindrop import Collection, SpecialCollection
 from ..data import LocalData
 from ..messages import ShowCollection
 from .commands_provider import CommandHit, CommandHits, CommandsProvider
@@ -25,13 +25,13 @@ class CollectionCommands(CommandsProvider):
         if self.data is None or self.data.user is None:
             return
         pro_features: tuple[Collection, ...] = (
-            (API.SpecialCollection.BROKEN(),) if self.data.user.pro else ()
+            (SpecialCollection.BROKEN(),) if self.data.user.pro else ()
         )
         collections = (
-            API.SpecialCollection.ALL(),
-            API.SpecialCollection.UNSORTED(),
-            API.SpecialCollection.UNTAGGED(),
-            API.SpecialCollection.TRASH(),
+            SpecialCollection.ALL(),
+            SpecialCollection.UNSORTED(),
+            SpecialCollection.UNTAGGED(),
+            SpecialCollection.TRASH(),
             *pro_features,
             *self.data.collections,
         )

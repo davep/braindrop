@@ -14,7 +14,7 @@ from httpx import AsyncClient, HTTPStatusError, RequestError
 ##############################################################################
 # Local imports.
 from ..raindrop.user import User
-from .collection import Collection
+from .collection import Collection, SpecialCollection
 from .raindrop import Raindrop
 from .tag import TagData
 
@@ -155,45 +155,6 @@ class API:
         result, user = await self._result_of("user", "user")
         return User.from_json(user) if result and user is not None else None
 
-    class SpecialCollection(IntEnum):
-        """IDs of the special collections."""
-
-        ALL = 0
-        """A collection that contains all non-trashed raindrops."""
-        UNSORTED = -1
-        """A collection that contains all non-trashed raindrops that haven't been sorted."""
-        TRASH = -99
-        """A collection that contains all trashed raindrops."""
-        UNTAGGED = -998
-        """A collection that contains all untagged raindrops."""
-        BROKEN = -999
-        """A collection that contains all broken raindrops.
-
-        Note:
-            Unlike the other special collection IDs defined here, the broken
-            collection isn't one that is supported via the API; but it's
-            available here so that it can be treated as just another
-            collection, with special handling within the main application.
-        """
-
-        def __call__(self) -> Collection:
-            """Turn a collection ID into a `Collection` object."""
-            return Collection(
-                raw={},
-                identity=self.value,
-                color="",
-                count=0,
-                cover=[],
-                created=None,
-                expanded=True,
-                last_update=None,
-                public=False,
-                sort=0,
-                title=self.name.title(),
-                view="",
-                parent=-1,
-            )
-
     async def raindrops(
         self, collection: int = SpecialCollection.ALL
     ) -> list[Raindrop]:
@@ -209,13 +170,13 @@ class API:
         Note:
             The following constants are available for specific special collections:
 
-            - `API.SpecialCollection.ALL` - All non-trashed `Raindrop`s.
-            - `API.SpecialCollection.UNSORTED` - All `Raindrop`s not in a `Collection`.
-            - `API.SpecialCollection.TRASH` - All trashed `Raindrop`s.
+            - `SpecialCollection.ALL` - All non-trashed `Raindrop`s.
+            - `SpecialCollection.UNSORTED` - All `Raindrop`s not in a `Collection`.
+            - `SpecialCollection.TRASH` - All trashed `Raindrop`s.
         """
         assert collection not in (
-            self.SpecialCollection.UNTAGGED,
-            self.SpecialCollection.BROKEN,
+            SpecialCollection.UNTAGGED,
+            SpecialCollection.BROKEN,
         ), f"{collection} is not a valid collection ID"
         page = 0
         raindrops: list[Raindrop] = []

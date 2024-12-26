@@ -17,7 +17,7 @@ from textual.widgets import Footer, Header
 ##############################################################################
 # Local imports.
 from ... import __version__
-from ...raindrop import API, User
+from ...raindrop import API, SpecialCollection, User
 from ..commands import CollectionCommands, TagCommands
 from ..data import LocalData, Raindrops, load_configuration, save_configuration
 from ..messages import ShowCollection, ShowTagged
@@ -260,7 +260,7 @@ class Main(Screen[None]):
         """Populate the display."""
         self.query_one(Navigation).data = self._data
         self.active_collection = self._data.all
-        self.query_one(Navigation).highlight_collection(API.SpecialCollection.ALL())
+        self.query_one(Navigation).highlight_collection(SpecialCollection.ALL())
 
     @on(ShowCollection)
     def command_show_collection(self, command: ShowCollection) -> None:

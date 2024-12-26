@@ -23,7 +23,7 @@ from textual.widgets.option_list import Option
 
 ##############################################################################
 # Local imports.
-from ...raindrop import API, Collection, Tag, TagData
+from ...raindrop import API, Collection, SpecialCollection, Tag, TagData
 from ..data import LocalData, Raindrops
 from ..messages import ShowCollection, ShowTagged
 from .extended_option_list import OptionListEx
@@ -198,11 +198,11 @@ class Navigation(OptionListEx):
 
     def show_all(self) -> None:
         """Show the special collection that is all the Raindrops."""
-        self.select_collection(API.SpecialCollection.ALL())
+        self.select_collection(SpecialCollection.ALL())
 
     def show_unsorted(self) -> None:
         """Show the special collection that is the unsorted Raindrops."""
-        self.select_collection(API.SpecialCollection.UNSORTED())
+        self.select_collection(SpecialCollection.UNSORTED())
 
     def _add_collection(
         self, collection: Collection, indent: int = 0, key: str | None = None
@@ -229,14 +229,12 @@ class Navigation(OptionListEx):
 
     def _add_specials(self) -> None:
         """Add the special collections."""
-        self._add_collection(API.SpecialCollection.ALL(), key=self.SHORTCUT_ALL)
-        self._add_collection(
-            API.SpecialCollection.UNSORTED(), key=self.SHORTCUT_UNSORTED
-        )
-        self._add_collection(API.SpecialCollection.UNTAGGED())
+        self._add_collection(SpecialCollection.ALL(), key=self.SHORTCUT_ALL)
+        self._add_collection(SpecialCollection.UNSORTED(), key=self.SHORTCUT_UNSORTED)
+        self._add_collection(SpecialCollection.UNTAGGED())
         if self.data is not None and self.data.user is not None and self.data.user.pro:
-            self._add_collection(API.SpecialCollection.BROKEN())
-        self._add_collection(API.SpecialCollection.TRASH())
+            self._add_collection(SpecialCollection.BROKEN())
+        self._add_collection(SpecialCollection.TRASH())
 
     def _add_children_for(
         self,

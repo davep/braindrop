@@ -8,6 +8,7 @@ from __future__ import annotations
 # Python imports.
 from dataclasses import dataclass
 from datetime import datetime
+from enum import IntEnum
 from typing import Any
 
 ##############################################################################
@@ -74,6 +75,47 @@ class Collection:
             title=data.get("title", ""),
             view=data.get("view", ""),
             parent=data.get("parent", {}).get("$id"),
+        )
+
+
+##############################################################################
+class SpecialCollection(IntEnum):
+    """IDs of the special collections."""
+
+    ALL = 0
+    """A collection that contains all non-trashed raindrops."""
+    UNSORTED = -1
+    """A collection that contains all non-trashed raindrops that haven't been sorted."""
+    TRASH = -99
+    """A collection that contains all trashed raindrops."""
+    UNTAGGED = -998
+    """A collection that contains all untagged raindrops."""
+    BROKEN = -999
+    """A collection that contains all broken raindrops.
+
+    Note:
+        Unlike the other special collection IDs defined here, the broken
+        collection isn't one that is supported via the API; but it's
+        available here so that it can be treated as just another
+        collection, with special handling within the main application.
+    """
+
+    def __call__(self) -> Collection:
+        """Turn a collection ID into a `Collection` object."""
+        return Collection(
+            raw={},
+            identity=self.value,
+            color="",
+            count=0,
+            cover=[],
+            created=None,
+            expanded=True,
+            last_update=None,
+            public=False,
+            sort=0,
+            title=self.name.title(),
+            view="",
+            parent=-1,
         )
 
 

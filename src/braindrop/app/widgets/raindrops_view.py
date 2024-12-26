@@ -25,7 +25,7 @@ from textual.widgets.option_list import Option
 
 ##############################################################################
 # Local imports.
-from ...raindrop import API, Raindrop
+from ...raindrop import Raindrop
 from ..data import Raindrops
 from .extended_option_list import OptionListEx
 
@@ -70,7 +70,7 @@ class RaindropView(Option):
         title.add_row(
             escape(self._raindrop.title),
             f"{self.BROKEN_ICON if self._raindrop.broken else ''}"
-            f"{self.UNSORTED_ICON if self._raindrop.collection == API.SpecialCollection.UNSORTED else ''}",
+            f"{self.UNSORTED_ICON if self._raindrop.is_unsorted else ''}",
         )
 
         body: list[Table] = []
