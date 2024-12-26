@@ -67,10 +67,10 @@ class Main(Screen[None]):
 
         .focus {
             border: none;
-            border-left: tall $border-blurred;
+            border-left: double $border 50%;
             &:focus, &:focus-within {
                 border: none;
-                border-left: tall $border;
+                border-left: double $border;
             }
         }
 
