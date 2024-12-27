@@ -287,7 +287,6 @@ class Main(Screen[None]):
         """Show a particular command palette.
 
         Args:
-            prompt: The prompt for the command palette.
             provider: The commands provider for the palette.
         """
         self.app.push_screen(
