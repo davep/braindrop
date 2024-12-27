@@ -67,11 +67,11 @@ class PreservedHighlight:
 
 ##############################################################################
 class OptionListEx(OptionList):
-    """The Textual `OptionList` with more navigation keys."""
+    """The Textual `OptionList` with more features."""
 
     BINDINGS = [
-        Binding("j", "cursor_down", show=False),
-        Binding("k", "cursor_up", show=False),
+        Binding("j, right", "cursor_down", show=False),
+        Binding("k, left", "cursor_up", show=False),
     ]
 
     @property
