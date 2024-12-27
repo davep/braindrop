@@ -8,7 +8,7 @@ authors = [
 license = { text = "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)"}
 dependencies = [
     "httpx>=0.27.2",
-    "textual>=0.87.1",
+    "textual>=1.0",
     "xdg-base-dirs>=6.0.2",
     "pytz>=2024.2",
     "humanize>=4.11.0",
