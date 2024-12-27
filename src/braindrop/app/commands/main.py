@@ -3,7 +3,7 @@
 ##############################################################################
 # Local imports.
 from ..data import Raindrops
-from ..messages import SearchTags
+from ..messages import SearchCollections, SearchTags
 from .commands_provider import CommandHit, CommandHits, CommandsProvider
 
 
@@ -21,6 +21,11 @@ class MainCommands(CommandsProvider):
             A tuple of the command, the command description and a command
                 message to run the command.
         """
+        yield CommandHit(
+            "Open Raindrop collection...",
+            "View all the raindrops in a given collection",
+            SearchCollections(),
+        )
         if self.active_collection.tags:
             yield CommandHit(
                 "Also tagged..." if self.active_collection.is_filtered else "Tagged...",

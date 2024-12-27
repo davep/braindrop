@@ -29,7 +29,7 @@ from ..data import (
     save_configuration,
     token_file,
 )
-from ..messages import SearchTags, ShowCollection, ShowTagged
+from ..messages import SearchCollections, SearchTags, ShowCollection, ShowTagged
 from ..widgets import Navigation, RaindropDetails, RaindropsView
 from .confirm import Confirm
 from .downloading import Downloading
@@ -158,7 +158,7 @@ class Main(Screen[None]):
 
     TITLE = f"Braindrop v{__version__}"
 
-    COMMANDS = {CollectionCommands, MainCommands}
+    COMMANDS = {MainCommands}
 
     active_collection: var[Raindrops] = var(Raindrops, always_update=True)
     """The currently-active collection."""
@@ -287,6 +287,16 @@ class Main(Screen[None]):
         """
         self.active_collection = self._data.in_collection(command.collection)
         self.query_one(Navigation).highlight_collection(command.collection)
+
+    @on(SearchCollections)
+    async def command_search_collections(self) -> None:
+        """Show the collection-based command palette."""
+        await self.app.push_screen(
+            CommandPalette(
+                placeholder="Open collection...",
+                providers=(CollectionCommands,),
+            )
+        )
 
     @on(SearchTags)
     async def command_search_tags(self) -> None:

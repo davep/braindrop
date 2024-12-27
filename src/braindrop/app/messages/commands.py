@@ -14,6 +14,11 @@ from ...raindrop import Collection, Tag
 
 
 ##############################################################################
+class SearchCollections(Message):
+    """A message that requests the collection-based command palette is shown."""
+
+
+##############################################################################
 @dataclass
 class ShowCollection(Message):
     """A message that requests that a particular collection is shown."""
