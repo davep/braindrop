@@ -29,7 +29,7 @@ from ..data import (
     save_configuration,
     token_file,
 )
-from ..messages import SearchCollections, SearchTags, ShowCollection, ShowTagged
+from ..messages import Logout, SearchCollections, SearchTags, ShowCollection, ShowTagged
 from ..widgets import Navigation, RaindropDetails, RaindropsView
 from .confirm import Confirm
 from .downloading import Downloading
@@ -392,6 +392,7 @@ class Main(Screen[None]):
         if search_text := await self.app.push_screen_wait(SearchInput()):
             self.active_collection = self.active_collection.containing(search_text)
 
+    @on(Logout)
     @work
     async def action_logout(self) -> None:
         """Perform the logout action."""

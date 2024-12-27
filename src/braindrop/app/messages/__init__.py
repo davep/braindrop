@@ -2,10 +2,10 @@
 
 ##############################################################################
 # Local imports.
-from .commands import SearchCollections, SearchTags, ShowCollection, ShowTagged
+from .commands import Logout, SearchCollections, SearchTags, ShowCollection, ShowTagged
 
 ##############################################################################
 # Exports.
-__all__ = ["SearchCollections", "SearchTags", "ShowCollection", "ShowTagged"]
+__all__ = ["Logout", "SearchCollections", "SearchTags", "ShowCollection", "ShowTagged"]
 
 ### __init__.py ends here

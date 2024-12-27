@@ -3,7 +3,7 @@
 ##############################################################################
 # Local imports.
 from ..data import Raindrops
-from ..messages import SearchCollections, SearchTags
+from ..messages import Logout, SearchCollections, SearchTags
 from .commands_provider import CommandHit, CommandHits, CommandsProvider
 
 
@@ -34,6 +34,11 @@ class MainCommands(CommandsProvider):
                 else "Filter the current collection with a tag",
                 SearchTags(),
             )
+        yield CommandHit(
+            "Logout",
+            "Forget your API token and remove the local raindrop cache",
+            Logout(),
+        )
 
 
 ### main.py ends here

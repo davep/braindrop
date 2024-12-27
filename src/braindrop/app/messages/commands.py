@@ -41,4 +41,9 @@ class ShowTagged(Message):
     """The tag to show."""
 
 
+##############################################################################
+class Logout(Message):
+    """A message that requests that the 'logout' action takes placed."""
+
+
 ### commands.py ends here
