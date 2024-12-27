@@ -12,16 +12,17 @@ import pytest
 # Application imports.
 from braindrop.raindrop.tag import Tag
 
+##############################################################################
+COMBINATIONS = (
+    ("test", "test"),
+    ("Test", "test"),
+    ("test", "Test"),
+)
+"""The combination of things to test."""
+
 
 ##############################################################################
-@pytest.mark.parametrize(
-    "tag, string",
-    [
-        ("test", "test"),
-        ("Test", "test"),
-        ("test", "Test"),
-    ],
-)
+@pytest.mark.parametrize("tag, string", COMBINATIONS)
 def test_tag_vs_str_equality(tag: str, string: str) -> None:
     """A `Tag` should be able to compare against a string."""
     assert Tag(tag) == string
@@ -29,17 +30,7 @@ def test_tag_vs_str_equality(tag: str, string: str) -> None:
 
 
 ##############################################################################
-@pytest.mark.parametrize(
-    "tag0, tag1",
-    [
-        ("test", "test"),
-        ("Test", "test"),
-        ("test", "Test"),
-        ("test", "test"),
-        ("Test", "test"),
-        ("test", "Test"),
-    ],
-)
+@pytest.mark.parametrize("tag0, tag1", COMBINATIONS)
 def test_tag_vs_tag_equality(tag0: str, tag1: str) -> None:
     """A `Tag` should be able to compare against another `Tag`."""
     assert Tag(tag0) == Tag(tag1)
