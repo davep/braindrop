@@ -9,6 +9,7 @@ from webbrowser import open as open_url
 from textual import on, work
 from textual.app import ComposeResult
 from textual.binding import Binding
+from textual.command import CommandPalette
 from textual.containers import Horizontal
 from textual.reactive import var
 from textual.screen import Screen
@@ -18,7 +19,7 @@ from textual.widgets import Footer, Header
 # Local imports.
 from ... import __version__
 from ...raindrop import API, SpecialCollection, User
-from ..commands import CollectionCommands, TagCommands
+from ..commands import CollectionCommands, MainCommands, TagCommands
 from ..data import (
     ExitState,
     LocalData,
@@ -28,7 +29,7 @@ from ..data import (
     save_configuration,
     token_file,
 )
-from ..messages import ShowCollection, ShowTagged
+from ..messages import SearchTags, ShowCollection, ShowTagged
 from ..widgets import Navigation, RaindropDetails, RaindropsView
 from .confirm import Confirm
 from .downloading import Downloading
@@ -157,7 +158,7 @@ class Main(Screen[None]):
 
     TITLE = f"Braindrop v{__version__}"
 
-    COMMANDS = {CollectionCommands, TagCommands}
+    COMMANDS = {CollectionCommands, MainCommands}
 
     active_collection: var[Raindrops] = var(Raindrops, always_update=True)
     """The currently-active collection."""
@@ -266,6 +267,7 @@ class Main(Screen[None]):
         """Handle the active collection being changed."""
         if self.active_collection.title:
             self.sub_title = self.active_collection.description
+            MainCommands.active_collection = self.active_collection
             TagCommands.active_collection = self.active_collection
         else:
             self.sub_title = "Loading..."
@@ -285,6 +287,18 @@ class Main(Screen[None]):
         """
         self.active_collection = self._data.in_collection(command.collection)
         self.query_one(Navigation).highlight_collection(command.collection)
+
+    @on(SearchTags)
+    async def command_search_tags(self) -> None:
+        """Show the tags-based command palette."""
+        await self.app.push_screen(
+            CommandPalette(
+                placeholder="Also search for Raindrops tagged with..."
+                if self.active_collection.is_filtered
+                else "Search for Raindrops tagged with...",
+                providers=(TagCommands,),
+            )
+        )
 
     @on(ShowTagged)
     def command_show_tagged(self, command: ShowTagged) -> None:

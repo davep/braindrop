@@ -23,6 +23,11 @@ class ShowCollection(Message):
 
 
 ##############################################################################
+class SearchTags(Message):
+    """A message that requests that the tag-based command palette is shown."""
+
+
+##############################################################################
 @dataclass
 class ShowTagged(Message):
     """A message that requests that Raindrops with a particular tag are shown."""
