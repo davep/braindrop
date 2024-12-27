@@ -19,9 +19,18 @@ from textual.widgets import Footer, Header
 from ... import __version__
 from ...raindrop import API, SpecialCollection, User
 from ..commands import CollectionCommands, TagCommands
-from ..data import LocalData, Raindrops, load_configuration, save_configuration
+from ..data import (
+    ExitState,
+    LocalData,
+    Raindrops,
+    load_configuration,
+    local_data_file,
+    save_configuration,
+    token_file,
+)
 from ..messages import ShowCollection, ShowTagged
 from ..widgets import Navigation, RaindropDetails, RaindropsView
+from .confirm import Confirm
 from .downloading import Downloading
 from .search_input import SearchInput
 
@@ -131,6 +140,11 @@ class Main(Screen[None]):
             "toggle_compact_mode",
             "Compact",
             tooltip="Toggle the compact mode for the Raindrop list",
+        ),
+        Binding(
+            "f12",
+            "logout",
+            tooltip="Forget your API token and remove the local raindrop cache",
         ),
         Binding(
             "ctrl+r",
@@ -353,6 +367,19 @@ class Main(Screen[None]):
         """Free-text search within the Raindrops."""
         if search_text := await self.app.push_screen_wait(SearchInput()):
             self.active_collection = self.active_collection.containing(search_text)
+
+    @work
+    async def action_logout(self) -> None:
+        """Perform the logout action."""
+        if await self.app.push_screen_wait(
+            Confirm(
+                "Logout",
+                "Remove the local copy of your API token and delete the local copy of all your data?",
+            )
+        ):
+            token_file().unlink(True)
+            local_data_file().unlink(True)
+            self.app.exit(ExitState.TOKEN_FORGOTTEN)
 
 
 ### main.py ends here
