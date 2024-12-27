@@ -9,7 +9,7 @@ from webbrowser import open as open_url
 from textual import on, work
 from textual.app import ComposeResult
 from textual.binding import Binding
-from textual.command import CommandPalette
+from textual.command import CommandPalette, Provider
 from textual.containers import Horizontal
 from textual.reactive import var
 from textual.screen import Screen
@@ -278,6 +278,20 @@ class Main(Screen[None]):
         self.active_collection = self._data.all
         self.query_one(Navigation).highlight_collection(SpecialCollection.ALL())
 
+    def _show_palette(self, prompt: str, provider: type[Provider]) -> None:
+        """Show a particular command palette.
+
+        Args:
+            prompt: The prompt for the command palette.
+            provider: The commands provider for the palette.
+        """
+        self.app.push_screen(
+            CommandPalette(
+                providers=(provider,),
+                placeholder=prompt,
+            )
+        )
+
     @on(ShowCollection)
     def command_show_collection(self, command: ShowCollection) -> None:
         """Handle the command that requests we show a collection.
@@ -289,25 +303,18 @@ class Main(Screen[None]):
         self.query_one(Navigation).highlight_collection(command.collection)
 
     @on(SearchCollections)
-    async def command_search_collections(self) -> None:
+    def command_search_collections(self) -> None:
         """Show the collection-based command palette."""
-        await self.app.push_screen(
-            CommandPalette(
-                placeholder="Open collection...",
-                providers=(CollectionCommands,),
-            )
-        )
+        self._show_palette("Open collection...", CollectionCommands)
 
     @on(SearchTags)
-    async def command_search_tags(self) -> None:
+    def command_search_tags(self) -> None:
         """Show the tags-based command palette."""
-        await self.app.push_screen(
-            CommandPalette(
-                placeholder="Also search for Raindrops tagged with..."
-                if self.active_collection.is_filtered
-                else "Search for Raindrops tagged with...",
-                providers=(TagCommands,),
-            )
+        self._show_palette(
+            "Also search for Raindrops tagged with..."
+            if self.active_collection.is_filtered
+            else "Search for Raindrops tagged with...",
+            TagCommands,
         )
 
     @on(ShowTagged)
