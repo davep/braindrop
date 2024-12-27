@@ -104,6 +104,21 @@ class RaindropsView(OptionListEx):
         ),
     ]
 
+    HELP = f"""
+    # The Raindrop collection view
+
+    This panel shows the currently-selected collection of Raindrops,
+    filtered by any tag ans search text you may have applied.
+
+    Each Raindrop may have one or more icons showing to the right, these
+    include:
+
+    ## {RaindropView.BROKEN_ICON}
+    The Raindrop has a broken link (*Raindrop Pro only*)
+    ## {RaindropView.UNSORTED_ICON}
+    The Raindrop hasn't been sorted into a collection yet
+    """
+
     raindrops: var[Raindrops] = var(Raindrops)
     """The list of raindrops being shown."""
 

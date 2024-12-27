@@ -31,10 +31,20 @@ from ...raindrop import Raindrop, Tag
 from ..messages import ShowTagged
 from .extended_option_list import OptionListEx
 
+##############################################################################
+HELP = """
+# The highlighted Raindrop's details.
+
+This panel contains the details of the currently-highlighted Raindrop.
+"""
+"""The help to use in the widgets."""
+
 
 ##############################################################################
 class Tags(OptionListEx):
     """Show the tags for a Raindrop."""
+
+    HELP = HELP
 
     _ICON: Final[str] = Emoji.replace(":bookmark: ")
     """The icon to show before tags."""
@@ -163,6 +173,8 @@ class RaindropDetails(VerticalScroll):
         }
     }
     """
+
+    HELP = HELP
 
     BINDINGS = [
         Binding(

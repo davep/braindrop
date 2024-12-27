@@ -149,6 +149,13 @@ class Title(Option):
 class Navigation(OptionListEx):
     """The main application navigation widget."""
 
+    HELP = """
+    # Navigation
+
+    This is the navigation panel. Here you can select a collection to view
+    as well as pick tags to filter the view with.
+    """
+
     data: var[LocalData | None] = var(None)
     """Holds a reference to the Raindrop data we're going to handle."""
 
