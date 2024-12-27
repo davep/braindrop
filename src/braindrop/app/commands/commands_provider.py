@@ -2,7 +2,7 @@
 
 ##############################################################################
 # Python imports.
-from abc import abstractmethod
+from abc import abstractclassmethod, abstractmethod
 from functools import partial
 from typing import Iterator, NamedTuple, TypeAlias
 
@@ -32,6 +32,11 @@ CommandHits: TypeAlias = Iterator[CommandHit]
 ##############################################################################
 class CommandsProvider(Provider):
     """A base class for command-message-oriented command palette commands."""
+
+    @classmethod
+    def prompt(cls) -> str:
+        """The prompt for the command provider."""
+        return ""
 
     @abstractmethod
     def commands(self) -> CommandHits:

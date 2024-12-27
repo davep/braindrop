@@ -9,7 +9,7 @@ from webbrowser import open as open_url
 from textual import on, work
 from textual.app import ComposeResult
 from textual.binding import Binding
-from textual.command import CommandPalette, Provider
+from textual.command import CommandPalette
 from textual.containers import Horizontal
 from textual.reactive import var
 from textual.screen import Screen
@@ -19,7 +19,7 @@ from textual.widgets import Footer, Header
 # Local imports.
 from ... import __version__
 from ...raindrop import API, SpecialCollection, User
-from ..commands import CollectionCommands, MainCommands, TagCommands
+from ..commands import CollectionCommands, CommandsProvider, MainCommands, TagCommands
 from ..data import (
     ExitState,
     LocalData,
@@ -278,7 +278,7 @@ class Main(Screen[None]):
         self.active_collection = self._data.all
         self.query_one(Navigation).highlight_collection(SpecialCollection.ALL())
 
-    def _show_palette(self, prompt: str, provider: type[Provider]) -> None:
+    def _show_palette(self, provider: type[CommandsProvider]) -> None:
         """Show a particular command palette.
 
         Args:
@@ -288,7 +288,7 @@ class Main(Screen[None]):
         self.app.push_screen(
             CommandPalette(
                 providers=(provider,),
-                placeholder=prompt,
+                placeholder=provider.prompt(),
             )
         )
 
@@ -305,17 +305,12 @@ class Main(Screen[None]):
     @on(SearchCollections)
     def command_search_collections(self) -> None:
         """Show the collection-based command palette."""
-        self._show_palette("Open collection...", CollectionCommands)
+        self._show_palette(CollectionCommands)
 
     @on(SearchTags)
     def command_search_tags(self) -> None:
         """Show the tags-based command palette."""
-        self._show_palette(
-            "Also search for Raindrops tagged with..."
-            if self.active_collection.is_filtered
-            else "Search for Raindrops tagged with...",
-            TagCommands,
-        )
+        self._show_palette(TagCommands)
 
     @on(ShowTagged)
     def command_show_tagged(self, command: ShowTagged) -> None:

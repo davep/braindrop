@@ -15,6 +15,11 @@ class CollectionCommands(CommandsProvider):
     data: LocalData | None = None
     """The local copy of the Raindrop data."""
 
+    @classmethod
+    def prompt(cls) -> str:
+        """The prompt for the command provider."""
+        return "Open collection..."
+
     def commands(self) -> CommandHits:
         """Provide collection-based command data for the command palette.
 

@@ -15,6 +15,15 @@ class TagCommands(CommandsProvider):
     active_collection: Raindrops = Raindrops()
     """The currently-active collection to get the tags from."""
 
+    @classmethod
+    def prompt(cls) -> str:
+        """The prompt for the command provider."""
+        return (
+            "Also search for Raindrops tagged with..."
+            if cls.active_collection.is_filtered
+            else "Search for Raindrops tagged with..."
+        )
+
     def commands(self) -> CommandHits:
         """Provide the tag-based command data for the command palette.
 
