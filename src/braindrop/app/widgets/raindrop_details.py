@@ -108,7 +108,6 @@ class RaindropDetails(VerticalScroll):
 
     DEFAULT_CSS = """
     RaindropDetails {
-        scrollbar-gutter: stable;
         background: $surface;
 
         &:focus, &:focus-within {

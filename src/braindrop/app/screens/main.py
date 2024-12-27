@@ -78,6 +78,7 @@ class Main(Screen[None]):
         .focus {
             border: none;
             border-left: double $border 50%;
+            scrollbar-gutter: stable;
             &:focus, &:focus-within {
                 border: none;
                 border-left: double $border;
