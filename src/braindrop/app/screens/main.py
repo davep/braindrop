@@ -154,7 +154,11 @@ class Main(Screen[None]):
             "Redownload",
             tooltip="Download a fresh copy of all data from raindrop.io",
         ),
-        Binding("escape", "escape"),
+        Binding(
+            "escape",
+            "escape",
+            tooltip="Back up through the panes, right to left, or exit the app if the navigation pane has focus",
+        ),
     ]
 
     TITLE = f"Braindrop v{__version__}"
