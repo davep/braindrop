@@ -36,6 +36,7 @@ from ..messages import (
     SearchTags,
     ShowCollection,
     ShowTagged,
+    VisitRaindrop,
 )
 from ..widgets import Navigation, RaindropDetails, RaindropsView
 from .confirm import Confirm
@@ -122,12 +123,7 @@ class Main(Screen[None]):
             "Search",
             tooltip="Search for text anywhere in the raindrops",
         ),
-        Binding(
-            "f2",
-            "goto_raindrop",
-            "raindrop.io",
-            tooltip="Open the web-based raindrop.io application",
-        ),
+        VisitRaindrop.binding(),
         Binding(
             "f3",
             "toggle_details_view",
@@ -335,7 +331,8 @@ class Main(Screen[None]):
         """Redownload data from the server."""
         self.download_data()
 
-    def action_goto_raindrop(self) -> None:
+    @on(VisitRaindrop)
+    def action_visit_raindrop_command(self) -> None:
         """Open the Raindrop application in the browser."""
         open_url("https://app.raindrop.io/")
 

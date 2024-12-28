@@ -144,4 +144,13 @@ class ClearFilters(Command):
     BINDING_KEY = "c"
 
 
+##############################################################################
+class VisitRaindrop(Command):
+    """Open the web-based raindrop.io application in your default web browser"""
+
+    COMMAND = "Visit raindrop.io"
+    FOOTER_TEXT = "raindrop.io"
+    BINDING_KEY = "f2"
+
+
 ### commands.py ends here

@@ -10,6 +10,7 @@ from .commands import (
     SearchTags,
     ShowCollection,
     ShowTagged,
+    VisitRaindrop,
 )
 
 ##############################################################################
@@ -22,6 +23,7 @@ __all__ = [
     "SearchTags",
     "ShowCollection",
     "ShowTagged",
+    "VisitRaindrop",
 ]
 
 ### __init__.py ends here
