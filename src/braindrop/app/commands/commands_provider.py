@@ -7,6 +7,10 @@ from functools import partial
 from typing import Iterator, NamedTuple, TypeAlias
 
 ##############################################################################
+# Rich imports.
+from rich.text import Text
+
+##############################################################################
 # Textual imports.
 from textual.command import DiscoveryHit, Hit, Hits, Provider
 
@@ -28,7 +32,7 @@ class CommandHit(NamedTuple):
 
 
 ##############################################################################
-CommandHits: TypeAlias = Iterator[CommandHit]
+CommandHits: TypeAlias = Iterator[CommandHit | Command]
 """The result of looking for commands to make into hits."""
 
 
@@ -50,15 +54,25 @@ class CommandsProvider(Provider):
         """
         raise NotImplemented
 
+    @property
+    def _commands(self) -> Iterator[CommandHit]:
+        """The commands available for the palette."""
+        return (
+            CommandHit(command.command(), command.tooltip(), command)
+            if isinstance(command, Command)
+            else command
+            for command in self.commands()
+        )
+
     async def discover(self) -> Hits:
         """Handle a request to discover commands.
 
         Yields:
             Command discovery hits for the command palette.
         """
-        for command, description, message in self.commands():
+        for command, description, message in self._commands:
             yield DiscoveryHit(
-                command,
+                message.maybe_add_binding(command),
                 partial(self.screen._post_message, message),
                 help=description,
             )
@@ -73,11 +87,11 @@ class CommandsProvider(Provider):
             Command hits for the command palette.
         """
         matcher = self.matcher(query)
-        for command, description, message in self.commands():
+        for command, description, message in self._commands:
             if match := matcher.match(command):
                 yield Hit(
                     match,
-                    matcher.highlight(command),
+                    message.maybe_add_binding(matcher.highlight(command)),
                     partial(self.screen._post_message, message),
                     help=description,
                 )

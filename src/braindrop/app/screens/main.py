@@ -143,11 +143,7 @@ class Main(Screen[None]):
             "Compact",
             tooltip="Toggle the compact mode for the Raindrop list",
         ),
-        Binding(
-            "f12",
-            "logout",
-            tooltip="Forget your API token and remove the local raindrop cache",
-        ),
+        Logout.binding(),
         Binding(
             "ctrl+r",
             "redownload",
@@ -400,7 +396,7 @@ class Main(Screen[None]):
 
     @on(Logout)
     @work
-    async def action_logout(self) -> None:
+    async def action_logout_command(self) -> None:
         """Perform the logout action."""
         if await self.app.push_screen_wait(
             Confirm(

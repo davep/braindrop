@@ -34,11 +34,7 @@ class MainCommands(CommandsProvider):
                 else "Filter the current collection with a tag",
                 SearchTags(),
             )
-        yield CommandHit(
-            "Logout",
-            "Forget your API token and remove the local raindrop cache",
-            Logout(),
-        )
+        yield Logout()
 
 
 ### main.py ends here
