@@ -3,7 +3,8 @@
 ##############################################################################
 # Python imports.
 from dataclasses import dataclass
-from re import findall
+from re import Pattern, compile
+from typing import Final
 
 ##############################################################################
 # Rich imports.
@@ -33,6 +34,9 @@ class Command(Message):
     BINDING_KEY: str | None = None
     """The binding key for the command."""
 
+    _SPLITTER: Final[Pattern[str]] = compile("[A-Z][^A-Z]*")
+    """Regular expression for splitting up a command name."""
+
     @classmethod
     def command(cls) -> str:
         """The text for the command.
@@ -40,7 +44,7 @@ class Command(Message):
         Returns:
             The command's textual name.
         """
-        return cls.COMMAND or " ".join(findall("[A-Z][^A-Z]*", cls.__name__))
+        return cls.COMMAND or " ".join(cls._SPLITTER.findall(cls.__name__))
 
     @classmethod
     def tooltip(cls) -> str:
@@ -64,6 +68,15 @@ class Command(Message):
         return text
 
     @classmethod
+    def _default_action_name(cls) -> str:
+        """Get the default action name for the command.
+
+        Returns:
+            The default action name.
+        """
+        return f"{'_'.join(cls._SPLITTER.findall(cls.__name__))}_command".lower()
+
+    @classmethod
     def binding(cls, action: str | None = None) -> Binding:
         """Create a binding object for the command.
 
@@ -74,7 +87,7 @@ class Command(Message):
             raise ValueError("No binding key defined, unable to create a binding")
         return Binding(
             cls.BINDING_KEY,
-            action or f"{cls.__name__.lower()}_command",
+            action or cls._default_action_name(),
             description=cls.command(),
             tooltip=cls.tooltip(),
         )
