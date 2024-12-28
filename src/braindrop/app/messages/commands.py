@@ -167,4 +167,11 @@ class Details(Command):
     BINDING_KEY = "f3"
 
 
+##############################################################################
+class TagOrder(Command):
+    "Toggle the tags sort order between by-name and by-count"
+
+    BINDING_KEY = "f4"
+
+
 ### commands.py ends here

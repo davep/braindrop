@@ -38,6 +38,7 @@ from ..messages import (
     SearchTags,
     ShowCollection,
     ShowTagged,
+    TagOrder,
     VisitRaindrop,
 )
 from ..widgets import Navigation, RaindropDetails, RaindropsView
@@ -122,12 +123,7 @@ class Main(Screen[None]):
         Search.binding(),
         VisitRaindrop.binding(),
         Details.binding(),
-        Binding(
-            "f4",
-            "toggle_tag_order",
-            "Tag Order",
-            tooltip="Toggle the tags sort order between by-name and by-count",
-        ),
+        TagOrder.binding(),
         Binding(
             "f5",
             "toggle_compact_mode",
@@ -328,7 +324,8 @@ class Main(Screen[None]):
         """Open the Raindrop application in the browser."""
         open_url("https://app.raindrop.io/")
 
-    def action_toggle_tag_order(self) -> None:
+    @on(TagOrder)
+    def action_tag_order_command(self) -> None:
         """Toggle the ordering of tags."""
         self.query_one(Navigation).tags_by_count = (
             by_count := not self.query_one(Navigation).tags_by_count

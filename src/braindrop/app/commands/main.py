@@ -10,6 +10,7 @@ from ..messages import (
     Search,
     SearchCollections,
     SearchTags,
+    TagOrder,
     VisitRaindrop,
 )
 from .commands_provider import CommandHit, CommandHits, CommandsProvider
@@ -31,6 +32,7 @@ class MainCommands(CommandsProvider):
         """
         yield Details()
         yield Search()
+        yield TagOrder()
         yield VisitRaindrop()
         yield ClearFilters()
         yield CommandHit(
