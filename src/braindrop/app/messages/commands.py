@@ -3,6 +3,7 @@
 ##############################################################################
 # Python imports.
 from dataclasses import dataclass
+from re import findall
 
 ##############################################################################
 # Rich imports.
@@ -23,14 +24,23 @@ class Command(Message):
     """Base class for all application command messages."""
 
     COMMAND: str | None = None
-    """The text for the command."""
+    """The text for the command.
+
+    Notes:
+        If no `COMMAND` is provided the class name will be used.
+    """
 
     BINDING_KEY: str | None = None
     """The binding key for the command."""
 
     @classmethod
     def command(cls) -> str:
-        return cls.COMMAND or cls.__name__
+        """The text for the command.
+
+        Returns:
+            The command's textual name.
+        """
+        return cls.COMMAND or " ".join(findall("[A-Z][^A-Z]*", cls.__name__))
 
     @classmethod
     def tooltip(cls) -> str:
