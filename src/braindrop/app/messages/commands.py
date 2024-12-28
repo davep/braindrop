@@ -14,13 +14,18 @@ from ...raindrop import Collection, Tag
 
 
 ##############################################################################
-class SearchCollections(Message):
+class Command(Message):
+    """Base class for all application command messages."""
+
+
+##############################################################################
+class SearchCollections(Command):
     """A message that requests the collection-based command palette is shown."""
 
 
 ##############################################################################
 @dataclass
-class ShowCollection(Message):
+class ShowCollection(Command):
     """A message that requests that a particular collection is shown."""
 
     collection: Collection
@@ -28,13 +33,13 @@ class ShowCollection(Message):
 
 
 ##############################################################################
-class SearchTags(Message):
+class SearchTags(Command):
     """A message that requests that the tag-based command palette is shown."""
 
 
 ##############################################################################
 @dataclass
-class ShowTagged(Message):
+class ShowTagged(Command):
     """A message that requests that Raindrops with a particular tag are shown."""
 
     tag: Tag
@@ -42,7 +47,7 @@ class ShowTagged(Message):
 
 
 ##############################################################################
-class Logout(Message):
+class Logout(Command):
     """A message that requests that the 'logout' action takes placed."""
 
 

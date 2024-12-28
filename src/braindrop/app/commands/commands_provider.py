@@ -11,6 +11,10 @@ from typing import Iterator, NamedTuple, TypeAlias
 from textual.command import DiscoveryHit, Hit, Hits, Provider
 from textual.message import Message
 
+##############################################################################
+# Local imports.
+from ..messages import Command
+
 
 ##############################################################################
 class CommandHit(NamedTuple):
@@ -20,7 +24,7 @@ class CommandHit(NamedTuple):
     """The command."""
     description: str
     """The description of the command."""
-    message: Message
+    message: Command
     """The message to emit when the command is chosen."""
 
 
