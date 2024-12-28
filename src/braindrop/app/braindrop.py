@@ -31,7 +31,7 @@ class Braindrop(App[ExitState]):
 
     BINDINGS = [
         Binding("ctrl+c, f10", "quit"),
-        Binding("ctrl+p, super+x, :", "command_palette", "Commands"),
+        Binding("ctrl+p, super+x, :", "command_palette", "Commands", show=False),
         Binding(
             "f1, ?",
             "help",
