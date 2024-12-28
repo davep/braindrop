@@ -181,4 +181,11 @@ class CompactMode(Command):
     BINDING_KEY = "f5"
 
 
+##############################################################################
+class Redownload(Command):
+    "Download a fresh copy of all data from raindrop.io"
+
+    BINDING_KEY = "ctrl+r"
+
+
 ### commands.py ends here

@@ -34,6 +34,7 @@ from ..messages import (
     CompactMode,
     Details,
     Logout,
+    Redownload,
     Search,
     SearchCollections,
     SearchTags,
@@ -127,12 +128,7 @@ class Main(Screen[None]):
         TagOrder.binding(),
         CompactMode.binding(),
         Logout.binding(),
-        Binding(
-            "ctrl+r",
-            "redownload",
-            "Redownload",
-            tooltip="Download a fresh copy of all data from raindrop.io",
-        ),
+        Redownload.binding(),
         Binding(
             "escape",
             "escape",
@@ -311,7 +307,8 @@ class Main(Screen[None]):
             RaindropsView
         ).highlighted_raindrop
 
-    def action_redownload(self) -> None:
+    @on(Redownload)
+    def action_redownload_command(self) -> None:
         """Redownload data from the server."""
         self.download_data()
 

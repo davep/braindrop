@@ -8,6 +8,7 @@ from ..messages import (
     CompactMode,
     Details,
     Logout,
+    Redownload,
     Search,
     SearchCollections,
     SearchTags,
@@ -35,6 +36,7 @@ class MainCommands(CommandsProvider):
         yield Search()
         yield TagOrder()
         yield CompactMode()
+        yield Redownload()
         yield VisitRaindrop()
         yield ClearFilters()
         yield CommandHit(
