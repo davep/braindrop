@@ -25,7 +25,7 @@ class Braindrop(App[ExitState]):
     /* Textual went to a full-width command palette and it looks like garbage.
        This makes it look less like it was unfinished and forgotten about. */
     CommandPalette > Vertical {
-        width: 90%;
+        width: 75%;
     }
     """
 
