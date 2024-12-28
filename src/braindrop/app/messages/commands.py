@@ -75,7 +75,7 @@ class Command(Message):
         return Binding(
             cls.BINDING_KEY,
             action or f"{cls.__name__.lower()}_command",
-            description=cls.__name__,
+            description=cls.command(),
             tooltip=cls.tooltip(),
         )
 
