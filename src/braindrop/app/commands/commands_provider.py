@@ -48,7 +48,7 @@ class CommandsProvider(Provider):
         Yields:
             A tuple of the command, the command description and a command message.
         """
-        raise NotImplemented
+        raise NotImplementedError
 
     @property
     def _commands(self) -> Iterator[CommandHit]:

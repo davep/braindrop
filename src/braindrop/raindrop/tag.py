@@ -45,7 +45,7 @@ class Tag:
             return self > str(value)
         if isinstance(value, str):
             return self.__tag.casefold() > value.casefold()
-        raise NotImplemented
+        raise NotImplementedError
 
     def __eq__(self, value: object, /) -> bool:
         """Is the tag equal to another value.
@@ -64,7 +64,7 @@ class Tag:
             return self == str(value)
         if isinstance(value, str):
             return self.__tag.casefold() == value.casefold()
-        raise NotImplemented
+        raise NotImplementedError
 
     def __hash__(self) -> int:
         """Ensure that Tag objects hash case-insensitive.
