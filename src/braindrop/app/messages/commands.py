@@ -174,4 +174,11 @@ class TagOrder(Command):
     BINDING_KEY = "f4"
 
 
+##############################################################################
+class CompactMode(Command):
+    "Toggle the compact mode for the Raindrop list"
+
+    BINDING_KEY = "f5"
+
+
 ### commands.py ends here

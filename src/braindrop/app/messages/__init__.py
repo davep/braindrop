@@ -5,6 +5,7 @@
 from .commands import (
     ClearFilters,
     Command,
+    CompactMode,
     Details,
     Logout,
     Search,
@@ -21,6 +22,7 @@ from .commands import (
 __all__ = [
     "ClearFilters",
     "Command",
+    "CompactMode",
     "Details",
     "Logout",
     "Search",

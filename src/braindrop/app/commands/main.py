@@ -5,6 +5,7 @@
 from ..data import Raindrops
 from ..messages import (
     ClearFilters,
+    CompactMode,
     Details,
     Logout,
     Search,
@@ -33,6 +34,7 @@ class MainCommands(CommandsProvider):
         yield Details()
         yield Search()
         yield TagOrder()
+        yield CompactMode()
         yield VisitRaindrop()
         yield ClearFilters()
         yield CommandHit(

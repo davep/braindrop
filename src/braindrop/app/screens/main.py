@@ -31,6 +31,7 @@ from ..data import (
 )
 from ..messages import (
     ClearFilters,
+    CompactMode,
     Details,
     Logout,
     Search,
@@ -124,12 +125,7 @@ class Main(Screen[None]):
         VisitRaindrop.binding(),
         Details.binding(),
         TagOrder.binding(),
-        Binding(
-            "f5",
-            "toggle_compact_mode",
-            "Compact",
-            tooltip="Toggle the compact mode for the Raindrop list",
-        ),
+        CompactMode.binding(),
         Logout.binding(),
         Binding(
             "ctrl+r",
@@ -373,7 +369,8 @@ class Main(Screen[None]):
         config.details_visible = not self.has_class("details-hidden")
         save_configuration(config)
 
-    def action_toggle_compact_mode(self) -> None:
+    @on(CompactMode)
+    def action_compact_mode_command(self) -> None:
         """Toggle the compact mode for the list of raindrops."""
         self.query_one(RaindropsView).compact = not self.query_one(
             RaindropsView
