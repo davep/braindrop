@@ -38,8 +38,12 @@ class Command(Message):
         If no `FOOTER_TEXT` is provided the `command` will be used.
     """
 
-    BINDING_KEY: str | None = None
-    """The binding key for the command."""
+    BINDING_KEY: str | tuple[str, str] | None = None
+    """The binding key for the command.
+
+    This can either be a string, which is the keys to bind, a tuple of the
+    keys and also an overriding display value, or `None`.
+    """
 
     _SPLITTER: Final[Pattern[str]] = compile("[A-Z][^A-Z]*")
     """Regular expression for splitting up a command name."""
@@ -84,7 +88,11 @@ class Command(Message):
         return f"{'_'.join(cls._SPLITTER.findall(cls.__name__))}_command".lower()
 
     @classmethod
-    def binding(cls, action: str | None = None, show: bool = True) -> Binding:
+    def binding(
+        cls,
+        action: str | None = None,
+        show: bool = True,
+    ) -> Binding:
         """Create a binding object for the command.
 
         Args:
@@ -93,12 +101,18 @@ class Command(Message):
         """
         if not cls.BINDING_KEY:
             raise ValueError("No binding key defined, unable to create a binding")
+        keys, display = (
+            cls.BINDING_KEY
+            if isinstance(cls.BINDING_KEY, tuple)
+            else (cls.BINDING_KEY, None)
+        )
         return Binding(
-            cls.BINDING_KEY,
+            keys,
             action or cls._default_action_name(),
             description=cls.FOOTER_TEXT or cls.command(),
             tooltip=cls.tooltip(),
             show=show,
+            key_display=display,
         )
 
 
