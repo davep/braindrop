@@ -7,10 +7,6 @@ from functools import partial
 from typing import Iterator, NamedTuple, TypeAlias
 
 ##############################################################################
-# Rich imports.
-from rich.text import Text
-
-##############################################################################
 # Textual imports.
 from textual.command import DiscoveryHit, Hit, Hits, Provider
 
