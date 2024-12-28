@@ -115,7 +115,7 @@ class Main(Screen[None]):
             "show_unsorted",
             tooltip="Show all unsorted Raindrops",
         ),
-        ClearFilters.binding(),
+        ClearFilters.binding(show=False),
         Binding(
             "/",
             "search",
