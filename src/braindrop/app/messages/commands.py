@@ -153,4 +153,11 @@ class VisitRaindrop(Command):
     BINDING_KEY = "f2"
 
 
+##############################################################################
+class Search(Command):
+    """Search for text anywhere in the raindrops"""
+
+    BINDING_KEY = "/"
+
+
 ### commands.py ends here

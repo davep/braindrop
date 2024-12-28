@@ -32,6 +32,7 @@ from ..data import (
 from ..messages import (
     ClearFilters,
     Logout,
+    Search,
     SearchCollections,
     SearchTags,
     ShowCollection,
@@ -117,12 +118,7 @@ class Main(Screen[None]):
             tooltip="Show all unsorted Raindrops",
         ),
         ClearFilters.binding(show=False),
-        Binding(
-            "/",
-            "search",
-            "Search",
-            tooltip="Search for text anywhere in the raindrops",
-        ),
+        Search.binding(),
         VisitRaindrop.binding(),
         Binding(
             "f3",
@@ -389,8 +385,9 @@ class Main(Screen[None]):
             RaindropsView
         ).compact
 
+    @on(Search)
     @work
-    async def action_search(self) -> None:
+    async def action_search_command(self) -> None:
         """Free-text search within the Raindrops."""
         if search_text := await self.app.push_screen_wait(SearchInput()):
             self.active_collection = self.active_collection.containing(search_text)
