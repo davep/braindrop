@@ -160,4 +160,11 @@ class Search(Command):
     BINDING_KEY = "/"
 
 
+##############################################################################
+class Details(Command):
+    """Toggle the view of the current Raindrop's details"""
+
+    BINDING_KEY = "f3"
+
+
 ### commands.py ends here

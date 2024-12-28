@@ -31,6 +31,7 @@ from ..data import (
 )
 from ..messages import (
     ClearFilters,
+    Details,
     Logout,
     Search,
     SearchCollections,
@@ -120,12 +121,7 @@ class Main(Screen[None]):
         ClearFilters.binding(show=False),
         Search.binding(),
         VisitRaindrop.binding(),
-        Binding(
-            "f3",
-            "toggle_details_view",
-            "Details",
-            tooltip="Toggle the display of the Raindrop details panel",
-        ),
+        Details.binding(),
         Binding(
             "f4",
             "toggle_tag_order",
@@ -372,7 +368,8 @@ class Main(Screen[None]):
         else:
             self.app.exit()
 
-    def action_toggle_details_view(self) -> None:
+    @on(Details)
+    def action_details_command(self) -> None:
         """Toggle the details of the raindrop details view."""
         self.toggle_class("details-hidden")
         config = load_configuration()

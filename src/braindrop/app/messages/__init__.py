@@ -5,6 +5,7 @@
 from .commands import (
     ClearFilters,
     Command,
+    Details,
     Logout,
     Search,
     SearchCollections,
@@ -19,6 +20,7 @@ from .commands import (
 __all__ = [
     "ClearFilters",
     "Command",
+    "Details",
     "Logout",
     "Search",
     "SearchCollections",

@@ -5,6 +5,7 @@
 from ..data import Raindrops
 from ..messages import (
     ClearFilters,
+    Details,
     Logout,
     Search,
     SearchCollections,
@@ -28,6 +29,7 @@ class MainCommands(CommandsProvider):
             A tuple of the command, the command description and a command
                 message to run the command.
         """
+        yield Details()
         yield Search()
         yield VisitRaindrop()
         yield ClearFilters()
