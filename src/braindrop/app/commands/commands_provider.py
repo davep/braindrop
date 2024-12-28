@@ -76,9 +76,13 @@ class CommandsProvider(Provider):
         """
         if isinstance(text, str):
             text = Text(text)
+        style = self.app.current_theme.accent if self.app.current_theme else None
         return (
-            text.append_text(
-                Text(f" [{self.app.get_key_display(command.binding())}] ", style="dim")
+            text.append_text(Text(" ")).append_text(
+                Text(
+                    f"[{self.app.get_key_display(command.binding())}]",
+                    style=style or "dim",
+                )
             )
             if command.has_binding
             else text
