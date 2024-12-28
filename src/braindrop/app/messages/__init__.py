@@ -3,6 +3,7 @@
 ##############################################################################
 # Local imports.
 from .commands import (
+    ClearFilters,
     Command,
     Logout,
     SearchCollections,
@@ -14,6 +15,7 @@ from .commands import (
 ##############################################################################
 # Exports.
 __all__ = [
+    "ClearFilters",
     "Command",
     "Logout",
     "SearchCollections",

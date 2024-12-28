@@ -128,4 +128,11 @@ class Logout(Command):
     BINDING_KEY = "f12"
 
 
+##############################################################################
+class ClearFilters(Command):
+    """Clear all tags and other filters."""
+
+    BINDING_KEY = "c"
+
+
 ### commands.py ends here

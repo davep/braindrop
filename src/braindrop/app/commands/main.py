@@ -3,7 +3,7 @@
 ##############################################################################
 # Local imports.
 from ..data import Raindrops
-from ..messages import Logout, SearchCollections, SearchTags
+from ..messages import ClearFilters, Logout, SearchCollections, SearchTags
 from .commands_provider import CommandHit, CommandHits, CommandsProvider
 
 
@@ -21,6 +21,7 @@ class MainCommands(CommandsProvider):
             A tuple of the command, the command description and a command
                 message to run the command.
         """
+        yield ClearFilters()
         yield CommandHit(
             "Open Raindrop collection...",
             "View all the raindrops in a given collection",

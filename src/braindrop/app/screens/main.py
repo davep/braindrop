@@ -29,7 +29,14 @@ from ..data import (
     save_configuration,
     token_file,
 )
-from ..messages import Logout, SearchCollections, SearchTags, ShowCollection, ShowTagged
+from ..messages import (
+    ClearFilters,
+    Logout,
+    SearchCollections,
+    SearchTags,
+    ShowCollection,
+    ShowTagged,
+)
 from ..widgets import Navigation, RaindropDetails, RaindropsView
 from .confirm import Confirm
 from .downloading import Downloading
@@ -108,11 +115,7 @@ class Main(Screen[None]):
             "show_unsorted",
             tooltip="Show all unsorted Raindrops",
         ),
-        Binding(
-            "c",
-            "clear_filters",
-            tooltip="Clear tags and other filters",
-        ),
+        ClearFilters.binding(),
         Binding(
             "/",
             "search",
@@ -353,7 +356,8 @@ class Main(Screen[None]):
         """Select the collection that shows all unsorted Raindrops."""
         self.query_one(Navigation).show_unsorted()
 
-    def action_clear_filters(self) -> None:
+    @on(ClearFilters)
+    def action_clear_filters_command(self) -> None:
         """Remove any filtering from the active collection."""
         self.active_collection = self.active_collection.unfiltered
 
