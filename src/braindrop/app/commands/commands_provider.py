@@ -2,14 +2,13 @@
 
 ##############################################################################
 # Python imports.
-from abc import abstractclassmethod, abstractmethod
+from abc import abstractmethod
 from functools import partial
 from typing import Iterator, NamedTuple, TypeAlias
 
 ##############################################################################
 # Textual imports.
 from textual.command import DiscoveryHit, Hit, Hits, Provider
-from textual.message import Message
 
 ##############################################################################
 # Local imports.
