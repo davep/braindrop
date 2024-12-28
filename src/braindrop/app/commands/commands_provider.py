@@ -7,6 +7,10 @@ from functools import partial
 from typing import Iterator, NamedTuple, TypeAlias
 
 ##############################################################################
+# Rich imports.
+from rich.text import Text
+
+##############################################################################
 # Textual imports.
 from textual.command import DiscoveryHit, Hit, Hits, Provider
 
@@ -60,6 +64,26 @@ class CommandsProvider(Provider):
             for command in self.commands()
         )
 
+    def _maybe_add_binding(self, command: Command, text: str | Text) -> Text:
+        """Maybe add binding details to some text.
+
+        Args:
+            command: The command message to get the binding for.
+            text: The text to add the binding details to.
+
+        Returns:
+            The resulting text.
+        """
+        if isinstance(text, str):
+            text = Text(text)
+        return (
+            text.append_text(
+                Text(f" [{self.app.get_key_display(command.binding())}] ", style="dim")
+            )
+            if command.has_binding
+            else text
+        )
+
     async def discover(self) -> Hits:
         """Handle a request to discover commands.
 
@@ -68,7 +92,7 @@ class CommandsProvider(Provider):
         """
         for command, description, message in self._commands:
             yield DiscoveryHit(
-                message.maybe_add_binding(command),
+                self._maybe_add_binding(message, command),
                 partial(self.screen._post_message, message),
                 help=description,
             )
@@ -87,7 +111,7 @@ class CommandsProvider(Provider):
             if match := matcher.match(command):
                 yield Hit(
                     match,
-                    message.maybe_add_binding(matcher.highlight(command)),
+                    self._maybe_add_binding(message, matcher.highlight(command)),
                     partial(self.screen._post_message, message),
                     help=description,
                 )

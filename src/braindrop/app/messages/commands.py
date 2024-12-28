@@ -7,10 +7,6 @@ from re import Pattern, compile
 from typing import Final
 
 ##############################################################################
-# Rich imports.
-from rich.text import Text
-
-##############################################################################
 # Textual imports.
 from textual.binding import Binding
 from textual.message import Message
@@ -63,22 +59,6 @@ class Command(Message):
         return cls.__doc__ or ""
 
     @classmethod
-    def maybe_add_binding(cls, text: str | Text) -> Text:
-        """Append the binding to the given text, if there is one.
-
-        Args:
-           text: The text to add the binding to.
-
-        Returns:
-            The text, with the binding added if there is one.
-        """
-        if isinstance(text, str):
-            text = Text(text)
-        if cls.BINDING_KEY:
-            return text.append_text(Text(f" [{cls.BINDING_KEY}] ", style="dim"))
-        return text
-
-    @classmethod
     def _default_action_name(cls) -> str:
         """Get the default action name for the command.
 
@@ -114,6 +94,11 @@ class Command(Message):
             show=show,
             key_display=display,
         )
+
+    @property
+    def has_binding(self) -> bool:
+        """Does this command have a binding?"""
+        return self.BINDING_KEY is not None
 
 
 ##############################################################################
