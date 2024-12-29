@@ -7,6 +7,7 @@ from ..messages import (
     ClearFilters,
     CompactMode,
     Details,
+    Escape,
     Logout,
     Redownload,
     Search,
@@ -34,15 +35,16 @@ class MainCommands(CommandsProvider):
             A tuple of the command, the command description and a command
                 message to run the command.
         """
-        yield Details()
-        yield Search()
-        yield TagOrder()
-        yield CompactMode()
-        yield Redownload()
-        yield VisitRaindrop()
         yield ClearFilters()
+        yield CompactMode()
+        yield Details()
+        yield Escape()
+        yield Redownload()
+        yield Search()
         yield ShowAll()
         yield ShowUnsorted()
+        yield TagOrder()
+        yield VisitRaindrop()
         yield CommandHit(
             "Open Raindrop collection...",
             "View all the raindrops in a given collection",

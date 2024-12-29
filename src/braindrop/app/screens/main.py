@@ -34,6 +34,7 @@ from ..messages import (
     Command,
     CompactMode,
     Details,
+    Escape,
     Logout,
     Redownload,
     Search,
@@ -117,6 +118,7 @@ class Main(Screen[None]):
         ClearFilters,
         CompactMode,
         Details,
+        Escape,
         Logout,
         Redownload,
         Search,
@@ -124,11 +126,6 @@ class Main(Screen[None]):
         ShowUnsorted,
         TagOrder,
         VisitRaindrop,
-        Binding(
-            "escape",
-            "escape",
-            tooltip="Back up through the panes, right to left, or exit the app if the navigation pane has focus",
-        ),
     )
 
     TITLE = f"Braindrop v{__version__}"
@@ -336,7 +333,8 @@ class Main(Screen[None]):
         """Remove any filtering from the active collection."""
         self.active_collection = self.active_collection.unfiltered
 
-    def action_escape(self) -> None:
+    @on(Escape)
+    def action_escape_command(self) -> None:
         """Handle escaping.
 
         The action's approach is to step-by-step back out from the 'deepest'

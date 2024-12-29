@@ -113,4 +113,12 @@ class ShowUnsorted(Command):
     SHOW_IN_FOOTER = False
 
 
+##############################################################################
+class Escape(Command):
+    "Back up through the panes, right to left, or exit the app if the navigation pane has focus"
+
+    BINDING_KEY = "escape"
+    SHOW_IN_FOOTER = False
+
+
 ### commands.py ends here
