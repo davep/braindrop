@@ -54,6 +54,17 @@ class Command(Message):
         return cls.__doc__ or ""
 
     @classmethod
+    def key_binding(cls) -> str | None:
+        """Get the key that is the binding for this command.
+
+        Returns:
+            The key that is bound, or `None` if there isn't one.
+        """
+        if isinstance(key := cls.BINDING_KEY, tuple):
+            key, *_ = key
+        return key
+
+    @classmethod
     def _default_action_name(cls) -> str:
         """Get the default action name for the command.
 
