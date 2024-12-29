@@ -5,6 +5,10 @@
 from __future__ import annotations
 
 ##############################################################################
+# Python imports.
+from typing import Any
+
+##############################################################################
 # Rich imports.
 from rich.align import Align
 from rich.console import RenderableType
@@ -187,7 +191,7 @@ class Navigation(OptionListEx):
     def on_mount(self) -> None:
         """Configure the widget once the DIM is ready."""
 
-        def redraw(*_) -> None:
+        def redraw(*_: Any) -> None:
             """Force a redraw of the content of the widget."""
             self.active_collection = self.active_collection
 
