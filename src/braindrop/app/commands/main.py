@@ -18,7 +18,7 @@ from ..messages import (
     TagOrder,
     VisitRaindrop,
 )
-from .commands_provider import CommandHit, CommandHits, CommandsProvider
+from .commands_provider import CommandHits, CommandsProvider
 
 
 ##############################################################################
