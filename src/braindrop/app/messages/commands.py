@@ -102,6 +102,7 @@ class ShowAll(Command):
     """Show all Raindrops"""
 
     BINDING_KEY = "a"
+    SHOW_IN_FOOTER = False
 
 
 ##############################################################################
@@ -109,6 +110,7 @@ class ShowUnsorted(Command):
     "Show all unsorted Raindrops"
 
     BINDING_KEY = "u"
+    SHOW_IN_FOOTER = False
 
 
 ### commands.py ends here
