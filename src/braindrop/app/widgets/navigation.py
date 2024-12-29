@@ -46,6 +46,7 @@ class CollectionView(Option):
         collection: Collection,
         indent: int = 0,
         key: str | None = None,
+        key_colour: str | None = None,
         count: int = 0,
     ) -> None:
         """Initialise the object.
@@ -54,6 +55,7 @@ class CollectionView(Option):
             collection: The collection to show.
             indent: The indent level for the collection.
             key: The associated with the collection.
+            key_colour: The colour to show the key in.
         """
         self._collection = collection
         """The collection being viewed."""
@@ -61,6 +63,8 @@ class CollectionView(Option):
         """The indent level for the collection."""
         self._key = key
         """The key associated with this collection, if any."""
+        self._key_colour = key_colour or "dim"
+        """The colour to show the key in."""
         self._count = count or collection.count
         """The count of raindrops in this collection."""
         super().__init__(self.prompt, id=self.id_of(collection))
@@ -82,7 +86,7 @@ class CollectionView(Option):
         prompt.add_column(justify="right")
         prompt.add_row(
             f"{'[dim]>[/dim] ' * self._indent}{self._collection.title}"
-            + (f" [dim]\\[{self._key or ''}][/]" if self._key else ""),
+            + (f" [{self._key_colour}]\\[{self._key or ''}][/]" if self._key else ""),
             f"[dim i]{self._count}[/]",
         )
         return prompt
@@ -180,6 +184,19 @@ class Navigation(OptionListEx):
         self._api = api
         """The API client object."""
 
+    def on_mount(self) -> None:
+        """Configure the widget once the DIM is ready."""
+
+        def redraw(*_) -> None:
+            """Force a redraw of the content of the widget."""
+            self.active_collection = self.active_collection
+
+        # While the user will almost never notice, if the theme changes the
+        # accent colour for the keys will go out of sync, so here we watch
+        # for a theme change and then force a redraw of the content so we do
+        # keep in sync.
+        self.app.theme_changed_signal.subscribe(self, redraw)
+
     def highlight_collection(self, collection: Collection) -> None:
         """Ensure the given collection is highlighted.
 
@@ -219,6 +236,9 @@ class Navigation(OptionListEx):
                 collection,
                 indent,
                 key,
+                None
+                if self.app.current_theme is None
+                else self.app.current_theme.accent,
                 0 if self.data is None else self.data.collection_size(collection),
             )
         )
