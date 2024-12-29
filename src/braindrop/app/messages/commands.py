@@ -120,6 +120,7 @@ class Redownload(Command):
     "Download a fresh copy of all data from raindrop.io"
 
     BINDING_KEY = "ctrl+r"
+    SHOW_IN_FOOTER = False
 
 
 ##############################################################################
