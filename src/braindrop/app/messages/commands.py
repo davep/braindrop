@@ -50,6 +50,7 @@ class ClearFilters(Command):
     """Clear all tags and other filters."""
 
     BINDING_KEY = "c"
+    SHOW_IN_FOOTER = False
 
 
 ##############################################################################

@@ -115,7 +115,7 @@ class Main(Screen[None]):
     BINDINGS = [
         ShowAll.binding(),
         ShowUnsorted.binding(),
-        ClearFilters.binding(show=False),
+        ClearFilters.binding(),
         Search.binding(),
         VisitRaindrop.binding(),
         Details.binding(),

@@ -29,6 +29,9 @@ class Command(Message):
         If no `FOOTER_TEXT` is provided the `command` will be used.
     """
 
+    SHOW_IN_FOOTER: bool = True
+    """Should the command be shown in the footer?"""
+
     BINDING_KEY: str | tuple[str, str] | None = None
     """The binding key for the command.
 
@@ -77,13 +80,11 @@ class Command(Message):
     def binding(
         cls,
         action: str | None = None,
-        show: bool = True,
     ) -> Binding:
         """Create a binding object for the command.
 
         Args:
             action: The optional action to call for the binding.
-            show: Should the binding be shown in the footer?
         """
         if not cls.BINDING_KEY:
             raise ValueError("No binding key defined, unable to create a binding")
@@ -97,7 +98,7 @@ class Command(Message):
             action or cls._default_action_name(),
             description=cls.FOOTER_TEXT or cls.command(),
             tooltip=cls.tooltip(),
-            show=show,
+            show=cls.SHOW_IN_FOOTER,
             key_display=display,
         )
 
