@@ -11,8 +11,11 @@ from .base_command import Command
 
 
 ##############################################################################
-class SearchCollections(Command):
-    """A message that requests the collection-based command palette is shown."""
+class OpenCollection(Command):
+    """View all available collections, select one and open it"""
+
+    BINDING_KEY = "C"
+    COMMAND = "Open Raindrop collection..."
 
 
 ##############################################################################

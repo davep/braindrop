@@ -9,9 +9,9 @@ from ..messages import (
     Details,
     Escape,
     Logout,
+    OpenCollection,
     Redownload,
     Search,
-    SearchCollections,
     SearchTags,
     ShowAll,
     ShowUnsorted,
@@ -45,11 +45,7 @@ class MainCommands(CommandsProvider):
         yield ShowUnsorted()
         yield TagOrder()
         yield VisitRaindrop()
-        yield CommandHit(
-            "Open Raindrop collection...",
-            "View all the raindrops in a given collection",
-            SearchCollections(),
-        )
+        yield OpenCollection()
         if self.active_collection.tags:
             yield CommandHit(
                 "Also tagged..." if self.active_collection.is_filtered else "Tagged...",

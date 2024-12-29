@@ -36,9 +36,9 @@ from ..messages import (
     Details,
     Escape,
     Logout,
+    OpenCollection,
     Redownload,
     Search,
-    SearchCollections,
     SearchTags,
     ShowAll,
     ShowCollection,
@@ -120,6 +120,7 @@ class Main(Screen[None]):
         Details,
         Escape,
         Logout,
+        OpenCollection,
         Redownload,
         Search,
         ShowAll,
@@ -272,8 +273,8 @@ class Main(Screen[None]):
         self.active_collection = self._data.in_collection(command.collection)
         self.query_one(Navigation).highlight_collection(command.collection)
 
-    @on(SearchCollections)
-    def command_search_collections(self) -> None:
+    @on(OpenCollection)
+    def action_open_collection_command(self) -> None:
         """Show the collection-based command palette."""
         self._show_palette(CollectionCommands)
 
