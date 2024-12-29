@@ -11,11 +11,10 @@ from .base_command import Command
 
 
 ##############################################################################
-class OpenCollection(Command):
-    """View all available collections, select one and open it"""
+class SearchCollections(Command):
+    """Search for a collection by name and show its contents"""
 
     BINDING_KEY = "C"
-    COMMAND = "Open Raindrop collection..."
     SHOW_IN_FOOTER = False
 
 
