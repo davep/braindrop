@@ -57,6 +57,8 @@ from .search_input import SearchInput
 class Main(Screen[None]):
     """The main screen of the application."""
 
+    TITLE = f"Braindrop v{__version__}"
+
     DEFAULT_CSS = """
     Header {
         /* The header icon is ugly and pointless. Remove it. */
@@ -129,8 +131,6 @@ class Main(Screen[None]):
         TagOrder,
         VisitRaindrop,
     )
-
-    TITLE = f"Braindrop v{__version__}"
 
     COMMANDS = {MainCommands}
 
