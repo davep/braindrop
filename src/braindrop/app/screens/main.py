@@ -44,6 +44,7 @@ from ..messages import (
     ShowCollection,
     ShowTagged,
     ShowUnsorted,
+    ShowUntagged,
     TagOrder,
     VisitRaindrop,
 )
@@ -128,6 +129,7 @@ class Main(Screen[None]):
         SearchTags,
         ShowAll,
         ShowUnsorted,
+        ShowUntagged,
         TagOrder,
         VisitRaindrop,
     )
@@ -335,6 +337,11 @@ class Main(Screen[None]):
     def action_show_unsorted_command(self) -> None:
         """Select the collection that shows all unsorted Raindrops."""
         self.query_one(Navigation).show_unsorted()
+
+    @on(ShowUntagged)
+    def action_show_untagged_command(self) -> None:
+        """Select the collection that shows all untagged Raindrops."""
+        self.query_one(Navigation).show_untagged()
 
     @on(ClearFilters)
     def action_clear_filters_command(self) -> None:

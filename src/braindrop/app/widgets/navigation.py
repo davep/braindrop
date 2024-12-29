@@ -21,7 +21,7 @@ from textual.widgets.option_list import Option
 # Local imports.
 from ...raindrop import API, Collection, SpecialCollection, Tag, TagData
 from ..data import LocalData, Raindrops
-from ..messages import ShowAll, ShowCollection, ShowTagged, ShowUnsorted
+from ..messages import ShowAll, ShowCollection, ShowTagged, ShowUnsorted, ShowUntagged
 from .extended_option_list import OptionListEx
 
 
@@ -214,6 +214,10 @@ class Navigation(OptionListEx):
         """Show the special collection that is all the Raindrops."""
         self.select_collection(SpecialCollection.ALL())
 
+    def show_untagged(self) -> None:
+        """Show the special collection that is all untagged Raindrops."""
+        self.select_collection(SpecialCollection.UNTAGGED())
+
     def show_unsorted(self) -> None:
         """Show the special collection that is the unsorted Raindrops."""
         self.select_collection(SpecialCollection.UNSORTED())
@@ -250,7 +254,9 @@ class Navigation(OptionListEx):
         self._add_collection(
             SpecialCollection.UNSORTED(), key=ShowUnsorted.key_binding()
         )
-        self._add_collection(SpecialCollection.UNTAGGED())
+        self._add_collection(
+            SpecialCollection.UNTAGGED(), key=ShowUntagged.key_binding()
+        )
         if self.data is not None and self.data.user is not None and self.data.user.pro:
             self._add_collection(SpecialCollection.BROKEN())
         self._add_collection(SpecialCollection.TRASH())

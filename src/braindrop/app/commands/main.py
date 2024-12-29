@@ -15,6 +15,7 @@ from ..messages import (
     SearchTags,
     ShowAll,
     ShowUnsorted,
+    ShowUntagged,
     TagOrder,
     VisitRaindrop,
 )
@@ -46,6 +47,7 @@ class MainCommands(CommandsProvider):
             yield SearchTags(self.active_collection)
         yield ShowAll()
         yield ShowUnsorted()
+        yield ShowUntagged()
         yield TagOrder()
         yield VisitRaindrop()
 

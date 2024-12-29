@@ -139,6 +139,14 @@ class ShowUnsorted(Command):
 
 
 ##############################################################################
+class ShowUntagged(Command):
+    """Show all Raindrops that are lacking tags"""
+
+    BINDING_KEY = "U"
+    SHOW_IN_FOOTER = False
+
+
+##############################################################################
 class Escape(Command):
     "Back up through the panes, right to left, or exit the app if the navigation pane has focus"
 
