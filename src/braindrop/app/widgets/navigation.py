@@ -5,10 +5,6 @@
 from __future__ import annotations
 
 ##############################################################################
-# Python imports.
-from typing import Final
-
-##############################################################################
 # Rich imports.
 from rich.align import Align
 from rich.console import RenderableType
