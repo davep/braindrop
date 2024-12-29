@@ -175,7 +175,7 @@ class Navigation(OptionListEx):
         id: str | None = None,
         classes: str | None = None,
         disabled: bool = False,
-    ):
+    ) -> None:
         """Initialise the object.
 
         Args:
