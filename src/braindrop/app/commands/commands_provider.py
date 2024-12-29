@@ -58,7 +58,7 @@ class CommandsProvider(Provider):
     def _commands(self) -> Iterator[CommandHit]:
         """The commands available for the palette."""
         return (
-            CommandHit(command.command(), command.tooltip(), command)
+            CommandHit(command.context_command, command.context_tooltip, command)
             if isinstance(command, Command)
             else command
             for command in self.commands()

@@ -61,10 +61,20 @@ class Command(Message):
         """
         return cls.COMMAND or " ".join(cls._SPLITTER.findall(cls.__name__))
 
+    @property
+    def context_command(self) -> str:
+        """The command in context."""
+        return self.command()
+
     @classmethod
     def tooltip(cls) -> str:
         """The tooltip for the command."""
         return cls.__doc__ or ""
+
+    @property
+    def context_tooltip(self) -> str:
+        """The tooltip for the comment, in context."""
+        return self.tooltip()
 
     @classmethod
     def key_binding(cls) -> str | None:
