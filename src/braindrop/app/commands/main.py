@@ -29,11 +29,10 @@ class MainCommands(CommandsProvider):
     """The currently-active collection."""
 
     def commands(self) -> CommandHits:
-        """Provide the main command data for the command palette.
+        """Provide the main application commands for the command palette.
 
         Yields:
-            A tuple of the command, the command description and a command
-                message to run the command.
+            The commands for the command palette.
         """
         yield ClearFilters()
         yield CompactMode()
