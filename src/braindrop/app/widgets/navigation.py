@@ -60,6 +60,7 @@ class CollectionView(Option):
             indent: The indent level for the collection.
             key: The associated with the collection.
             key_colour: The colour to show the key in.
+            count: The count of raindrops in the collection.
         """
         self._collection = collection
         """The collection being viewed."""
