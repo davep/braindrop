@@ -1,5 +1,7 @@
 """Provides the base class for all application command messages."""
 
+from __future__ import annotations
+
 ##############################################################################
 # Python imports.
 from re import Pattern, compile
@@ -7,7 +9,7 @@ from typing import Final
 
 ##############################################################################
 # Textual imports.
-from textual.binding import Binding
+from textual.binding import Binding, BindingType
 from textual.message import Message
 
 
@@ -86,6 +88,21 @@ class Command(Message):
             cls.ACTION
             or f"{'_'.join(cls._SPLITTER.findall(cls.__name__))}_command".lower()
         )
+
+    @staticmethod
+    def bindings(*bindings: BindingType | type[Command]) -> list[BindingType]:
+        """Create bindings.
+
+        Args:
+            bindings: Normal Textual bindings or a command class.
+
+        Returns:
+            A list of bindings that can be used with `BINDINGS`.
+        """
+        return [
+            (binding if isinstance(binding, (Binding, tuple)) else binding.binding())
+            for binding in bindings
+        ]
 
     @classmethod
     def binding(cls) -> Binding:

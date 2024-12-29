@@ -31,6 +31,7 @@ from ..data import (
 )
 from ..messages import (
     ClearFilters,
+    Command,
     CompactMode,
     Details,
     Logout,
@@ -112,23 +113,23 @@ class Main(Screen[None]):
     }
     """
 
-    BINDINGS = [
-        ShowAll.binding(),
-        ShowUnsorted.binding(),
-        ClearFilters.binding(),
-        Search.binding(),
-        VisitRaindrop.binding(),
-        Details.binding(),
-        TagOrder.binding(),
-        CompactMode.binding(),
-        Logout.binding(),
-        Redownload.binding(),
+    BINDINGS = Command.bindings(
+        ClearFilters,
+        CompactMode,
+        Details,
+        Logout,
+        Redownload,
+        Search,
+        ShowAll,
+        ShowUnsorted,
+        TagOrder,
+        VisitRaindrop,
         Binding(
             "escape",
             "escape",
             tooltip="Back up through the panes, right to left, or exit the app if the navigation pane has focus",
         ),
-    ]
+    )
 
     TITLE = f"Braindrop v{__version__}"
 
