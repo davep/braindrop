@@ -282,7 +282,13 @@ class Main(Screen[None]):
     @on(SearchTags)
     def action_search_tags_command(self) -> None:
         """Show the tags-based command palette."""
-        self._show_palette(TagCommands)
+        if self.active_collection.tags:
+            self._show_palette(TagCommands)
+        else:
+            self.notify(
+                f"The '{self.active_collection.title}' collection has no tags",
+                severity="information",
+            )
 
     @on(ShowTagged)
     def command_show_tagged(self, command: ShowTagged) -> None:
