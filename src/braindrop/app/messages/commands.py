@@ -16,6 +16,7 @@ class OpenCollection(Command):
 
     BINDING_KEY = "C"
     COMMAND = "Open Raindrop collection..."
+    SHOW_IN_FOOTER = False
 
 
 ##############################################################################
