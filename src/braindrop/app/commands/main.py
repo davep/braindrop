@@ -13,6 +13,7 @@ from ..messages import (
     SearchCollections,
     SearchTags,
     ShowAll,
+    ShowUnsorted,
     TagOrder,
     VisitRaindrop,
 )
@@ -41,6 +42,7 @@ class MainCommands(CommandsProvider):
         yield VisitRaindrop()
         yield ClearFilters()
         yield ShowAll()
+        yield ShowUnsorted()
         yield CommandHit(
             "Open Raindrop collection...",
             "View all the raindrops in a given collection",

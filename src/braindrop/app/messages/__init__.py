@@ -15,6 +15,7 @@ from .commands import (
     ShowAll,
     ShowCollection,
     ShowTagged,
+    ShowUnsorted,
     TagOrder,
     VisitRaindrop,
 )
@@ -34,6 +35,7 @@ __all__ = [
     "ShowAll",
     "ShowCollection",
     "ShowTagged",
+    "ShowUnsorted",
     "TagOrder",
     "VisitRaindrop",
 ]

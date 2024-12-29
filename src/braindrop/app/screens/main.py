@@ -41,6 +41,7 @@ from ..messages import (
     ShowAll,
     ShowCollection,
     ShowTagged,
+    ShowUnsorted,
     TagOrder,
     VisitRaindrop,
 )
@@ -113,11 +114,7 @@ class Main(Screen[None]):
 
     BINDINGS = [
         ShowAll.binding(),
-        Binding(
-            Navigation.SHORTCUT_UNSORTED,
-            "show_unsorted",
-            tooltip="Show all unsorted Raindrops",
-        ),
+        ShowUnsorted.binding(),
         ClearFilters.binding(show=False),
         Search.binding(),
         VisitRaindrop.binding(),
@@ -328,7 +325,8 @@ class Main(Screen[None]):
         """Select the collection that shows all Raindrops."""
         self.query_one(Navigation).show_all()
 
-    def action_show_unsorted(self) -> None:
+    @on(ShowUnsorted)
+    def action_show_unsorted_command(self) -> None:
         """Select the collection that shows all unsorted Raindrops."""
         self.query_one(Navigation).show_unsorted()
 

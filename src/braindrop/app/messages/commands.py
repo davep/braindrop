@@ -103,4 +103,11 @@ class ShowAll(Command):
     BINDING_KEY = "a"
 
 
+##############################################################################
+class ShowUnsorted(Command):
+    "Show all unsorted Raindrops"
+
+    BINDING_KEY = "u"
+
+
 ### commands.py ends here
