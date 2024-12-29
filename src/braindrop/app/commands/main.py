@@ -38,16 +38,16 @@ class MainCommands(CommandsProvider):
         yield CompactMode()
         yield Details()
         yield Escape()
+        yield Logout()
         yield Redownload()
         yield Search()
+        yield SearchCollections()
+        if self.active_collection.tags:
+            yield SearchTags(self.active_collection)
         yield ShowAll()
         yield ShowUnsorted()
         yield TagOrder()
         yield VisitRaindrop()
-        yield SearchCollections()
-        if self.active_collection.tags:
-            yield SearchTags(self.active_collection)
-        yield Logout()
 
 
 ### main.py ends here
