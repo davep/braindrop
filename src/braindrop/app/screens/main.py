@@ -38,6 +38,7 @@ from ..messages import (
     Search,
     SearchCollections,
     SearchTags,
+    ShowAll,
     ShowCollection,
     ShowTagged,
     TagOrder,
@@ -111,11 +112,7 @@ class Main(Screen[None]):
     """
 
     BINDINGS = [
-        Binding(
-            Navigation.SHORTCUT_ALL,
-            "show_all",
-            tooltip="Show all Raindrops",
-        ),
+        ShowAll.binding(),
         Binding(
             Navigation.SHORTCUT_UNSORTED,
             "show_unsorted",
@@ -326,7 +323,8 @@ class Main(Screen[None]):
         config.show_tags_by_count = by_count
         save_configuration(config)
 
-    def action_show_all(self) -> None:
+    @on(ShowAll)
+    def action_show_all_command(self) -> None:
         """Select the collection that shows all Raindrops."""
         self.query_one(Navigation).show_all()
 

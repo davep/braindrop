@@ -96,4 +96,11 @@ class Redownload(Command):
     BINDING_KEY = "ctrl+r"
 
 
+##############################################################################
+class ShowAll(Command):
+    """Show all Raindrops"""
+
+    BINDING_KEY = "a"
+
+
 ### commands.py ends here

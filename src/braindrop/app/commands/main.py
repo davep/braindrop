@@ -12,6 +12,7 @@ from ..messages import (
     Search,
     SearchCollections,
     SearchTags,
+    ShowAll,
     TagOrder,
     VisitRaindrop,
 )
@@ -39,6 +40,7 @@ class MainCommands(CommandsProvider):
         yield Redownload()
         yield VisitRaindrop()
         yield ClearFilters()
+        yield ShowAll()
         yield CommandHit(
             "Open Raindrop collection...",
             "View all the raindrops in a given collection",
