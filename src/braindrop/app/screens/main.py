@@ -216,9 +216,8 @@ class Main(Screen[None]):
             return
 
         # Having got to this point, it looks like we really do need to pull
-        # data down from the server. Go via the action that the user can use
-        # to download everything again.
-        await self.run_action("redownload")
+        # data down from the server. Fire off the redownload command.
+        self.post_message(Redownload())
 
     @work(thread=True)
     def load_data(self) -> None:
