@@ -37,8 +37,7 @@ update:				# Update all dependencies
 	rye sync --update-all
 
 .PHONY: resetup
-resetup:			# Recreate the virtual environment from scratch
-	rm -rf .venv
+resetup: realclean		# Recreate the virtual environment from scratch
 	make setup
 
 ##############################################################################
@@ -104,6 +103,10 @@ tidy: delint pep8ify		# Tidy up the code, fixing lint and format issues.
 .PHONY: clean
 clean:				# Clean the build directories
 	rm -rf dist
+
+.PHONY: realclean
+realclean: clean		# Clean the venv and build directories
+	rm -rf .venv
 
 .PHONY: help
 help:				# Display this help
