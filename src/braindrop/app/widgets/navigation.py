@@ -25,7 +25,7 @@ from textual.widgets.option_list import Option
 # Local imports.
 from ...raindrop import API, Collection, SpecialCollection, Tag, TagData
 from ..data import LocalData, Raindrops
-from ..messages import ShowAll, ShowCollection, ShowTagged
+from ..messages import ShowAll, ShowCollection, ShowTagged, ShowUnsorted
 from .extended_option_list import OptionListEx
 
 
@@ -165,9 +165,6 @@ class Navigation(OptionListEx):
     tags_by_count: var[bool] = var(False)
     """Should the tags be sorted by count?"""
 
-    SHORTCUT_UNSORTED: Final[str] = "u"
-    """The key to use as the shortcut for the unsorted collection."""
-
     def __init__(
         self,
         api: API,
@@ -234,7 +231,9 @@ class Navigation(OptionListEx):
     def _add_specials(self) -> None:
         """Add the special collections."""
         self._add_collection(SpecialCollection.ALL(), key=ShowAll.key_binding())
-        self._add_collection(SpecialCollection.UNSORTED(), key=self.SHORTCUT_UNSORTED)
+        self._add_collection(
+            SpecialCollection.UNSORTED(), key=ShowUnsorted.key_binding()
+        )
         self._add_collection(SpecialCollection.UNTAGGED())
         if self.data is not None and self.data.user is not None and self.data.user.pro:
             self._add_collection(SpecialCollection.BROKEN())
