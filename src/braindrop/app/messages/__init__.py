@@ -2,9 +2,9 @@
 
 ##############################################################################
 # Local imports.
+from .base_command import Command
 from .commands import (
     ClearFilters,
-    Command,
     CompactMode,
     Details,
     Logout,
