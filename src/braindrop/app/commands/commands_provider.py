@@ -97,7 +97,7 @@ class CommandsProvider(Provider):
         for command, description, message in self._commands:
             yield DiscoveryHit(
                 self._maybe_add_binding(message, command),
-                partial(self.screen._post_message, message),
+                partial(self.screen.post_message, message),
                 help=description,
             )
 
@@ -116,7 +116,7 @@ class CommandsProvider(Provider):
                 yield Hit(
                     match,
                     self._maybe_add_binding(message, matcher.highlight(command)),
-                    partial(self.screen._post_message, message),
+                    partial(self.screen.post_message, message),
                     help=description,
                 )
 
