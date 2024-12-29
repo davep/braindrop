@@ -47,13 +47,7 @@ class MainCommands(CommandsProvider):
         yield VisitRaindrop()
         yield SearchCollections()
         if self.active_collection.tags:
-            yield CommandHit(
-                "Also tagged..." if self.active_collection.is_filtered else "Tagged...",
-                "Add another tag to the current filter"
-                if self.active_collection.is_filtered
-                else "Filter the current collection with a tag",
-                SearchTags(),
-            )
+            yield SearchTags(self.active_collection)
         yield Logout()
 
 

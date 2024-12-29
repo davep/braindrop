@@ -121,6 +121,7 @@ class Main(Screen[None]):
         Escape,
         Logout,
         SearchCollections,
+        SearchTags,
         Redownload,
         Search,
         ShowAll,
@@ -279,7 +280,7 @@ class Main(Screen[None]):
         self._show_palette(CollectionCommands)
 
     @on(SearchTags)
-    def command_search_tags(self) -> None:
+    def action_search_tags_command(self) -> None:
         """Show the tags-based command palette."""
         self._show_palette(TagCommands)
 
