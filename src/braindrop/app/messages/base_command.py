@@ -22,6 +22,14 @@ class Command(Message):
         If no `COMMAND` is provided the class name will be used.
     """
 
+    ACTION: str | None = None
+    """The action to call when the command is executed.
+
+    By default the action will be:
+
+       `action_{snake-case-of-command}_command`
+    """
+
     FOOTER_TEXT: str | None = None
     """The text to show in the footer.
 
@@ -68,19 +76,19 @@ class Command(Message):
         return key
 
     @classmethod
-    def _default_action_name(cls) -> str:
-        """Get the default action name for the command.
+    def action_name(cls) -> str:
+        """Get the action name for the command.
 
         Returns:
-            The default action name.
+            The action name.
         """
-        return f"{'_'.join(cls._SPLITTER.findall(cls.__name__))}_command".lower()
+        return (
+            cls.ACTION
+            or f"{'_'.join(cls._SPLITTER.findall(cls.__name__))}_command".lower()
+        )
 
     @classmethod
-    def binding(
-        cls,
-        action: str | None = None,
-    ) -> Binding:
+    def binding(cls) -> Binding:
         """Create a binding object for the command.
 
         Args:
@@ -95,7 +103,7 @@ class Command(Message):
         )
         return Binding(
             keys,
-            action or cls._default_action_name(),
+            cls.action_name(),
             description=cls.FOOTER_TEXT or cls.command(),
             tooltip=cls.tooltip(),
             show=cls.SHOW_IN_FOOTER,
