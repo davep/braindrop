@@ -57,8 +57,8 @@ class VisitRaindrop(Command):
     """Open the web-based raindrop.io application in your default web browser"""
 
     COMMAND = "Visit raindrop.io"
-    FOOTER_TEXT = "raindrop.io"
     BINDING_KEY = "f2"
+    FOOTER_TEXT = "raindrop.io"
 
 
 ##############################################################################
