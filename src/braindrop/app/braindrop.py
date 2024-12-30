@@ -46,6 +46,8 @@ class Braindrop(App[ExitState]):
         ),
     ]
 
+    COMMANDS = set()
+
     def __init__(self) -> None:
         """Initialise the application."""
         super().__init__()
