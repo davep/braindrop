@@ -5,7 +5,7 @@
 from enum import IntEnum
 from json import loads
 from ssl import SSLCertVerificationError
-from typing import Any, Final, Literal
+from typing import Any, Callable, Final, Literal
 
 ##############################################################################
 # HTTPX imports.
@@ -156,13 +156,17 @@ class API:
         return User.from_json(user) if result and user is not None else None
 
     async def raindrops(
-        self, collection: int = SpecialCollection.ALL
+        self,
+        collection: int = SpecialCollection.ALL,
+        count_update: Callable[[int], None] | None = None,
     ) -> list[Raindrop]:
         """Get a list of Raindrops.
 
         Args:
             collection: The collection to get the Raindrops from. Defaults
                 to all Raindrops.
+            count_update: Optional callable that takes a count of the
+                download progress.
 
         Returns:
             A list of Raindrops.
@@ -180,15 +184,21 @@ class API:
         ), f"{collection} is not a valid collection ID"
         page = 0
         raindrops: list[Raindrop] = []
+        if count_update is not None:
+            count_update(0)
         while True:
             _, data = await self._items_of(
                 "raindrops", str(collection), page=str(page), pagesize="50"
             )
             if data:
                 raindrops += [Raindrop.from_json(raindrop) for raindrop in data]
+                if count_update is not None:
+                    count_update(len(raindrops))
                 page += 1
             else:
                 break
+        if count_update is not None:
+            count_update(len(raindrops))
         return raindrops
 
     async def tags(self, collection: int | None = None) -> list[TagData]:
