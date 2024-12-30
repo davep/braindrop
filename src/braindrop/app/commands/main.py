@@ -5,6 +5,7 @@
 from ..data import Raindrops
 from ..messages import (
     ChangeTheme,
+    CheckTheWaybackMachine,
     ClearFilters,
     CompactMode,
     CopyLinkToClipboard,
@@ -40,6 +41,7 @@ class MainCommands(CommandsProvider):
             The commands for the command palette.
         """
         yield ChangeTheme()
+        yield CheckTheWaybackMachine()
         yield ClearFilters()
         yield CompactMode()
         yield CopyLinkToClipboard()

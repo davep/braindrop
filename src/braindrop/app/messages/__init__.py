@@ -5,6 +5,7 @@
 from .base_command import Command
 from .commands import (
     ChangeTheme,
+    CheckTheWaybackMachine,
     ClearFilters,
     CompactMode,
     CopyLinkToClipboard,
@@ -30,6 +31,7 @@ from .commands import (
 # Exports.
 __all__ = [
     "ChangeTheme",
+    "CheckTheWaybackMachine",
     "ClearFilters",
     "Command",
     "CompactMode",

@@ -35,6 +35,7 @@ from ..data import (
 )
 from ..messages import (
     ChangeTheme,
+    CheckTheWaybackMachine,
     ClearFilters,
     Command,
     CompactMode,
@@ -60,6 +61,7 @@ from ..widgets import Navigation, RaindropDetails, RaindropsView
 from .confirm import Confirm
 from .downloading import Downloading
 from .search_input import SearchInput
+from .wayback_checker import WaybackChecker
 
 
 ##############################################################################
@@ -135,6 +137,7 @@ class Main(Screen[None]):
         CompactMode,
         # Everything else.
         ChangeTheme,
+        CheckTheWaybackMachine,
         ClearFilters,
         CopyLinkToClipboard,
         Escape,
@@ -436,39 +439,49 @@ class Main(Screen[None]):
         """Quit the application."""
         self.app.exit(ExitState.OKAY)
 
+    def _current_link(self, action: str) -> str | None:
+        """Get the current link.
+
+        Args:
+            action: The action that we're getting the link for.
+
+        Returns:
+            The link if there is one, or `None`.
+        """
+        if (raindrop := self.query_one(RaindropsView).highlighted_raindrop) is None:
+            self.notify(
+                f"No Raindrop is highlighted, there is nothing to {action}!",
+                title="No Raindrop",
+                severity="warning",
+            )
+            return None
+        if not raindrop.link:
+            self.notify(
+                f"The highlighted Raindrop doesn't have an associated link to {action}.",
+                title="No link",
+                severity="warning",
+            )
+            return None
+        return raindrop.link
+
     @on(CopyLinkToClipboard)
     def action_copy_link_to_clipboard_command(self) -> None:
         """Copy the currently-highlighted link to the clipboard."""
 
-        # Ensure we have a raindrop to look at.
-        if (raindrop := self.query_one(RaindropsView).highlighted_raindrop) is None:
-            self.notify(
-                "No Raindrop is highlighted, there is nothing to copy!",
-                title="No Raindrop",
-                severity="warning",
-            )
-            return
-
-        # Does it have a link?
-        if not raindrop.link:
-            self.notify(
-                "The highlighted Raindrop doesn't have an associated link to copy.",
-                title="No link",
-                severity="warning",
-            )
+        if (link := self._current_link("copy")) is None:
             return
 
         # Copy the link tot he clipboard using Textual's own facility; this
         # has the benefit of pushing it through remote connections, where
         # possible.
-        self.app.copy_to_clipboard(raindrop.link)
+        self.app.copy_to_clipboard(link)
 
         # Having done that copy, we'll also try and use pyperclip too. It's
         # possible the user is within a Terminal that doesn't support the
         # Textual approach, so this will belt-and-braces make sure the link
         # gets to some clipboard.
         try:
-            to_clipboard(raindrop.link)
+            to_clipboard(link)
         except PyperclipException:
             self.app.bell()
             self.notify(
@@ -477,6 +490,13 @@ class Main(Screen[None]):
             )
         else:
             self.notify("The link has been copied to the clipboard")
+
+    @on(CheckTheWaybackMachine)
+    def action_check_the_wayback_machine_command(self) -> None:
+        """Check if the current raindrop is on the Wayback Machine."""
+        if (link := self._current_link("check")) is None:
+            return
+        self.app.push_screen(WaybackChecker(link))
 
 
 ### main.py ends here

@@ -187,4 +187,12 @@ class CopyLinkToClipboard(Command):
     SHOW_IN_FOOTER = False
 
 
+##############################################################################
+class CheckTheWaybackMachine(Command):
+    """Check if the currently-highlighted Raindrop is archived in the Wayback Machine"""
+
+    BINDING_KEY = "w"
+    SHOW_IN_FOOTER = False
+
+
 ### commands.py ends here
