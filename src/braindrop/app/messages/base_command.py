@@ -6,6 +6,7 @@ from __future__ import annotations
 
 ##############################################################################
 # Python imports.
+from dataclasses import replace
 from re import Pattern, compile
 from typing import Final
 
@@ -141,6 +142,19 @@ class Command(Message):
             show=cls.SHOW_IN_FOOTER,
             key_display=display,
         )
+
+    @classmethod
+    def primary_binding(cls) -> Binding:
+        """Create a binding object for the primary key of the command.
+
+        Returns:
+            A `Binding` for the primary key.
+
+        Raises:
+            ValueError: If the command has no key binding.
+        """
+        key, _, _ = (binding := cls.binding()).key.partition(",")
+        return replace(binding, key=key)
 
     @property
     def has_binding(self) -> bool:
