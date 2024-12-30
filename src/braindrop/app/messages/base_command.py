@@ -80,15 +80,21 @@ class Command(Message):
         return self.tooltip()
 
     @classmethod
-    def key_binding(cls) -> str | None:
+    def key_binding(cls) -> str:
         """Get the key that is the binding for this command.
 
         Returns:
             The key that is bound, or `None` if there isn't one.
+
+        Notes:
+            If a command has multiple bindings, only the first key is
+            returned.
         """
         if isinstance(key := cls.BINDING_KEY, tuple):
             key, *_ = key
-        return key
+        if isinstance(key, str):
+            key, _, _ = (binding := cls.binding()).key.partition(",")
+        return key or ""
 
     @classmethod
     def action_name(cls) -> str:
