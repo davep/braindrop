@@ -10,8 +10,8 @@ from typing import Any
 
 ##############################################################################
 # Rich imports.
-from rich.align import Align
-from rich.console import RenderableType
+from rich.console import Group, RenderableType
+from rich.rule import Rule
 from rich.table import Table
 
 ##############################################################################
@@ -146,7 +146,9 @@ class Title(Option):
             title: The title to show.
         """
         super().__init__(
-            Align.right(f"\n[bold italic underline]{title}[/]"), disabled=True, id=title
+            Group("", Rule(title, style="bold dim")),
+            disabled=True,
+            id=f"_title_{title}",
         )
 
 
