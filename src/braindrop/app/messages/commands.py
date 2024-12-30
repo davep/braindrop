@@ -159,7 +159,7 @@ class Escape(Command):
 
 ##############################################################################
 class Help(Command):
-    """Toggle the display of the context-sensitive help"""
+    """Show help for and information about the application"""
 
     BINDING_KEY = "f1, ?"
 
