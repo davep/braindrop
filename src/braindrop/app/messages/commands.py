@@ -68,6 +68,7 @@ class Logout(Command):
     """Forget your API token and remove the local raindrop cache"""
 
     BINDING_KEY = "f12"
+    SHOW_IN_FOOTER = False
 
 
 ##############################################################################
