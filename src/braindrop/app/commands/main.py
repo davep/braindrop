@@ -11,6 +11,7 @@ from ..messages import (
     Escape,
     Help,
     Logout,
+    Quit,
     Redownload,
     Search,
     SearchCollections,
@@ -44,6 +45,7 @@ class MainCommands(CommandsProvider):
         yield Escape()
         yield Help()
         yield Logout()
+        yield Quit()
         yield Redownload()
         yield Search()
         yield SearchCollections()

@@ -37,6 +37,7 @@ from ..messages import (
     Escape,
     Help,
     Logout,
+    Quit,
     Redownload,
     Search,
     SearchCollections,
@@ -131,6 +132,7 @@ class Main(Screen[None]):
         ClearFilters,
         Escape,
         Logout,
+        Quit,
         Redownload,
         Search,
         SearchCollections,
@@ -421,6 +423,11 @@ class Main(Screen[None]):
     def action_change_theme_command(self) -> None:
         """Show the theme picker."""
         self.app.search_themes()
+
+    @on(Quit)
+    def action_quit_command(self) -> None:
+        """Quit the application."""
+        self.app.exit(ExitState.OKAY)
 
 
 ### main.py ends here

@@ -172,4 +172,11 @@ class ChangeTheme(Command):
     SHOW_IN_FOOTER = False
 
 
+##############################################################################
+class Quit(Command):
+    """Quit the application"""
+
+    BINDING_KEY = "f10, ctrl+c, ctrl+q"
+
+
 ### commands.py ends here
