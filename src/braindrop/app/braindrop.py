@@ -26,6 +26,19 @@ class Braindrop(App[ExitState]):
     CommandPalette > Vertical {
         width: 75%;
     }
+
+    /* Remove cruft from the Header. */
+    Header {
+        /* The header icon is ugly and pointless. Remove it. */
+        HeaderIcon {
+            visibility: hidden;
+        }
+
+        /* The tall version of the header is utterly useless. Nuke that. */
+        &.-tall {
+            height: 1 !important;
+        }
+    }
     """
 
     BINDINGS = [

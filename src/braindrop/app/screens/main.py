@@ -71,18 +71,6 @@ class Main(Screen[None]):
     TITLE = f"Braindrop v{__version__}"
 
     DEFAULT_CSS = """
-    Header {
-        /* The header icon is ugly and pointless. Remove it. */
-        HeaderIcon {
-            visibility: hidden;
-        }
-
-        /* The tall version of the header is utterly useless. Nuke that. */
-        &.-tall {
-            height: 1 !important;
-        }
-    }
-
     Main {
         Navigation {
             width: 2fr;
