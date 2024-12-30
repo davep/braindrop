@@ -8,7 +8,6 @@ import os
 # Textual imports.
 from textual.app import App, InvalidThemeError
 from textual.binding import Binding
-from textual.widgets import HelpPanel
 
 ##############################################################################
 # Local imports.
@@ -37,12 +36,6 @@ class Braindrop(App[ExitState]):
             "Commands",
             show=False,
             tooltip="Show the command palette",
-        ),
-        Binding(
-            "f1, ?",
-            "help",
-            description="Help",
-            tooltip="Toggle the display of the key binding help panel",
         ),
     ]
 
@@ -113,12 +106,6 @@ class Braindrop(App[ExitState]):
             self.push_screen(Main(API(token)))
         else:
             self.push_screen(TokenInput(), callback=self.token_bounce)
-
-    async def action_help(self) -> None:
-        """Toggle the display of the help panel."""
-        await self.run_action(
-            f"{'hide' if self.screen.query(HelpPanel) else 'show'}_help_panel"
-        )
 
 
 ### app.py ends here

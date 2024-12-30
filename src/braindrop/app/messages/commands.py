@@ -156,4 +156,11 @@ class Escape(Command):
     SHOW_IN_FOOTER = False
 
 
+##############################################################################
+class Help(Command):
+    """Toggle the display of the context-sensitive help"""
+
+    BINDING_KEY = "f1, ?"
+
+
 ### commands.py ends here

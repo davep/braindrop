@@ -13,7 +13,7 @@ from textual.command import CommandPalette
 from textual.containers import Horizontal
 from textual.reactive import var
 from textual.screen import Screen
-from textual.widgets import Footer, Header
+from textual.widgets import Footer, Header, HelpPanel
 
 ##############################################################################
 # Local imports.
@@ -35,6 +35,7 @@ from ..messages import (
     CompactMode,
     Details,
     Escape,
+    Help,
     Logout,
     Redownload,
     Search,
@@ -118,9 +119,12 @@ class Main(Screen[None]):
     """
 
     BINDINGS = Command.bindings(
+        Help,
+        VisitRaindrop,
+        Details,
+        TagOrder,
         ClearFilters,
         CompactMode,
-        Details,
         Escape,
         Logout,
         Redownload,
@@ -130,8 +134,6 @@ class Main(Screen[None]):
         ShowAll,
         ShowUnsorted,
         ShowUntagged,
-        TagOrder,
-        VisitRaindrop,
     )
 
     COMMANDS = {MainCommands}
@@ -402,6 +404,14 @@ class Main(Screen[None]):
             token_file().unlink(True)
             local_data_file().unlink(True)
             self.app.exit(ExitState.TOKEN_FORGOTTEN)
+
+    @on(Help)
+    def action_help_command(self) -> None:
+        """Toggle the display of the help panel."""
+        self.call_next(
+            self.app.run_action,
+            f"{'hide' if self.screen.query(HelpPanel) else 'show'}_help_panel",
+        )
 
 
 ### main.py ends here

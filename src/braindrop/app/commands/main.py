@@ -8,6 +8,7 @@ from ..messages import (
     CompactMode,
     Details,
     Escape,
+    Help,
     Logout,
     Redownload,
     Search,
@@ -39,6 +40,7 @@ class MainCommands(CommandsProvider):
         yield CompactMode()
         yield Details()
         yield Escape()
+        yield Help()
         yield Logout()
         yield Redownload()
         yield Search()
