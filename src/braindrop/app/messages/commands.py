@@ -75,7 +75,7 @@ class Logout(Command):
 class ClearFilters(Command):
     """Clear all tags and other filters."""
 
-    BINDING_KEY = "c"
+    BINDING_KEY = "f"
     SHOW_IN_FOOTER = False
 
 
