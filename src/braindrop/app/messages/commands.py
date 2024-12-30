@@ -93,6 +93,7 @@ class Search(Command):
     """Search for text anywhere in the raindrops"""
 
     BINDING_KEY = "/"
+    SHOW_IN_FOOTER = False
 
 
 ##############################################################################

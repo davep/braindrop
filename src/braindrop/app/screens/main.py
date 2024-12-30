@@ -127,14 +127,13 @@ class Main(Screen[None]):
         Details,
         TagOrder,
         CompactMode,
-        # Non-function-key footer.
-        Search,
         # Everything else.
         ChangeTheme,
         ClearFilters,
         Escape,
         Logout,
         Redownload,
+        Search,
         SearchCollections,
         SearchTags,
         ShowAll,
