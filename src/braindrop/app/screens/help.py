@@ -67,9 +67,12 @@ class HelpScreen(ModalScreen[None]):
         Vertical {
             width: 75%;
             height: 90%;
-            background: $surface;
-            border: panel $primary;
-            border-title-color: $accent;
+            background: $panel;
+            border: solid $border;
+        }
+
+        Markdown {
+            background: $panel;
         }
 
         VerticalScroll {
@@ -79,8 +82,7 @@ class HelpScreen(ModalScreen[None]):
         Center {
             height: auto;
             width: 100%;
-            border-top: solid $primary;
-            padding-top: 1;
+            border-top: solid $border;
         }
     }
     """
