@@ -96,12 +96,12 @@ class Main(Screen[None]):
         .focus {
             padding-right: 0;
             border: none;
-            border-left: double $border 50%;
+            border-left: round $border 50%;
             scrollbar-gutter: stable;
             scrollbar-background: $surface;
             &:focus, &:focus-within {
                 border: none;
-                border-left: double $border;
+                border-left: round $border;
             }
         }
 
