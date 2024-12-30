@@ -420,6 +420,7 @@ class Main(Screen[None]):
 
     @on(ChangeTheme)
     def action_change_theme_command(self) -> None:
+        """Show the theme picker."""
         self.app.search_themes()
 
 
