@@ -80,7 +80,7 @@ class CommandsProvider(Provider):
         return (
             text.append_text(Text(" ")).append_text(
                 Text(
-                    f"[{self.app.get_key_display(command.binding())}]",
+                    f"[{self.app.get_key_display(command.primary_binding())}]",
                     style=style or "dim",
                 )
             )
