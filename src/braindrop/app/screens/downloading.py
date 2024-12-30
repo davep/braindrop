@@ -29,11 +29,17 @@ class Downloading(ModalScreen[None]):
             height: auto;
             Vertical {
                 margin-top: 1;
+                margin-bottom: 1;
                 height: 1;
                 width: 100%;
             }
             LoadingIndicator {
                 background: transparent;
+            }
+            #status {
+                width: 100%;
+                text-align: center;
+                color: $text-success;
             }
         }
     }
@@ -55,13 +61,22 @@ class Downloading(ModalScreen[None]):
     def compose(self) -> ComposeResult:
         """Compose the loading screen."""
         with Center():
-            yield Label("Downloading Raindrops from raindrop.io")
+            yield Label("Downloading all your Raindrop data from raindrop.io")
             yield Vertical()
+            yield Label(id="status")
 
     def on_mount(self) -> None:
         """Configure the screen when the DOM is mounted."""
         self.query_one("Vertical").loading = True
         self.download_data()
+
+    def _update_status(self, status: str) -> None:
+        """Update the status label.
+
+        Args:
+            status: The status message to update with.
+        """
+        self.query_one("#status", Label).update(status)
 
     @work
     async def download_data(self) -> None:
@@ -82,7 +97,7 @@ class Downloading(ModalScreen[None]):
                 return
 
             try:
-                await self._data.download(self._user)
+                await self._data.download(self._user, self._update_status)
             except API.Error:
                 self.app.bell()
                 self.notify(

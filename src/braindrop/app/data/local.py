@@ -9,7 +9,7 @@ from __future__ import annotations
 from datetime import datetime
 from json import dumps, loads
 from pathlib import Path
-from typing import Any, Counter, Iterable, Iterator, Self, Sequence
+from typing import Any, Callable, Counter, Iterable, Iterator, Self, Sequence
 
 ##############################################################################
 # pytz imports.
@@ -288,7 +288,26 @@ class LocalData:
         self._last_downloaded = datetime.now(UTC)
         return self
 
-    async def download(self, user: User) -> Self:
+    @staticmethod
+    def _update_raindrop_count(
+        status_update: Callable[[str], None], message: str
+    ) -> Callable[[int], None]:
+        """Create a raindrop download count update function.
+
+        Args:
+            status_update: The function that updates the status.
+            message: The message to show against the count.
+
+        Returns:
+            A callable that can be passed to the API wrapper.
+        """
+
+        def _update(count: int) -> None:
+            status_update(f"{message} ({count})")
+
+        return _update
+
+    async def download(self, user: User, status_update: Callable[[str], None]) -> Self:
         """Download all available Raindrops from the server.
 
         Args:
@@ -298,8 +317,19 @@ class LocalData:
             Self.
         """
         self._user = user
-        self._all.set_to(await self._api.raindrops(SpecialCollection.ALL))
-        self._trash.set_to(await self._api.raindrops(SpecialCollection.TRASH))
+        self._all.set_to(
+            await self._api.raindrops(
+                SpecialCollection.ALL,
+                self._update_raindrop_count(status_update, "Downloading all Raindrops"),
+            )
+        )
+        self._trash.set_to(
+            await self._api.raindrops(
+                SpecialCollection.TRASH,
+                self._update_raindrop_count(status_update, "Downloading trash"),
+            )
+        )
+        status_update("Downloading all collections")
         self._collections = {
             collection.identity: collection
             for collection in await self._api.collections("all")
