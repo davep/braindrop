@@ -39,6 +39,12 @@ class Braindrop(App[ExitState]):
             height: 1 !important;
         }
     }
+
+    /* General style tweaks that affect all widgets. */
+    * {
+        /* Let's make scrollbars a wee bit thinner. */
+        scrollbar-size-vertical: 1;
+    }
     """
 
     BINDINGS = [
