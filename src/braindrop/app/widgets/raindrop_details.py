@@ -33,7 +33,7 @@ from .extended_option_list import OptionListEx
 
 ##############################################################################
 HELP = """
-# The highlighted Raindrop's details.
+## The highlighted Raindrop's details.
 
 This panel contains the details of the currently-highlighted Raindrop.
 """

@@ -17,7 +17,7 @@ from textual.command import CommandPalette
 from textual.containers import Horizontal
 from textual.reactive import var
 from textual.screen import Screen
-from textual.widgets import Footer, Header, HelpPanel
+from textual.widgets import Footer, Header
 
 ##############################################################################
 # Local imports.
@@ -60,6 +60,7 @@ from ..messages import (
 from ..widgets import Navigation, RaindropDetails, RaindropsView
 from .confirm import Confirm
 from .downloading import Downloading
+from .help import HelpScreen
 from .search_input import SearchInput
 from .wayback_checker import WaybackChecker
 
@@ -69,6 +70,12 @@ class Main(Screen[None]):
     """The main screen of the application."""
 
     TITLE = f"Braindrop v{__version__}"
+
+    HELP = """
+    ## Main application keys and commands
+
+    The following keys and commands can be used anywhere here on the main screen.
+    """
 
     DEFAULT_CSS = """
     Main {
@@ -117,7 +124,7 @@ class Main(Screen[None]):
     }
     """
 
-    BINDINGS = Command.bindings(
+    COMMAND_MESSAGES = (
         # Keep these together as they're bound to function keys and destined
         # for the footer.
         Help,
@@ -141,6 +148,8 @@ class Main(Screen[None]):
         ShowUnsorted,
         ShowUntagged,
     )
+
+    BINDINGS = Command.bindings(*COMMAND_MESSAGES)
 
     COMMANDS = {MainCommands}
 
@@ -411,13 +420,14 @@ class Main(Screen[None]):
             local_data_file().unlink(True)
             self.app.exit(ExitState.TOKEN_FORGOTTEN)
 
-    @on(Help)
+    @on(HelpScreen)
     def action_help_command(self) -> None:
         """Toggle the display of the help panel."""
-        self.call_next(
-            self.app.run_action,
-            f"{'hide' if self.screen.query(HelpPanel) else 'show'}_help_panel",
-        )
+        self.app.push_screen(HelpScreen(self))
+        # self.call_next(
+        #     self.app.run_action,
+        #     f"{'hide' if self.screen.query(HelpPanel) else 'show'}_help_panel",
+        # )
 
     @on(ChangeTheme)
     def action_change_theme_command(self) -> None:

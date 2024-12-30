@@ -6,7 +6,7 @@ Coming soon.
 
 Things I'm considering adding or addressing:
 
-- [ ] Textual's help system is keyboard-hostile despite being of most use to
+- [X] Textual's help system is keyboard-hostile despite being of most use to
       keyboard-first users. Replace the current slide-in help panel with
       something useful and helpful.
       [#1](https://github.com/davep/braindrop/issues/1)

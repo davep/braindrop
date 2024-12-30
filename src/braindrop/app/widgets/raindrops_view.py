@@ -105,7 +105,7 @@ class RaindropsView(OptionListEx):
     ]
 
     HELP = f"""
-    # The Raindrop collection view
+    ## The Raindrop collection view
 
     This panel shows the currently-selected collection of Raindrops,
     filtered by any tag ans search text you may have applied.

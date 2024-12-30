@@ -157,7 +157,7 @@ class Navigation(OptionListEx):
     """The main application navigation widget."""
 
     HELP = """
-    # Navigation
+    ## The Navigation Panel
 
     This is the navigation panel. Here you can select a collection to view
     as well as pick tags to filter the view with.
