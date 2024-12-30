@@ -1,5 +1,7 @@
 """Provides the base class for all application command messages."""
 
+##############################################################################
+# Backward compatibility.
 from __future__ import annotations
 
 ##############################################################################
