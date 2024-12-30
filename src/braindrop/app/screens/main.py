@@ -8,7 +8,6 @@ from webbrowser import open as open_url
 # Textual imports.
 from textual import on, work
 from textual.app import ComposeResult
-from textual.binding import Binding
 from textual.command import CommandPalette
 from textual.containers import Horizontal
 from textual.reactive import var
