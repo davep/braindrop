@@ -420,14 +420,10 @@ class Main(Screen[None]):
             local_data_file().unlink(True)
             self.app.exit(ExitState.TOKEN_FORGOTTEN)
 
-    @on(HelpScreen)
+    @on(Help)
     def action_help_command(self) -> None:
         """Toggle the display of the help panel."""
         self.app.push_screen(HelpScreen(self))
-        # self.call_next(
-        #     self.app.run_action,
-        #     f"{'hide' if self.screen.query(HelpPanel) else 'show'}_help_panel",
-        # )
 
     @on(ChangeTheme)
     def action_change_theme_command(self) -> None:
