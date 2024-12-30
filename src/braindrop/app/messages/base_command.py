@@ -158,7 +158,9 @@ class Command(Message):
         Raises:
             ValueError: If the command has no key binding.
         """
-        return cls.binding().with_key(cls.key_binding())
+        return (binding := cls.binding()).with_key(
+            cls.key_binding(), binding.key_display
+        )
 
     @property
     def has_binding(self) -> bool:
