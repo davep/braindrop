@@ -6,7 +6,6 @@ from __future__ import annotations
 
 ##############################################################################
 # Python imports.
-from dataclasses import replace
 from re import Pattern, compile
 from typing import Final
 
@@ -159,8 +158,7 @@ class Command(Message):
         Raises:
             ValueError: If the command has no key binding.
         """
-        key, _, _ = (binding := cls.binding()).key.partition(",")
-        return replace(binding, key=key)
+        return cls.binding().with_key(cls.key_binding())
 
     @property
     def has_binding(self) -> bool:
