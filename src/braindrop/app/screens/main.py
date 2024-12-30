@@ -94,6 +94,7 @@ class Main(Screen[None]):
         }
 
         .focus {
+            padding-right: 0;
             border: none;
             border-left: double $border 50%;
             scrollbar-gutter: stable;
