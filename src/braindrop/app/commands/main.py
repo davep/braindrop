@@ -7,6 +7,7 @@ from ..messages import (
     ChangeTheme,
     ClearFilters,
     CompactMode,
+    CopyLinkToClipboard,
     Details,
     Escape,
     Help,
@@ -41,6 +42,7 @@ class MainCommands(CommandsProvider):
         yield ChangeTheme()
         yield ClearFilters()
         yield CompactMode()
+        yield CopyLinkToClipboard()
         yield Details()
         yield Escape()
         yield Help()

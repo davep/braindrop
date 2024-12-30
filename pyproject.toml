@@ -12,6 +12,7 @@ dependencies = [
     "xdg-base-dirs>=6.0.2",
     "pytz>=2024.2",
     "humanize>=4.11.0",
+    "pyperclip>=1.9.0",
 ]
 readme = "README.md"
 requires-python = ">= 3.8"

@@ -179,4 +179,12 @@ class Quit(Command):
     BINDING_KEY = "f10, ctrl+c, ctrl+q"
 
 
+##############################################################################
+class CopyLinkToClipboard(Command):
+    """Copy the currently-highlighted link to the clipboard."""
+
+    BINDING_KEY = "c"
+    SHOW_IN_FOOTER = False
+
+
 ### commands.py ends here

@@ -5,6 +5,11 @@
 from webbrowser import open as open_url
 
 ##############################################################################
+# Pyperclip imports.
+from pyperclip import PyperclipException
+from pyperclip import copy as to_clipboard
+
+##############################################################################
 # Textual imports.
 from textual import on, work
 from textual.app import ComposeResult
@@ -33,6 +38,7 @@ from ..messages import (
     ClearFilters,
     Command,
     CompactMode,
+    CopyLinkToClipboard,
     Details,
     Escape,
     Help,
@@ -130,6 +136,7 @@ class Main(Screen[None]):
         # Everything else.
         ChangeTheme,
         ClearFilters,
+        CopyLinkToClipboard,
         Escape,
         Logout,
         Quit,
@@ -428,6 +435,48 @@ class Main(Screen[None]):
     def action_quit_command(self) -> None:
         """Quit the application."""
         self.app.exit(ExitState.OKAY)
+
+    @on(CopyLinkToClipboard)
+    def action_copy_link_to_clipboard_command(self) -> None:
+        """Copy the currently-highlighted link to the clipboard."""
+
+        # Ensure we have a raindrop to look at.
+        if (raindrop := self.query_one(RaindropsView).highlighted_raindrop) is None:
+            self.notify(
+                "No Raindrop is highlighted, there is nothing to copy!",
+                title="No Raindrop",
+                severity="warning",
+            )
+            return
+
+        # Does it have a link?
+        if not raindrop.link:
+            self.notify(
+                "The highlighted Raindrop doesn't have an associated link to copy.",
+                title="No link",
+                severity="warning",
+            )
+            return
+
+        # Copy the link tot he clipboard using Textual's own facility; this
+        # has the benefit of pushing it through remote connections, where
+        # possible.
+        self.app.copy_to_clipboard(raindrop.link)
+
+        # Having done that copy, we'll also try and use pyperclip too. It's
+        # possible the user is within a Terminal that doesn't support the
+        # Textual approach, so this will belt-and-braces make sure the link
+        # gets to some clipboard.
+        try:
+            to_clipboard(raindrop.link)
+        except PyperclipException:
+            self.app.bell()
+            self.notify(
+                "Clipboard support not available in your environment.",
+                severity="error",
+            )
+        else:
+            self.notify("The link has been copied to the clipboard")
 
 
 ### main.py ends here
