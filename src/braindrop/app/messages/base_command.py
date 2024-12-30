@@ -120,8 +120,11 @@ class Command(Message):
     def binding(cls) -> Binding:
         """Create a binding object for the command.
 
-        Args:
-            action: The optional action to call for the binding.
+        Returns:
+            A `Binding` for the command's key bindings.
+
+        Raises:
+            ValueError: If the command has no key binding.
         """
         if not cls.BINDING_KEY:
             raise ValueError("No binding key defined, unable to create a binding")
