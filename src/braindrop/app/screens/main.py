@@ -97,6 +97,7 @@ class Main(Screen[None]):
             border: none;
             border-left: double $border 50%;
             scrollbar-gutter: stable;
+            scrollbar-background: $surface;
             &:focus, &:focus-within {
                 border: none;
                 border-left: double $border;
