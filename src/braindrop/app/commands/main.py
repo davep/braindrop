@@ -4,6 +4,7 @@
 # Local imports.
 from ..data import Raindrops
 from ..messages import (
+    ChangeTheme,
     ClearFilters,
     CompactMode,
     Details,
@@ -36,6 +37,7 @@ class MainCommands(CommandsProvider):
         Yields:
             The commands for the command palette.
         """
+        yield ChangeTheme()
         yield ClearFilters()
         yield CompactMode()
         yield Details()

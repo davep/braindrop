@@ -30,6 +30,7 @@ from ..data import (
     token_file,
 )
 from ..messages import (
+    ChangeTheme,
     ClearFilters,
     Command,
     CompactMode,
@@ -119,16 +120,21 @@ class Main(Screen[None]):
     """
 
     BINDINGS = Command.bindings(
+        # Keep these together as they're bound to function keys and destined
+        # for the footer.
         Help,
         VisitRaindrop,
         Details,
         TagOrder,
-        ClearFilters,
         CompactMode,
+        # Non-function-key footer.
+        Search,
+        # Everything else.
+        ChangeTheme,
+        ClearFilters,
         Escape,
         Logout,
         Redownload,
-        Search,
         SearchCollections,
         SearchTags,
         ShowAll,
@@ -412,6 +418,10 @@ class Main(Screen[None]):
             self.app.run_action,
             f"{'hide' if self.screen.query(HelpPanel) else 'show'}_help_panel",
         )
+
+    @on(ChangeTheme)
+    def action_change_theme_command(self) -> None:
+        self.app.search_themes()
 
 
 ### main.py ends here

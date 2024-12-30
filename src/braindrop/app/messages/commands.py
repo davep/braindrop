@@ -163,4 +163,12 @@ class Help(Command):
     BINDING_KEY = "f1, ?"
 
 
+##############################################################################
+class ChangeTheme(Command):
+    """Change the application's theme"""
+
+    BINDING_KEY = "f9"
+    SHOW_IN_FOOTER = False
+
+
 ### commands.py ends here

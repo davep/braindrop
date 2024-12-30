@@ -4,6 +4,7 @@
 # Local imports.
 from .base_command import Command
 from .commands import (
+    ChangeTheme,
     ClearFilters,
     CompactMode,
     Details,
@@ -26,6 +27,7 @@ from .commands import (
 ##############################################################################
 # Exports.
 __all__ = [
+    "ChangeTheme",
     "ClearFilters",
     "Command",
     "CompactMode",
