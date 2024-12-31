@@ -115,6 +115,26 @@ class Raindrop:
         )
 
     @property
+    def as_json(self) -> dict[str, Any]:
+        """The Raindrop as a JSON-friendly dictionary."""
+        return {
+            "collection": {"$id": self.collection},
+            "cover": self.cover,
+            "created": self.created,
+            "domain": self.domain,
+            "excerpt": self.excerpt,
+            "note": self.note,
+            "last_update": self.last_update,
+            "link": self.link,
+            # media
+            "tags": [str(tag) for tag in self.tags],
+            "title": self.title,
+            "type": self.type,
+            # user
+            "broken": False,
+        }
+
+    @property
     def is_unsorted(self) -> bool:
         """Is this raidnrop unsorted?"""
         return self.collection == SpecialCollection.UNSORTED
