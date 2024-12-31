@@ -62,6 +62,7 @@ from ..widgets import Navigation, RaindropDetails, RaindropsView
 from .confirm import Confirm
 from .downloading import Downloading
 from .help import HelpScreen
+from .raindrop_input import RaindropInput
 from .search_input import SearchInput
 from .wayback_checker import WaybackChecker
 
@@ -497,9 +498,15 @@ class Main(Screen[None]):
         self.app.push_screen(WaybackChecker(link))
 
     @on(AddRaindrop)
-    def action_add_raindrop_command(self) -> None:
+    @work
+    async def action_add_raindrop_command(self) -> None:
         """Add a new Raindrop."""
-        self.notify("TODO")
+        if (
+            raindrop := await self.app.push_screen_wait(
+                RaindropInput(self._api, self._data)
+            )
+        ) is not None:
+            self.notify(repr(raindrop), title="TODO: Save this")
 
 
 ### main.py ends here
