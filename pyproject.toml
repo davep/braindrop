@@ -1,7 +1,7 @@
 [project]
 name = "braindrop"
 version = "0.0.1"
-description = "Coming soon"
+description = "A terminal-based client for raindrop.io."
 authors = [
     { name = "Dave Pearson", email = "davep@davep.org" }
 ]
@@ -15,7 +15,45 @@ dependencies = [
     "pyperclip>=1.9.0",
 ]
 readme = "README.md"
-requires-python = ">= 3.8"
+requires-python = ">= 3.10"
+keywords = [
+    "bookmark",
+    "bookmarking",
+    "terminal",
+    "raindrop",
+    "raindrop.io",
+    "tui",
+    "chui",
+]
+classifiers = [
+    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+    "Environment :: Console",
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: End Users/Desktop",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Internet",
+    "Topic :: Terminals",
+    "Topic :: Utilities",
+    "Typing :: Typed",
+]
+
+[project.urls]
+Homepage = "https://github.com/davep/braindrop"
+Repository = "https://github.com/davep/braindrop"
+Documentation = "https://github.com/davep/braindrop/blob/main/README.md"
+Source = "https://github.com/davep/braindrop"
+Issues = "https://github.com/davep/braindrop/issues"
+Discussions = "https://github.com/davep/braindrop/discussions"
+
+[project.scripts]
+braindrop = "braindrop.__main__:main"
 
 [build-system]
 requires = ["hatchling"]
@@ -37,5 +75,3 @@ allow-direct-references = true
 [tool.hatch.build.targets.wheel]
 packages = ["src/braindrop"]
 
-[project.scripts]
-braindrop = "braindrop.__main__:main"
