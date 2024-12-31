@@ -5,11 +5,11 @@
 from enum import IntEnum
 from json import loads
 from ssl import SSLCertVerificationError
-from typing import Any, Callable, Final, Literal
+from typing import Any, Awaitable, Callable, Final, Literal
 
 ##############################################################################
 # HTTPX imports.
-from httpx import AsyncClient, HTTPStatusError, RequestError
+from httpx import AsyncClient, HTTPStatusError, RequestError, Response
 
 ##############################################################################
 # Local imports.
@@ -64,10 +64,13 @@ class API:
         """
         return f"{self._BASE}{'/'.join(path)}"
 
-    async def _call(self, *path: str, **params: str) -> str:
+    async def _call(
+        self, method: Callable[..., Awaitable[Response]], *path: str, **params: str
+    ) -> str:
         """Call on the Raindrop API.
 
         Args:
+            method: The method to use to make the call.
             path: The path for the API call.
             params: The parameters for the call.
 
@@ -75,7 +78,7 @@ class API:
             The text returned from the call.
         """
         try:
-            response = await self._client.get(
+            response = await method(
                 self._api_url(*path),
                 params=params,
                 headers={
@@ -93,12 +96,20 @@ class API:
 
         return response.text
 
+    async def _get(self, *path: str, **params: str) -> str:
+        return await self._call(self._client.get, *path, **params)
+
     async def _result_of(
-        self, value: str, *path: str, **params: str
+        self,
+        method: Callable[..., Awaitable[str]],
+        value: str,
+        *path: str,
+        **params: str,
     ) -> tuple[bool, Any]:
         """Get the result of a call to the Raindrop API.
 
         Args:
+            method: The method for the call.
             value: The name of the value to pull from the result.
             path: The path for the API call.
             params: The parameters for the call.
@@ -106,7 +117,7 @@ class API:
         Returns:
             A tuple of a bool that is the result plus any data from the call.
         """
-        result = loads(await self._call(*path, **params))
+        result = loads(await method(*path, **params))
         return (
             (result["result"], result[value])
             if value in result
@@ -114,18 +125,19 @@ class API:
         )
 
     async def _items_of(
-        self, *path: str, **params: str
+        self, method: Callable[..., Awaitable[str]], *path: str, **params: str
     ) -> tuple[bool, list[Any] | None]:
         """Get the items of a call to the Raindrop API.
 
         Args:
+            method: The method for the call.
             path: The path for the API call.
             params: The parameters for the call.
 
         Returns:
             A tuple of a bool that is the result plus any items from the call.
         """
-        return await self._result_of("items", *path, **params)
+        return await self._result_of(method, "items", *path, **params)
 
     async def collections(
         self, level: Literal["root", "children", "all"] = "all"
@@ -141,7 +153,7 @@ class API:
         if level == "all":
             return await self.collections("root") + await self.collections("children")
         _, collections = await self._items_of(
-            f"collections{'' if level == 'root' else '/childrens'}"
+            self._get, f"collections{'' if level == 'root' else '/childrens'}"
         )
         return [Collection.from_json(collection) for collection in collections or []]
 
@@ -152,7 +164,7 @@ class API:
             The details of the current user, or `None` if the details could
             not be fetched.
         """
-        result, user = await self._result_of("user", "user")
+        result, user = await self._result_of(self._get, "user", "user")
         return User.from_json(user) if result and user is not None else None
 
     async def raindrops(
@@ -188,7 +200,7 @@ class API:
             count_update(0)
         while True:
             _, data = await self._items_of(
-                "raindrops", str(collection), page=str(page), pagesize="50"
+                self._get, "raindrops", str(collection), page=str(page), pagesize="50"
             )
             if data:
                 raindrops += [Raindrop.from_json(raindrop) for raindrop in data]
@@ -211,7 +223,7 @@ class API:
             A list of tags.
         """
         _, tags = await self._items_of(
-            "/tags" if collection is None else f"/tags/{collection}"
+            self._get, "/tags" if collection is None else f"/tags/{collection}"
         )
         return [TagData.from_json(tag) for tag in tags or []]
 
