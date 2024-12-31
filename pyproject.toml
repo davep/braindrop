@@ -55,7 +55,9 @@ Discussions = "https://github.com/davep/braindrop/discussions"
 braindrop = "braindrop.__main__:main"
 
 [build-system]
-requires = ["hatchling"]
+# https://github.com/astral-sh/rye/issues/1446
+requires = ["hatchling==1.26.3", "hatch-vcs"]
+# requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.rye]
