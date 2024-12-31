@@ -75,9 +75,9 @@ then download your data and you will be good to go.
 *NOTE: if it's your preference, you can set the token in an environment
 variable called `BRAINDROP_API_TOKEN`.*
 
-## Using Tinboard
+## Using Braindrop
 
-The best way to get to know Tinboard is to read the help screen, once in the
+The best way to get to know Braindrop is to read the help screen, once in the
 main application you can see this by pressing <kbd>F1</kbd>.
 
 ![Braindrop help](https://raw.githubusercontent.com/davep/braindrop/refs/heads/main/.images/braindrop-help.png)
