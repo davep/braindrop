@@ -248,5 +248,22 @@ class API:
         )
         return [TagData.from_json(tag) for tag in tags or []]
 
+    async def add_raindrop(self, raindrop: Raindrop) -> Raindrop | None:
+        """Add a raindrop.
+
+        Args:
+            raindrop: The raindrop to add.
+
+        Returns:
+            The posted raindrop data, or `None` if there was a problem.
+
+        Raises:
+            RequestError: If there was a problem with the request.
+        """
+        result, resulting_raindrop = await self._result_of(
+            self._post, "item", "raindrop", **raindrop.as_json
+        )
+        return Raindrop.from_json(resulting_raindrop) if result else None
+
 
 ### api.py ends here
