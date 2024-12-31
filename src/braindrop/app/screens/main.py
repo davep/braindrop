@@ -467,7 +467,7 @@ class Main(Screen[None]):
         if (link := self._current_link("copy")) is None:
             return
 
-        # Copy the link tot he clipboard using Textual's own facility; this
+        # Copy the link to the clipboard using Textual's own facility; this
         # has the benefit of pushing it through remote connections, where
         # possible.
         self.app.copy_to_clipboard(link)
