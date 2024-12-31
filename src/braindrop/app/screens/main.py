@@ -34,6 +34,7 @@ from ..data import (
     token_file,
 )
 from ..messages import (
+    AddRaindrop,
     ChangeTheme,
     CheckTheWaybackMachine,
     ClearFilters,
@@ -133,6 +134,7 @@ class Main(Screen[None]):
         TagOrder,
         CompactMode,
         # Everything else.
+        AddRaindrop,
         ChangeTheme,
         CheckTheWaybackMachine,
         ClearFilters,
@@ -493,6 +495,11 @@ class Main(Screen[None]):
         if (link := self._current_link("check")) is None:
             return
         self.app.push_screen(WaybackChecker(link))
+
+    @on(AddRaindrop)
+    def action_add_raindrop_command(self) -> None:
+        """Add a new Raindrop."""
+        self.notify("TODO")
 
 
 ### main.py ends here

@@ -4,6 +4,7 @@
 # Local imports.
 from .base_command import Command
 from .commands import (
+    AddRaindrop,
     ChangeTheme,
     CheckTheWaybackMachine,
     ClearFilters,
@@ -30,6 +31,7 @@ from .commands import (
 ##############################################################################
 # Exports.
 __all__ = [
+    "AddRaindrop",
     "ChangeTheme",
     "CheckTheWaybackMachine",
     "ClearFilters",

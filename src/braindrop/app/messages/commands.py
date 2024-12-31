@@ -195,4 +195,12 @@ class CheckTheWaybackMachine(Command):
     SHOW_IN_FOOTER = False
 
 
+##############################################################################
+class AddRaindrop(Command):
+    """Add a new raindrop"""
+
+    BINDING_KEY = "n"
+    SHOW_IN_FOOTER = False
+
+
 ### commands.py ends here
