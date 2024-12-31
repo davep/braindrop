@@ -76,10 +76,11 @@ class API:
         Returns:
             The text returned from the call.
         """
+        payload = {"params" if method is self._get else "json": params}
         try:
             response = await method(
                 self._api_url(*path),
-                params=params,
+                **payload,
                 headers={
                     "user-agent": self.AGENT,
                     "Authorization": f"Bearer {self._token}",
