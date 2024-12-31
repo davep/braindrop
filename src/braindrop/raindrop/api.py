@@ -64,7 +64,7 @@ class API:
         return f"{self._BASE}{'/'.join(path)}"
 
     async def _call(
-        self, method: Callable[..., Awaitable[Response]], *path: str, **params: str
+        self, method: Callable[..., Awaitable[Response]], *path: str, **params: Any
     ) -> str:
         """Call on the Raindrop API.
 
@@ -96,7 +96,7 @@ class API:
 
         return response.text
 
-    async def _get(self, *path: str, **params: str) -> str:
+    async def _get(self, *path: str, **params: Any) -> str:
         """Perform a GET call against the Raindrop API.
 
         Args:
@@ -108,7 +108,7 @@ class API:
         """
         return await self._call(self._client.get, *path, **params)
 
-    async def _post(self, *path: str, **params: str) -> str:
+    async def _post(self, *path: str, **params: Any) -> str:
         """Perform a POST call against the Raindrop API.
 
         Args:
@@ -125,7 +125,7 @@ class API:
         method: Callable[..., Awaitable[str]],
         value: str,
         *path: str,
-        **params: str,
+        **params: Any,
     ) -> tuple[bool, Any]:
         """Get the result of a call to the Raindrop API.
 
