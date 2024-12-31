@@ -1,5 +1,10 @@
 # Braindrop
 
+> [!NOTE]
+> This is still pre-release. Right now the client works read-only; Raindrop
+> created and editing is being added at the moment. The repository is
+> available so anyone can have a play with the client UI.
+
 ![Braindrop](.images/braindrop.png)
 
 ## Introduction
@@ -87,6 +92,9 @@ Things I'm considering adding or addressing:
       keyboard-first users. Replace the current slide-in help panel with
       something useful and helpful.
       [#1](https://github.com/davep/braindrop/issues/1)
+- [ ] Add the ability to add a Raindrop (current WIP)
+- [ ] Add the ability to edit a Raindrop (current WIP)
+- [ ] Add the ability to delete a Raindrop (current WIP)
 - [ ] Add a user information dialog. There's some useful information about
       the user, so add a little dialog that will show it.
 
