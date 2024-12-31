@@ -8,6 +8,10 @@ Braindrop is a terminal-based client application for the [raindrop.io
 bookmarking service](https://raindrop.io/). It provides the ability to
 manage and search your bookmarks in the terminal.
 
+Braindrop is and generally always will be fairly opinionated about the
+"best" way to make use of Raindrop (AKA how I like to use it); but where
+possible I want to keep it quite general so it will be useful to anyone.
+
 ## Installing
 
 ### pipx
