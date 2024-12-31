@@ -335,7 +335,7 @@ class Navigation(OptionListEx):
         with self.preserved_highlight:
             self._main_navigation()
             if self.data is not None and (tags := collection.tags):
-                self.add_option(Title("Tags"))
+                self.add_option(Title(f"Tags ({len(tags)})"))
                 for tag in (self._by_count if self.tags_by_count else self._by_name)(
                     tags
                 ):
