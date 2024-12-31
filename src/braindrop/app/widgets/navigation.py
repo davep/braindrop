@@ -296,7 +296,7 @@ class Navigation(OptionListEx):
                 return
             # Populate the groups.
             for group in self.data.user.groups:
-                self.add_option(Title(group.title))
+                self.add_option(Title(f"{group.title} ({len(self.data.collections)})"))
                 for collection in group.collections:
                     self._add_children_for(
                         self._add_collection(self.data.collection(collection))
