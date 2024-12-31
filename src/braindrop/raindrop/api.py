@@ -12,10 +12,10 @@ from httpx import AsyncClient, HTTPStatusError, RequestError, Response
 
 ##############################################################################
 # Local imports.
-from ..raindrop.user import User
 from .collection import Collection, SpecialCollection
 from .raindrop import Raindrop
 from .tag import TagData
+from .user import User
 
 
 ##############################################################################
