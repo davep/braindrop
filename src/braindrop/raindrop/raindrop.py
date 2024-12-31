@@ -6,7 +6,7 @@ from __future__ import annotations
 
 ##############################################################################
 # Python imports.
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Any, Literal, TypeAlias
 
@@ -51,37 +51,37 @@ class Media:
 class Raindrop:
     """Class that holds the details of a Raindrop."""
 
-    raw: dict[str, Any]
+    raw: dict[str, Any] = field(default_factory=dict)
     """The raw data for the Raindrop."""
-    identity: int
+    identity: int = -1
     """The ID of the raindrop."""
-    collection: int
+    collection: int = SpecialCollection.UNSORTED
     """The ID of the collection that this raindrop belongs to."""
-    cover: str
+    cover: str = ""
     """The URL to the cover."""
-    created: datetime | None
+    created: datetime | None = None
     """The time when the Raindrop was created."""
-    domain: str
+    domain: str = ""
     """The domain for a link."""
-    excerpt: str
+    excerpt: str = ""
     """The excerpt for the Raindrop."""
-    note: str
+    note: str = ""
     """The note for the Raindrop."""
-    last_update: datetime | None
+    last_update: datetime | None = None
     """The time the Raindrop was last updated."""
-    link: str
+    link: str = ""
     """The URL of the link for the Raindrop."""
-    media: list[Media]
+    media: list[Media] = field(default_factory=list)
     """A list of media associated with the Raindrop."""
-    tags: list[Tag]
+    tags: list[Tag] = field(default_factory=list)
     """The tags for the Raindrop."""
-    title: str
+    title: str = ""
     """The title of the Raindrop."""
-    type: RaindropType
+    type: RaindropType = "link"
     """The type of the raindrop."""
-    user: int
+    user: int = -1
     """The ID of the owner of the Raindrop."""
-    broken: bool
+    broken: bool = False
     """Is the Raindrop a broken link?"""
     # TODO: More fields here.
 
