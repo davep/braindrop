@@ -2,7 +2,6 @@
 
 ##############################################################################
 # Python imports.
-from enum import IntEnum
 from json import loads
 from ssl import SSLCertVerificationError
 from typing import Any, Awaitable, Callable, Final, Literal
