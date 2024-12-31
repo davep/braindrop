@@ -76,7 +76,7 @@ class API:
         Returns:
             The text returned from the call.
         """
-        payload = {"params" if method is self._get else "json": params}
+        payload = {"params" if method == self._client.get else "json": params}
         try:
             response = await method(
                 self._api_url(*path),
