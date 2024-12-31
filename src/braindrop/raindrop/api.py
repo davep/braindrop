@@ -86,12 +86,12 @@ class API:
                 },
             )
         except (RequestError, SSLCertVerificationError) as error:
-            raise self.RequestError(str(error))
+            raise self.RequestError(str(error)) from None
 
         try:
             response.raise_for_status()
         except HTTPStatusError as error:
-            raise self.RequestError(str(error))
+            raise self.RequestError(str(error)) from None
 
         return response.text
 
