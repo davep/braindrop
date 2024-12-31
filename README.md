@@ -9,7 +9,7 @@
 > code is still under very active development. On the other hand feedback
 > and ideas are **very** welcome.
 
-![Braindrop](.images/braindrop.png)
+![Braindrop](https://raw.githubusercontent.com/davep/braindrop/refs/heads/main/.images/braindrop.png)
 
 ## Introduction
 
@@ -67,7 +67,7 @@ your account settings, under `Integrations`. In `Integrations`:
 Having done the above, when you run up Braindrop the first time it will ask
 for this token:
 
-![Raindrop API token entry dialog](.images/raindrop-token-entry.png)
+![Raindrop API token entry dialog](https://raw.githubusercontent.com/davep/braindrop/refs/heads/main/.images/raindrop-token-entry.png)
 
 Paste the token into the input field and select `Conttect`. Braindrop will
 then download your data and you will be good to go.
@@ -80,7 +80,7 @@ variable called `BRAINDROP_API_TOKEN`.*
 The best way to get to know Tinboard is to read the help screen, once in the
 main application you can see this by pressing <kbd>F1</kbd>.
 
-![Braindrop help](.images/braindrop-help.png)
+![Braindrop help](https://raw.githubusercontent.com/davep/braindrop/refs/heads/main/.images/braindrop-help.png)
 
 ## Getting help
 
