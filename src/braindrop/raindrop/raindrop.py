@@ -124,7 +124,7 @@ class Raindrop:
             "domain": self.domain,
             "excerpt": self.excerpt,
             "note": self.note,
-            "last_update": self.last_update,
+            "lastUpdate": self.last_update,
             "link": self.link,
             # media
             "tags": [str(tag) for tag in self.tags],
