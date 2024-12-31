@@ -2,7 +2,7 @@
 
 > [!NOTE]
 > This is still pre-release. Right now the client works read-only; Raindrop
-> created and editing is being added at the moment. The repository is
+> creation and editing is being added at the moment. The repository is
 > available so anyone can have a play with the client UI.
 
 ![Braindrop](.images/braindrop.png)
