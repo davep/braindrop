@@ -277,5 +277,22 @@ class API:
         )
         return Raindrop.from_json(resulting_raindrop) if result else None
 
+    async def update_raindrop(self, raindrop: Raindrop) -> Raindrop | None:
+        """Update a raindrop.
+
+        Args:
+            raindrop: The raindrop to update.
+
+        Requests:
+            The updated raindrop data, or `None` if there was a problem.
+
+        Raises:
+            RequestError: if there was a problem with the request.
+        """
+        result, resulting_raindrop = await self._result_of(
+            self._put, "item", "raindrop", str(raindrop.identity), **raindrop.as_json
+        )
+        return Raindrop.from_json(resulting_raindrop) if result else None
+
 
 ### api.py ends here
