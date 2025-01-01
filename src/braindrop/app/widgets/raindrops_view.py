@@ -53,7 +53,19 @@ class RaindropView(Option):
         """The raindrop to view."""
         self._compact = compact
         """Use a compact view?"""
-        super().__init__(self.prompt, id=f"raindrop-{raindrop.identity}")
+        super().__init__(self.prompt, id=self.id_of(raindrop))
+
+    @staticmethod
+    def id_of(raindrop: Raindrop) -> str:
+        """Create an option ID for the given Raindrop.
+
+        Args:
+            raindrop: The raindrop to create the ID for.
+
+        Returns:
+            The ID of the raindrop.
+        """
+        return f"raindrop-{raindrop.identity}"
 
     @property
     def raindrop(self) -> Raindrop:
