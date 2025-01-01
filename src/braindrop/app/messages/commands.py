@@ -181,7 +181,7 @@ class Quit(Command):
 
 ##############################################################################
 class CopyLinkToClipboard(Command):
-    """Copy the currently-highlighted link to the clipboard."""
+    """Copy the currently-highlighted link to the clipboard"""
 
     BINDING_KEY = "c"
     SHOW_IN_FOOTER = False
