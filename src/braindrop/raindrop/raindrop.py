@@ -8,7 +8,7 @@ from __future__ import annotations
 # Python imports.
 from dataclasses import dataclass, field
 from datetime import datetime
-from typing import Any, Literal, TypeAlias
+from typing import Any, Final, Literal, TypeAlias
 
 ##############################################################################
 # Local imports.
@@ -47,13 +47,18 @@ class Media:
 
 
 ##############################################################################
+UNSAVED_IDENTITY: Final[int] = -1
+"""The ID used to mark a Raindrop as unsaved."""
+
+
+##############################################################################
 @dataclass(frozen=True)
 class Raindrop:
     """Class that holds the details of a Raindrop."""
 
     raw: dict[str, Any] = field(default_factory=dict)
     """The raw data for the Raindrop."""
-    identity: int = -1
+    identity: int = UNSAVED_IDENTITY
     """The ID of the raindrop."""
     collection: int = SpecialCollection.UNSORTED
     """The ID of the collection that this raindrop belongs to."""
@@ -133,6 +138,11 @@ class Raindrop:
             # user
             "broken": False,
         }
+
+    @property
+    def is_brand_new(self) -> bool:
+        """Is this a brand new Raindrop that hasn't been saved yet?"""
+        return self.identity == UNSAVED_IDENTITY
 
     @property
     def is_unsorted(self) -> bool:
