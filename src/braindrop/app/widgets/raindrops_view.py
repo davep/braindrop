@@ -21,7 +21,7 @@ from rich.table import Table
 # Textual imports.
 from textual.binding import Binding
 from textual.reactive import var
-from textual.widgets.option_list import Option
+from textual.widgets.option_list import Option, OptionDoesNotExist
 
 ##############################################################################
 # Local imports.
@@ -160,6 +160,16 @@ class RaindropsView(OptionListEx):
                 RaindropView, self.get_option_at_index(self.highlighted)
             ).raindrop
         return None
+
+    @highlighted_raindrop.setter
+    def highlighted_raindrop(self, raindrop: Raindrop | None) -> None:
+        if raindrop is None:
+            self.highlighted = None
+        else:
+            try:
+                self.highlighted = self.get_option_index(RaindropView.id_of(raindrop))
+            except OptionDoesNotExist:
+                pass
 
     def action_visit(self) -> None:
         """Action that visits the currently-selected raindrop link, if there is one."""
