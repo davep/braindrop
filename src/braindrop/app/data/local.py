@@ -81,6 +81,18 @@ class Raindrops:
         self._raindrops = list(raindrops)
         return self
 
+    def push(self, raindrop: Raindrop) -> Self:
+        """Push a new Raindrop into the contained raindrops.
+
+        Args:
+            raindrop: The Raindrop to push.
+
+        Returns:
+            Self.
+        """
+        self._raindrops.insert(0, raindrop)
+        return self
+
     @property
     def title(self) -> str:
         """The title of the group."""
@@ -381,6 +393,19 @@ class LocalData:
                 for k, v in data.get("collections", {}).items()
             }
         return self
+
+    def add(self, raindrop: Raindrop) -> Self:
+        """Add a raindrop to the local data.
+
+        Args:
+            raindrop: The raindrop to add.
+
+        Notes:
+            As a side effect the data is saved to storage.
+        """
+        # Add the raindrop to the start of the list of Raindrops.
+        self._all.push(raindrop)
+        return self.mark_downloaded().save()
 
 
 ### local.py ends here
