@@ -6,7 +6,7 @@ from __future__ import annotations
 
 ##############################################################################
 # Python imports.
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from datetime import datetime
 from typing import Any, Final, Literal, TypeAlias
 
@@ -138,6 +138,17 @@ class Raindrop:
             # user
             "broken": False,
         }
+
+    def clone(self, **replacements: Any) -> Raindrop:
+        """Clone the raindrop.
+
+        Args:
+            replacement: Values to replace while cloning.
+
+        Returns:
+            A clone of the raindrop, with any value replacements made.
+        """
+        return replace(self, **replacements)
 
     @property
     def is_brand_new(self) -> bool:
