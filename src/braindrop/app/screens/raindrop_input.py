@@ -142,9 +142,14 @@ class RaindropInput(ModalScreen[Raindrop | None]):
     def on_mount(self) -> None:
         """Configure the dialog once it's in the DOM."""
         if self._raindrop:
-            # TODO: Load up from a given raindrop.
-            pass
-        else:
+            self.query_one("#title", Input).value = self._raindrop.title
+            self.query_one("#excerpt", TextArea).text = self._raindrop.excerpt
+            self.query_one("#note", TextArea).text = self._raindrop.note
+            self.query_one("#url", Input).value = self._raindrop.link
+            self.query_one("#tags", Input).value = " ".join(
+                str(tag) for tag in self._raindrop.tags
+            )
+        if not self._raindrop.link:
             self._suggest_link()
 
     def _all_looks_good(self) -> bool:
