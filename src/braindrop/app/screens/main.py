@@ -172,6 +172,8 @@ class Main(Screen[None]):
         """Details of the Raindrop user."""
         self._data = LocalData(api)
         """The local copy of the Raindrop data."""
+        self._redownload_wiggle_room = 2
+        """The number of seconds difference needs to exist to consider a full redownload."""
         CollectionCommands.data = self._data
 
     def compose(self) -> ComposeResult:
@@ -219,9 +221,20 @@ class Main(Screen[None]):
         if self._data.last_downloaded is None:
             self.notify("No local data found; checking in with the server.")
         elif (
-            self._user.last_action is None
-            or self._user.last_action > self._data.last_downloaded
+            self._user.last_update is not None
+            and abs(
+                (self._user.last_update - self._data.last_downloaded).total_seconds()
+            )
+            > self._redownload_wiggle_room
         ):
+            # NOTE: for this check, I'm still undecided if I should be using
+            # last_update or last_action. The latter seems more sensible,
+            # but I think it can record the last action that *didn't* result
+            # in an update (eg: for Pro users it may look if a new link is
+            # broken, and so record an action, and then not update because
+            # it isn't broken); as such I'm going with last update for now.
+            #
+            # This may change.
             self.notify(
                 "Data on the server appears to be newer; downloading a fresh copy."
             )
