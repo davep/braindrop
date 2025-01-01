@@ -139,14 +139,14 @@ class Raindrop:
             "broken": False,
         }
 
-    def clone(self, **replacements: Any) -> Raindrop:
-        """Clone the raindrop.
+    def edit(self, **replacements: Any) -> Raindrop:
+        """Edit some values in the raindrop.
 
         Args:
             replacement: Values to replace while cloning.
 
         Returns:
-            A clone of the raindrop, with any value replacements made.
+            A copy of the raindrop with the edits made.
         """
         return replace(self, **replacements)
 

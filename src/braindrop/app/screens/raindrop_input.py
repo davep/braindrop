@@ -188,7 +188,7 @@ class RaindropInput(ModalScreen[Raindrop | None]):
         """Save the raindrop data."""
         if self._all_looks_good():
             self.dismiss(
-                self._raindrop.clone(
+                self._raindrop.edit(
                     title=self.query_one("#title", Input).value,
                     excerpt=self.query_one("#excerpt", TextArea).text,
                     note=self.query_one("#note", TextArea).text,
