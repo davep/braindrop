@@ -22,7 +22,7 @@ from textual.widgets import Footer, Header
 ##############################################################################
 # Local imports.
 from ... import __version__
-from ...raindrop import API, SpecialCollection, User
+from ...raindrop import API, Raindrop, SpecialCollection, User
 from ..commands import CollectionCommands, CommandsProvider, MainCommands, TagCommands
 from ..data import (
     ExitState,
@@ -172,6 +172,8 @@ class Main(Screen[None]):
         """Details of the Raindrop user."""
         self._data = LocalData(api)
         """The local copy of the Raindrop data."""
+        self._new_raindrop_buffer: Raindrop | None = None
+        """Used to hold on to new Raindrop data until we know it's been added."""
         self._redownload_wiggle_room = 2
         """The number of seconds difference needs to exist to consider a full redownload."""
         CollectionCommands.data = self._data
@@ -514,12 +516,48 @@ class Main(Screen[None]):
     @work
     async def action_add_raindrop_command(self) -> None:
         """Add a new Raindrop."""
-        if (
-            raindrop := await self.app.push_screen_wait(
-                RaindropInput(self._api, self._data)
+
+        # Get the details of the new Raindrop from the user.
+        self._new_raindrop_buffer = await self.app.push_screen_wait(
+            RaindropInput(self._api, self._data, self._new_raindrop_buffer)
+        )
+        if self._new_raindrop_buffer is None:
+            return
+
+        # They've provided the new details, so now push them to the server.
+        # In doing so get the full version of the data back from the server;
+        # it's this that we'll actually add locally.
+        try:
+            added_raindrop = await self._api.add_raindrop(self._new_raindrop_buffer)
+        except API.Error as error:
+            self.notify(
+                str(error),
+                title="Error adding new Raindrop",
+                severity="error",
+                timeout=8,
             )
-        ) is not None:
-            self.notify(repr(raindrop), title="TODO: Save this")
+            return
+
+        if added_raindrop is None:
+            self.notify(
+                "Raindrop.io did not confirm the save of the data, try again...",
+                title="Save not confirmed",
+                severity="warning",
+            )
+            # Call this command again, the next time around we'll be using
+            # the saved buffer of new raindrop details so the user doesn't
+            # find themselves having to enter everything all over again.
+            self.app.post_message(AddRaindrop())
+            return
+
+        # At this point we know it's saved *and* we have the fully-populated
+        # version of the raindrop data back with us. Let the user know and
+        # add it to our local copy.
+        self._data.add(added_raindrop)
+        self.populate_display()
+        self.query_one(RaindropsView).highlighted_raindrop = added_raindrop
+        self._new_raindrop_buffer = None
+        self.notify("Saved")
 
 
 ### main.py ends here
