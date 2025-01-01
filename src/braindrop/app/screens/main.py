@@ -172,7 +172,7 @@ class Main(Screen[None]):
         """Details of the Raindrop user."""
         self._data = LocalData(api)
         """The local copy of the Raindrop data."""
-        self._new_raindrop_buffer: Raindrop | None = None
+        self._new_raindrop_draft: Raindrop | None = None
         """Used to hold on to new Raindrop data until we know it's been added."""
         self._redownload_wiggle_room = 2
         """The number of seconds difference needs to exist to consider a full redownload."""
@@ -518,17 +518,17 @@ class Main(Screen[None]):
         """Add a new Raindrop."""
 
         # Get the details of the new Raindrop from the user.
-        self._new_raindrop_buffer = await self.app.push_screen_wait(
-            RaindropInput(self._api, self._data, self._new_raindrop_buffer)
+        self._new_raindrop_draft = await self.app.push_screen_wait(
+            RaindropInput(self._api, self._data, self._new_raindrop_draft)
         )
-        if self._new_raindrop_buffer is None:
+        if self._new_raindrop_draft is None:
             return
 
         # They've provided the new details, so now push them to the server.
         # In doing so get the full version of the data back from the server;
         # it's this that we'll actually add locally.
         try:
-            added_raindrop = await self._api.add_raindrop(self._new_raindrop_buffer)
+            added_raindrop = await self._api.add_raindrop(self._new_raindrop_draft)
         except API.Error as error:
             self.notify(
                 str(error),
@@ -538,16 +538,14 @@ class Main(Screen[None]):
             )
             return
 
+        # I don't think this should ever happen, if I'm to understand things
+        # correctly, but let's not let it slip by.
         if added_raindrop is None:
             self.notify(
                 "Raindrop.io did not confirm the save of the data, try again...",
                 title="Save not confirmed",
                 severity="warning",
             )
-            # Call this command again, the next time around we'll be using
-            # the saved buffer of new raindrop details so the user doesn't
-            # find themselves having to enter everything all over again.
-            self.app.post_message(AddRaindrop())
             return
 
         # At this point we know it's saved *and* we have the fully-populated
@@ -556,8 +554,13 @@ class Main(Screen[None]):
         self._data.add(added_raindrop)
         self.populate_display()
         self.query_one(RaindropsView).highlighted_raindrop = added_raindrop
-        self._new_raindrop_buffer = None
         self.notify("Saved")
+
+        # The two failure routes above will retain the data the user entered
+        # and will present it back again when they try and create a new
+        # raindrop. If we got this far everything has worked according to
+        # plan, so we don't need it any more.
+        self._new_raindrop_draft = None
 
 
 ### main.py ends here
