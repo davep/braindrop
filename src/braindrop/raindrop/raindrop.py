@@ -13,8 +13,8 @@ from typing import Any, Final, Literal, TypeAlias
 ##############################################################################
 # Local imports.
 from .collection import SpecialCollection
-from .parse_time import get_time
 from .tag import Tag
+from .time_tools import get_time, json_time
 
 ##############################################################################
 RaindropType: TypeAlias = Literal[
@@ -125,11 +125,11 @@ class Raindrop:
         return {
             "collection": {"$id": self.collection},
             "cover": self.cover,
-            "created": self.created,
+            "created": json_time(self.created),
             "domain": self.domain,
             "excerpt": self.excerpt,
             "note": self.note,
-            "lastUpdate": self.last_update,
+            "lastUpdate": json_time(self.last_update),
             "link": self.link,
             # media
             "tags": [str(tag) for tag in self.tags],
