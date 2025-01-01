@@ -62,12 +62,27 @@ class Raindrops:
         """The title for the group of Raindrops."""
         self._raindrops = [] if raindrops is None else list(raindrops)
         """The raindrops."""
+        self._index: dict[int, int] = {}
+        """The index of IDs to locations in the list."""
         self._tags = () if tags is None else tags
         """The list of tags that resulted in this Raindrop group."""
         self._search_text = () if search_text is None else search_text
         """The search text related to this Raindrop group."""
         self._source = source or self
         """The original source for the Raindrops."""
+        self._reindex()
+
+    def _reindex(self) -> Self:
+        """Reindex the raindrops.
+
+        Returns:
+            Self.
+        """
+        self._index = {
+            raindrop.identity: location
+            for location, raindrop in enumerate(self._raindrops)
+        }
+        return self
 
     def set_to(self, raindrops: Iterable[Raindrop]) -> Self:
         """Set the group to the given group of Raindrops.
@@ -79,7 +94,7 @@ class Raindrops:
             Self.
         """
         self._raindrops = list(raindrops)
-        return self
+        return self._reindex()
 
     def push(self, raindrop: Raindrop) -> Self:
         """Push a new Raindrop into the contained raindrops.
@@ -91,6 +106,18 @@ class Raindrops:
             Self.
         """
         self._raindrops.insert(0, raindrop)
+        return self._reindex()
+
+    def replace(self, raindrop: Raindrop) -> Self:
+        """Replace a raindrop with a new version.
+
+        Args:
+            raindrop: The raindrop to replace.
+
+        Returns:
+            Self.
+        """
+        self._raindrops[self._index[raindrop.identity]] = raindrop
         return self
 
     @property
@@ -405,6 +432,18 @@ class LocalData:
         """
         # Add the raindrop to the start of the list of Raindrops.
         self._all.push(raindrop)
+        return self.mark_downloaded().save()
+
+    def update(self, raindrop: Raindrop) -> Self:
+        """Update a raindrop in the local data.
+
+        Args:
+            raindrop: The raindrop to update.
+
+        Notes:
+            as a side-effect the data is saved to storage.
+        """
+        self._all.replace(raindrop)
         return self.mark_downloaded().save()
 
 

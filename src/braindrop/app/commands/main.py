@@ -11,6 +11,7 @@ from ..messages import (
     CompactMode,
     CopyLinkToClipboard,
     Details,
+    EditRaindrop,
     Escape,
     Help,
     Logout,
@@ -49,6 +50,7 @@ class MainCommands(CommandsProvider):
         yield CopyLinkToClipboard()
         yield Details()
         yield Escape()
+        yield EditRaindrop()
         yield Help()
         yield Logout()
         yield Quit()

@@ -203,4 +203,12 @@ class AddRaindrop(Command):
     SHOW_IN_FOOTER = False
 
 
+##############################################################################
+class EditRaindrop(Command):
+    """Edit the currently-highlighted raindrop"""
+
+    BINDING_KEY = "e"
+    SHOW_IN_FOOTER = False
+
+
 ### commands.py ends here
