@@ -4,9 +4,9 @@
 # Local imports.
 from .api import API
 from .collection import Collection, SpecialCollection
-from .parse_time import get_time
 from .raindrop import Raindrop, RaindropType
 from .tag import Tag, TagData
+from .time_tools import get_time
 from .user import Group, User
 
 ##############################################################################

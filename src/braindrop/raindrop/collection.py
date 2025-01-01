@@ -13,7 +13,7 @@ from typing import Any
 
 ##############################################################################
 # Local imports.
-from .parse_time import get_time
+from .time_tools import get_time
 
 
 ##############################################################################
