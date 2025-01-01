@@ -120,6 +120,18 @@ class API:
         """
         return await self._call(self._client.post, *path, **params)
 
+    async def _put(self, *path: str, **params: Any) -> str:
+        """Perform a PUT call against the Raindrop API.
+
+        Args:
+            path: The path for the API call.
+            params: The parameters for the call.
+
+        Returns:
+            The string result of the call.
+        """
+        return await self._call(self._client.put, *path, **params)
+
     async def _result_of(
         self,
         method: Callable[..., Awaitable[str]],
