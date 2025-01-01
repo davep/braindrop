@@ -74,7 +74,7 @@ class RaindropInput(ModalScreen[Raindrop | None]):
         """The Raindrop API."""
         self._data = data
         """The local raindrop data."""
-        self._raindrop = raindrop
+        self._raindrop = raindrop or Raindrop()
         """The raindrop to edit, or `None` if this is a new raindrop."""
 
     def compose(self) -> ComposeResult:
@@ -84,7 +84,9 @@ class RaindropInput(ModalScreen[Raindrop | None]):
             The content for the dialog.
         """
         with Vertical() as dialog:
-            dialog.border_title = f"{'New' if self._raindrop is None or self._raindrop.is_brand_new else 'Edit'} Raindrop"
+            dialog.border_title = (
+                f"{'New' if self._raindrop.is_brand_new else 'Edit'} Raindrop"
+            )
             yield Label("Title:")
             yield Input(
                 placeholder="Raindrop title",
@@ -181,7 +183,7 @@ class RaindropInput(ModalScreen[Raindrop | None]):
         """Save the raindrop data."""
         if self._all_looks_good():
             self.dismiss(
-                Raindrop(
+                self._raindrop.clone(
                     title=self.query_one("#title", Input).value,
                     excerpt=self.query_one("#excerpt", TextArea).text,
                     note=self.query_one("#note", TextArea).text,
