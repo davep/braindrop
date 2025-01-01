@@ -84,9 +84,7 @@ class RaindropInput(ModalScreen[Raindrop | None]):
             The content for the dialog.
         """
         with Vertical() as dialog:
-            dialog.border_title = (
-                f"{'New' if self._raindrop is None else 'Edit'} Raindrop"
-            )
+            dialog.border_title = f"{'New' if self._raindrop is None or self._raindrop.is_brand_new else 'Edit'} Raindrop"
             yield Label("Title:")
             yield Input(
                 placeholder="Raindrop title",
