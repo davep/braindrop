@@ -20,7 +20,7 @@ from textual.widgets import Button, Input, Label, TextArea
 
 ##############################################################################
 # Local imports.
-from ...raindrop import API, Raindrop, Tag
+from ...raindrop import API, Raindrop
 from ..data import LocalData
 
 
