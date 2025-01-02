@@ -1,5 +1,15 @@
 # Braindrop ChangeLog
 
+## Unreleased
+
+**Released: WiP**
+
+- Added the ability to add a raindrop.
+- Added the ability to edit a raindrop.
+- Added the ability to delete a raindrop.
+- Changed the redownload decision to work off last update rather than last
+  action.
+
 ## v0.0.2
 
 **Released: 2024-12-31**
