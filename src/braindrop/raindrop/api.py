@@ -295,7 +295,7 @@ class API:
         Args:
             raindrop: The raindrop to update.
 
-        Requests:
+        Returns:
             The updated raindrop data, or `None` if there was a problem.
 
         Raises:
