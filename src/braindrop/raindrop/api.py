@@ -76,7 +76,15 @@ class API:
         Returns:
             The text returned from the call.
         """
-        payload = {"params" if method == self._client.get else "json": params}
+        payload: dict[str, Any] = (
+            {
+                "json"
+                if method in (self._client.post, self._client.put)
+                else "params": params
+            }
+            if params
+            else {}
+        )
         try:
             response = await method(
                 self._api_url(*path),
@@ -147,7 +155,7 @@ class API:
     async def _result_of(
         self,
         method: Callable[..., Awaitable[str]],
-        value: str,
+        value: str | None,
         *path: str,
         **params: Any,
     ) -> tuple[bool, Any]:
@@ -164,9 +172,8 @@ class API:
         """
         result = loads(await method(*path, **params))
         return (
-            (result["result"], result[value])
-            if value in result
-            else (result[value], None)
+            result["result"],
+            result[value] if value is not None and value in result else None,
         )
 
     async def _items_of(
@@ -305,6 +312,28 @@ class API:
             self._put, "item", "raindrop", str(raindrop.identity), **raindrop.as_json
         )
         return Raindrop.from_json(resulting_raindrop) if result else None
+
+    async def remove_raindrop(self, raindrop: Raindrop) -> bool:
+        """Remove a raindrop.
+
+        Args:
+            raindrop: The raindrop to remove.
+
+        Returns:
+            `True` if the delete worked, `False` if not.
+
+        Raises:
+            RequestError: if there was a problem with the request.
+
+        Notes:
+            The Raindrop API itself will move the raindrop to the trash
+            folder if it isn't in trash; the raindrop being removed is in
+            trash it will be permanently deleted.
+        """
+        result, _ = await self._result_of(
+            self._delete, None, "raindrop", str(raindrop.identity)
+        )
+        return result
 
 
 ### api.py ends here
