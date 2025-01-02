@@ -2,6 +2,7 @@
 
 ##############################################################################
 # Python imports.
+from typing import Iterator
 from urllib.parse import urlparse
 
 ##############################################################################
@@ -16,11 +17,11 @@ from textual.app import ComposeResult
 from textual.containers import Horizontal, Vertical
 from textual.screen import ModalScreen
 from textual.validation import Length, ValidationResult
-from textual.widgets import Button, Input, Label, TextArea
+from textual.widgets import Button, Input, Label, Select, TextArea
 
 ##############################################################################
 # Local imports.
-from ...raindrop import API, Raindrop
+from ...raindrop import API, Collection, Raindrop, SpecialCollection
 from ..data import LocalData
 
 
@@ -77,6 +78,39 @@ class RaindropInput(ModalScreen[Raindrop | None]):
         self._raindrop = raindrop or Raindrop()
         """The raindrop to edit, or `None` if this is a new raindrop."""
 
+    def _selectable_child_collections_of(
+        self, parent: Collection, indent: int = 0
+    ) -> Iterator[tuple[str, int]]:
+        """Get child collections of the given collection for a `Select`.
+
+        Args:
+            parent: The parent collection to get the children for.
+            indent: The indent level.
+
+        Yields:
+            The title of the collection and its identity.
+        """
+        indent += 1
+        for collection in self._data.collections:
+            if collection.parent == parent.identity:
+                yield f"{'  ' * indent}{collection.title}", collection.identity
+                yield from self._selectable_child_collections_of(collection, indent)
+
+    @property
+    def _selectable_collections(self) -> Iterator[tuple[str, int]]:
+        """An iterator of options for the collections `Select` widget.
+
+        Each item in the iteration is a collection title and its identity.
+        """
+        yield SpecialCollection.UNSORTED().title, SpecialCollection.UNSORTED().identity
+        if self._data.user is not None:
+            for group in self._data.user.groups:
+                for collection_id in group.collections:
+                    collection = self._data.collection(collection_id)
+                    yield collection.title, collection.identity
+                    yield from self._selectable_child_collections_of(collection)
+        yield SpecialCollection.TRASH().title, SpecialCollection.TRASH().identity
+
     def compose(self) -> ComposeResult:
         """Compose the dialog.
 
@@ -103,7 +137,13 @@ class RaindropInput(ModalScreen[Raindrop | None]):
                 id="url",
                 validators=[Length(1, failure_description="A link is required")],
             )
-            # TODO Collection
+            yield Label("Collection:")
+            yield Select[int](
+                self._selectable_collections,
+                prompt="The raindrop's collection",
+                allow_blank=False,
+                id="collection",
+            )
             yield Label("Tags:")
             yield Input(placeholder="Raindrop tags (comma separated)", id="tags")
             # TODO: Tag suggestions
@@ -146,6 +186,7 @@ class RaindropInput(ModalScreen[Raindrop | None]):
             self.query_one("#excerpt", TextArea).text = self._raindrop.excerpt
             self.query_one("#note", TextArea).text = self._raindrop.note
             self.query_one("#url", Input).value = self._raindrop.link
+            self.query_one("#collection", Select).value = self._raindrop.collection
             self.query_one("#tags", Input).value = Raindrop.tags_to_string(
                 self._raindrop.tags
             )
@@ -193,6 +234,7 @@ class RaindropInput(ModalScreen[Raindrop | None]):
                     excerpt=self.query_one("#excerpt", TextArea).text,
                     note=self.query_one("#note", TextArea).text,
                     link=self.query_one("#url", Input).value,
+                    collection=self.query_one("#collection", Select).value,
                     tags=Raindrop.string_to_tags(self.query_one("#tags", Input).value),
                     # TODO: More
                 )
