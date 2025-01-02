@@ -32,7 +32,7 @@ class RaindropInput(ModalScreen[Raindrop | None]):
     RaindropInput {
         align: center middle;
 
-        Vertical {
+        &> Vertical {
             width: 60%;
             height: auto;
             background: $panel;
