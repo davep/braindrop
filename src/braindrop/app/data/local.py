@@ -458,5 +458,22 @@ class LocalData:
         self._all.replace(raindrop)
         return self.mark_downloaded().save()
 
+    def delete(self, raindrop: Raindrop) -> Self:
+        """Delete a raindrop in the local data.
+
+        Args:
+            raindrop: The raindrop to delete.
+
+        Notes:
+            This method mimics out raindrop.io works when you remove a
+            raindrop: if the raindrop isn't in trash, it is moved to trash;
+            if it is in trash it is fully removed.
+
+            As a side-effect the data is saved to storage.
+        """
+        self._trash.push(raindrop)
+        self._all.remove(raindrop)
+        return self.mark_downloaded().save()
+
 
 ### local.py ends here
