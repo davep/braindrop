@@ -233,9 +233,7 @@ class Main(Screen[None]):
             self.notify("No local data found; checking in with the server.")
         elif (
             self._user.last_update is not None
-            and abs(
-                (self._user.last_update - self._data.last_downloaded).total_seconds()
-            )
+            and (self._user.last_update - self._data.last_downloaded).total_seconds()
             > self._redownload_wiggle_room
         ):
             # NOTE: for this check, I'm still undecided if I should be using
