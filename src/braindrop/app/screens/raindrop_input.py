@@ -105,7 +105,7 @@ class RaindropInput(ModalScreen[Raindrop | None]):
             )
             # TODO Collection
             yield Label("Tags:")
-            yield Input(placeholder="Raindrop tags (space separated)", id="tags")
+            yield Input(placeholder="Raindrop tags (comma separated)", id="tags")
             # TODO: Tag suggestions
             with Horizontal(id="buttons"):
                 yield Button("Save [dim]\\[F2][/]", id="save", variant="success")
@@ -146,8 +146,8 @@ class RaindropInput(ModalScreen[Raindrop | None]):
             self.query_one("#excerpt", TextArea).text = self._raindrop.excerpt
             self.query_one("#note", TextArea).text = self._raindrop.note
             self.query_one("#url", Input).value = self._raindrop.link
-            self.query_one("#tags", Input).value = " ".join(
-                str(tag) for tag in self._raindrop.tags
+            self.query_one("#tags", Input).value = Raindrop.tags_to_string(
+                self._raindrop.tags
             )
         if not self._raindrop.link:
             self._suggest_link()
@@ -193,9 +193,7 @@ class RaindropInput(ModalScreen[Raindrop | None]):
                     excerpt=self.query_one("#excerpt", TextArea).text,
                     note=self.query_one("#note", TextArea).text,
                     link=self.query_one("#url", Input).value,
-                    tags=[
-                        Tag(tag) for tag in self.query_one("#tags", Input).value.split()
-                    ],
+                    tags=Raindrop.string_to_tags(self.query_one("#tags", Input).value),
                     # TODO: More
                 )
             )
