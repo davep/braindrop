@@ -199,6 +199,10 @@ class Raindrops:
             self._source,
         )
 
+    def __contains__(self, raindrop: Raindrop) -> bool:
+        """Is the given raindrop in here?"""
+        return raindrop.identity in self._index
+
     def __iter__(self) -> Iterator[Raindrop]:
         return iter(self._raindrops)
 

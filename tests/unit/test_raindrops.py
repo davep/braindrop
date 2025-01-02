@@ -101,4 +101,18 @@ def test_unfiltering() -> None:
     assert list(filters_applied.unfiltered) == originals
 
 
+##############################################################################
+def test_raindrop_in_raindrops() -> None:
+    """We should be able to check if a raindrop is in a Raindrops instance."""
+    raindrop = Raindrop(identity=(find_me := 42))
+    is_in = Raindrops(
+        raindrops=[Raindrop(identity=identity) for identity in range(find_me)]
+    ).push(raindrop)
+    is_not_in = Raindrops(
+        raindrops=[Raindrop(identity=identity) for identity in range(find_me)]
+    )
+    assert raindrop in is_in
+    assert raindrop not in is_not_in
+
+
 ### test_raindrops.py ends here
