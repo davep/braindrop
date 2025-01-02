@@ -656,7 +656,7 @@ class Main(Screen[None]):
             return
 
         # Reflect the change locally.
-        self._locally_refresh(self._data.update, raindrop, "Saved")
+        self._locally_refresh(self._data.update, updated_raindrop, "Saved")
 
         # We're safe to drop the draft now.
         self._draft_raindrop = None
