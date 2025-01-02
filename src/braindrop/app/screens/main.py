@@ -576,11 +576,9 @@ class Main(Screen[None]):
             local_save(raindrop)
             # Get the navigation bar to refresh its content.
             self.query_one(Navigation).data = self._data
-            # Now update the active collection, forcing a reacquire of the
-            # raindrops and then reapplying any filtering.
-            self.active_collection = self.active_collection.refilter(
-                self._data.in_collection(self.active_collection.originally_from)
-            )
+            # Remake the active collection from the new data, keeping all
+            # filtering intact.
+            self.active_collection = self._data.rebuild(self.active_collection)
             # Let the user know what happened.
             self.notify(confirmation)
 

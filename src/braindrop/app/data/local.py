@@ -345,6 +345,17 @@ class LocalData:
                     root_collection=collection,
                 )
 
+    def rebuild(self, raindrops: Raindrops) -> Raindrops:
+        """Rebuild the given Raindrops from the current data.
+
+        Args:
+            raindrops: The `Raindrops` instance to rebuild.
+
+        Returns:
+            The `Raindrops` instance remade with the current data.
+        """
+        return raindrops.refilter(self.in_collection(raindrops.originally_from))
+
     def collection_size(self, collection: Collection) -> int:
         """Get the size of a given collection.
 
