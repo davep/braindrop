@@ -508,7 +508,18 @@ class LocalData:
         Notes:
             As a side-effect the data is saved to storage.
         """
-        self._all.replace(raindrop)
+        if raindrop in self._all and raindrop.collection == SpecialCollection.TRASH:
+            # Looks like the raindrop is currently not in trash, but the
+            # update puts it there; so trash it.
+            return self.delete(raindrop)
+        elif raindrop in self._trash and raindrop.collection != SpecialCollection.TRASH:
+            # Looks like the raindrop is currently in trash, and the update
+            # moves it out of there; so restore it.
+            self._trash.remove(raindrop)
+            self._all.push(raindrop)
+        else:
+            # Just a normal update.
+            self._all.replace(raindrop)
         return self.mark_downloaded().save()
 
     def delete(self, raindrop: Raindrop) -> Self:
@@ -525,7 +536,7 @@ class LocalData:
             As a side-effect the data is saved to storage.
         """
         if raindrop in self._all:
-            self._trash.push(raindrop)
+            self._trash.push(raindrop.edit(collection=SpecialCollection.TRASH))
             self._all.remove(raindrop)
         else:
             self._trash.remove(raindrop)
