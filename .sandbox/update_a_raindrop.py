@@ -2,6 +2,8 @@
 
 from asyncio import run
 
+from rich.pretty import pprint as print
+
 from braindrop.app.data import token_file
 from braindrop.raindrop import API, Raindrop
 
@@ -15,7 +17,12 @@ async def make_it_rain() -> None:
     )
     if raindrop:
         print(
-            await api.update_raindrop(raindrop.edit(note="This was added as an edit"))
+            await api.update_raindrop(
+                raindrop.edit(
+                    note="This was added as an edit",
+                    collection=46742381,
+                ),
+            )
         )
     else:
         print("Add didn't happen so edit can't happen.")
