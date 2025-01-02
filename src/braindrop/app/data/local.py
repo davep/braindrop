@@ -51,12 +51,17 @@ class Raindrops:
         tags: Sequence[Tag] | None = None,
         search_text: tuple[str, ...] | None = None,
         source: Raindrops | None = None,
+        root_collection: Collection | None = None,
     ) -> None:
         """Initialise the Raindrop grouping.
 
         Args:
             title: The title for the Raindrop grouping.
             raindrops: The raindrops to hold in the group.
+            tags: Any tags associated with the given raindrops.
+            search_text: Any search text associated with the given raindrops.
+            source: The source data for the raindrops.
+            root_collection: The root collection for the raindrops.
         """
         self._title = title
         """The title for the group of Raindrops."""
@@ -70,6 +75,10 @@ class Raindrops:
         """The search text related to this Raindrop group."""
         self._source = source or self
         """The original source for the Raindrops."""
+        self._root_collection = (
+            SpecialCollection.ALL() if root_collection is None else root_collection
+        )
+        """The collection that was the root."""
         self._reindex()
 
     def _reindex(self) -> Self:
@@ -95,6 +104,11 @@ class Raindrops:
         """
         self._raindrops = list(raindrops)
         return self._reindex()
+
+    @property
+    def originally_from(self) -> Collection:
+        """The collection these raindrops originally came from."""
+        return self._root_collection
 
     def push(self, raindrop: Raindrop) -> Self:
         """Push a new Raindrop into the contained raindrops.
@@ -180,6 +194,7 @@ class Raindrops:
             tuple(set((*self._tags, *tags))),
             self._search_text,
             self._source,
+            self._root_collection,
         )
 
     def containing(self, search_text: str) -> Raindrops:
@@ -197,7 +212,24 @@ class Raindrops:
             self._tags,
             (*self._search_text, search_text),
             self._source,
+            self._root_collection,
         )
+
+    def refilter(self, raindrops: Raindrops | None = None) -> Raindrops:
+        """Reapply any filtering.
+
+        Args:
+            raindrops: An optional list of raindrops to apply to.
+
+        Returns:
+            The given raindrops with this object's filters applied.
+        """
+        raindrops = (self if raindrops is None else raindrops).unfiltered.tagged(
+            *self._tags
+        )
+        for search_text in self._search_text:
+            raindrops = raindrops.containing(search_text)
+        return raindrops
 
     def __contains__(self, raindrop: Raindrop) -> bool:
         """Is the given raindrop in here?"""
@@ -226,7 +258,9 @@ class LocalData:
         """The details of the user who is the owner of the Raindrops."""
         self._all: Raindrops = Raindrops("All")
         """All non-trashed Raindrops."""
-        self._trash: Raindrops = Raindrops("Trash")
+        self._trash: Raindrops = Raindrops(
+            "Trash", root_collection=SpecialCollection.TRASH()
+        )
         """All Raindrops in trash."""
         self._collections: dict[int, Collection] = {}
         """An index of all of the Raindrops we know about."""
@@ -254,6 +288,7 @@ class LocalData:
         return Raindrops(
             "Unsorted",
             (raindrop for raindrop in self._all if raindrop.is_unsorted),
+            root_collection=SpecialCollection.UNSORTED(),
         )
 
     @property
@@ -262,6 +297,7 @@ class LocalData:
         return Raindrops(
             "Untagged",
             (raindrop for raindrop in self._all if not raindrop.tags),
+            root_collection=SpecialCollection.UNTAGGED(),
         )
 
     @property
@@ -270,6 +306,7 @@ class LocalData:
         return Raindrops(
             "Broken",
             (raindrop for raindrop in self._all if raindrop.broken),
+            root_collection=SpecialCollection.BROKEN(),
         )
 
     @property
@@ -305,6 +342,7 @@ class LocalData:
                         for raindrop in self._all
                         if raindrop.collection == user_collection
                     ],
+                    root_collection=collection,
                 )
 
     def collection_size(self, collection: Collection) -> int:

@@ -2,6 +2,7 @@
 
 ##############################################################################
 # Python imports.
+from typing import Callable
 from webbrowser import open as open_url
 
 ##############################################################################
@@ -22,6 +23,8 @@ from textual.widgets import Footer, Header
 ##############################################################################
 # Typing extension imports.
 from typing_extensions import TypeIs
+
+from braindrop.app.widgets import navigation
 
 ##############################################################################
 # Local imports.
@@ -555,6 +558,32 @@ class Main(Screen[None]):
             return True
         return False
 
+    def _locally_refresh(
+        self,
+        local_save: Callable[[Raindrop], LocalData],
+        raindrop: Raindrop,
+        confirmation: str,
+    ) -> None:
+        """Refresh the local state.
+
+        Args:
+            local_save: The callable that locally saves the change.
+            raindrop: The raindrop causing the refresh.
+            confirmation: The message to show the user.
+        """
+        with self.query_one(Navigation).preserved_highlight:
+            # Ensure local storage is updated.
+            local_save(raindrop)
+            # Get the navigation bar to refresh its content.
+            self.query_one(Navigation).data = self._data
+            # Now update the active collection, forcing a reacquire of the
+            # raindrops and then reapplying any filtering.
+            self.active_collection = self.active_collection.refilter(
+                self._data.in_collection(self.active_collection.originally_from)
+            )
+            # Let the user know what happened.
+            self.notify(confirmation)
+
     @on(AddRaindrop)
     @work
     async def action_add_raindrop_command(self) -> None:
@@ -585,18 +614,10 @@ class Main(Screen[None]):
         if self._was_not_saved(added_raindrop):
             return
 
-        # At this point we know it's saved *and* we have the fully-populated
-        # version of the raindrop data back with us. Let the user know and
-        # add it to our local copy.
-        self._data.add(added_raindrop)
-        self.populate_display()
-        self.query_one(RaindropsView).highlighted_raindrop = added_raindrop
-        self.notify("Saved")
+        # Reflect the change locally.
+        self._locally_refresh(self._data.add, added_raindrop, "Saved")
 
-        # The two failure routes above will retain the data the user entered
-        # and will present it back again when they try and create a new
-        # raindrop. If we got this far everything has worked according to
-        # plan, so we don't need it any more.
+        # We're safe to drop the draft now.
         self._draft_raindrop = None
 
     @on(EditRaindrop)
@@ -640,12 +661,8 @@ class Main(Screen[None]):
         if self._was_not_saved(updated_raindrop):
             return
 
-        # At this point we know the edit is saved. Let the user know and
-        # update our local copy.
-        self._data.update(updated_raindrop)
-        self.populate_display()
-        self.query_one(RaindropsView).highlighted_raindrop = updated_raindrop
-        self.notify("Saved")
+        # Reflect the change locally.
+        self._locally_refresh(self._data.update, raindrop, "Saved")
 
         # We're safe to drop the draft now.
         self._draft_raindrop = None
@@ -684,9 +701,7 @@ class Main(Screen[None]):
 
         # Act on how that went down.
         if deleted:
-            self._data.delete(raindrop)
-            self.populate_display()
-            self.notify("Deleted")
+            self._locally_refresh(self._data.delete, raindrop, "Deleted")
         else:
             self.notify(
                 "Raindrop.io reported that the delete operation failed.",
