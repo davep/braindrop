@@ -163,7 +163,7 @@ class Navigation(OptionListEx):
     as well as pick tags to filter the view with.
     """
 
-    data: var[LocalData | None] = var(None)
+    data: var[LocalData | None] = var(None, always_update=True)
     """Holds a reference to the Raindrop data we're going to handle."""
 
     active_collection: var[Raindrops] = var(Raindrops(), always_update=True)
@@ -344,6 +344,7 @@ class Navigation(OptionListEx):
     def watch_data(self) -> None:
         """Handle the data being changed."""
         self._main_navigation()
+        self.active_collection = self.active_collection
 
     def watch_active_collection(self) -> None:
         """React to the currently-active collection being changed."""
