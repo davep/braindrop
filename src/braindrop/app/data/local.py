@@ -120,6 +120,18 @@ class Raindrops:
         self._raindrops[self._index[raindrop.identity]] = raindrop
         return self
 
+    def remove(self, raindrop: Raindrop) -> Self:
+        """Remove a raindrop.
+
+        Args:
+            raindrop: The raindrop to remove.
+
+        Returns:
+            Self.
+        """
+        del self._raindrops[self._index[raindrop.identity]]
+        return self._reindex()
+
     @property
     def title(self) -> str:
         """The title of the group."""
