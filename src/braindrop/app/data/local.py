@@ -475,8 +475,11 @@ class LocalData:
 
             As a side-effect the data is saved to storage.
         """
-        self._trash.push(raindrop)
-        self._all.remove(raindrop)
+        if raindrop in self._all:
+            self._trash.push(raindrop)
+            self._all.remove(raindrop)
+        else:
+            self._trash.remove(raindrop)
         return self.mark_downloaded().save()
 
 
