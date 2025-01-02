@@ -40,7 +40,11 @@ class RaindropInput(ModalScreen[Raindrop | None]):
             border: panel $border;
         }
 
-        TextArea {
+        #excerpt {
+            height: 5;
+        }
+
+        #note {
             height: 10;
         }
 
