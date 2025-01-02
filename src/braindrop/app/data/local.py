@@ -441,7 +441,7 @@ class LocalData:
             raindrop: The raindrop to update.
 
         Notes:
-            as a side-effect the data is saved to storage.
+            As a side-effect the data is saved to storage.
         """
         self._all.replace(raindrop)
         return self.mark_downloaded().save()
