@@ -8,7 +8,7 @@ from __future__ import annotations
 # Python imports.
 from dataclasses import dataclass, field, replace
 from datetime import datetime
-from typing import Any, Final, Literal, TypeAlias
+from typing import Any, Final, Iterable, Literal, TypeAlias
 
 ##############################################################################
 # Local imports.
@@ -184,6 +184,44 @@ class Raindrop:
             f"{self.excerpt.casefold()} {self.title.casefold()} {self.note.casefold()} "
             f"{' '.join(str(tag) for tag in self.tags).casefold()}"
         )
+
+    @staticmethod
+    def tags_to_string(tags: Iterable[Tag]) -> str:
+        """Convert a sequence of tags to a string.
+
+        This method should be used when you wish to create a single string
+        that can be edited in something like an `Input` field.
+
+        Args:
+            tags: The sequence of tags to convert.
+
+        Returns:
+            A comma-separated string of tags.
+
+        Notes:
+            The resulting string will ensure that duplicate tags are
+            stripped and that the order is natural sort order.
+        """
+        return ", ".join(str(tag) for tag in sorted(set(tags)))
+
+    @staticmethod
+    def string_to_tags(tags: str) -> list[Tag]:
+        """Convert a string of tags into a list of tags.
+
+        This method should be used when you have a comma-separated string of
+        tags and want to turn it into a list of `Tag` objects.
+
+        Args:
+            tags: The tags in a string.
+
+        Returns:
+            A list of `Tag` objects.
+
+        Notes:
+            This method guarantees that there will be no repeats of a tag,
+            even if the input string has repeats.
+        """
+        return sorted({Tag(tag.strip()) for tag in tags.split(",") if tag.strip()})
 
 
 ### raindrop.py ends here
