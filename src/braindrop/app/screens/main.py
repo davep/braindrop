@@ -24,8 +24,6 @@ from textual.widgets import Footer, Header
 # Typing extension imports.
 from typing_extensions import TypeIs
 
-from braindrop.app.widgets import navigation
-
 ##############################################################################
 # Local imports.
 from ... import __version__
