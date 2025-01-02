@@ -10,6 +10,7 @@ from ..messages import (
     ClearFilters,
     CompactMode,
     CopyLinkToClipboard,
+    DeleteRaindrop,
     Details,
     EditRaindrop,
     Escape,
@@ -48,6 +49,7 @@ class MainCommands(CommandsProvider):
         yield ClearFilters()
         yield CompactMode()
         yield CopyLinkToClipboard()
+        yield DeleteRaindrop()
         yield Details()
         yield Escape()
         yield EditRaindrop()

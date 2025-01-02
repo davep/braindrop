@@ -45,6 +45,7 @@ from ..messages import (
     Command,
     CompactMode,
     CopyLinkToClipboard,
+    DeleteRaindrop,
     Details,
     EditRaindrop,
     Escape,
@@ -145,6 +146,7 @@ class Main(Screen[None]):
         CheckTheWaybackMachine,
         ClearFilters,
         CopyLinkToClipboard,
+        DeleteRaindrop,
         EditRaindrop,
         Escape,
         Logout,
@@ -647,6 +649,51 @@ class Main(Screen[None]):
 
         # We're safe to drop the draft now.
         self._draft_raindrop = None
+
+    @on(DeleteRaindrop)
+    @work
+    async def action_delete_raindrop_command(self) -> None:
+        """Delete the currently-highlighted raindrop."""
+
+        # Get the highlighted raindrop, or GTFO if we're somehow in here
+        # when nothing is highlighted.
+        if (raindrop := self._current_raindrop("delete")) is None:
+            return
+
+        # Check the user actually wants to do this.
+        if not await self.app.push_screen_wait(
+            Confirm(
+                "Delete Raindrop",
+                "Are you sure you want to delete the currently-highlighted Raindrop?",
+            )
+        ):
+            return
+
+        # We know the raindrop, we know the user wants to nuke it. So be
+        # it...
+        try:
+            deleted = await self._api.remove_raindrop(raindrop)
+        except API.Error as error:
+            self.notify(
+                str(error),
+                title="Error deleting the Raindrop",
+                severity="error",
+                timeout=8,
+            )
+            return
+
+        # Act on how that went down.
+        if deleted:
+            self._data.delete(raindrop)
+            self.populate_display()
+            self.notify("Deleted")
+        else:
+            self.notify(
+                "Raindrop.io reported that the delete operation failed.",
+                title="Failed to delete",
+                severity="error",
+                timeout=8,
+            )
 
 
 ### main.py ends here

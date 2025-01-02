@@ -211,4 +211,12 @@ class EditRaindrop(Command):
     SHOW_IN_FOOTER = False
 
 
+##############################################################################
+class DeleteRaindrop(Command):
+    """Delete the currently-highlighted raindrop"""
+
+    BINDING_KEY = "d, delete"
+    SHOW_IN_FOOTER = False
+
+
 ### commands.py ends here
