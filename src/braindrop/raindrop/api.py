@@ -132,6 +132,18 @@ class API:
         """
         return await self._call(self._client.put, *path, **params)
 
+    async def _delete(self, *path: str, **params: Any) -> str:
+        """Perform a DELETE call against the Raindrop API.
+
+        Args:
+            path: The path for the API call.
+            params: The parameters for the call.
+
+        Returns:
+            The string result of the call.
+        """
+        return await self._call(self._client.delete, *path, **params)
+
     async def _result_of(
         self,
         method: Callable[..., Awaitable[str]],
