@@ -14,6 +14,7 @@ from httpx import AsyncClient, HTTPStatusError, RequestError, Response
 # Local imports.
 from .collection import Collection, SpecialCollection
 from .raindrop import Raindrop
+from .suggestions import Suggestions
 from .tag import TagData
 from .user import User
 
@@ -334,6 +335,29 @@ class API:
             self._delete, None, "raindrop", str(raindrop.identity)
         )
         return result
+
+    async def suggestions_for(self, link: Raindrop | str) -> Suggestions:
+        """Get suggestions for a link.
+
+        Args:
+            link: The link to get suggestions for.
+
+        Returns:
+            The suggestions for the link.
+
+        Raises:
+            RequestError: If there was a problem with the request.
+        """
+        if isinstance(link, Raindrop):
+            getter = self._result_of(
+                self._get, "item", "raindrop", str(link.identity), "suggest"
+            )
+        else:
+            getter = self._result_of(
+                self._post, "item", "raindrop", "suggest", link=link
+            )
+        _, suggestions = await getter
+        return Suggestions.from_json(suggestions)
 
 
 ### api.py ends here

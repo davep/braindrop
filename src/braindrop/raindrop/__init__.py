@@ -5,6 +5,7 @@
 from .api import API
 from .collection import Collection, SpecialCollection
 from .raindrop import Raindrop, RaindropType
+from .suggestions import Suggestions
 from .tag import Tag, TagData
 from .time_tools import get_time
 from .user import Group, User
@@ -19,6 +20,7 @@ __all__ = [
     "Raindrop",
     "RaindropType",
     "SpecialCollection",
+    "Suggestions",
     "Tag",
     "TagData",
     "User",
