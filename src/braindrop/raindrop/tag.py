@@ -74,6 +74,10 @@ class Tag:
         """
         return hash(self.__tag.casefold())
 
+    def __len__(self) -> int:
+        """The length of the tag."""
+        return len(self.__tag)
+
 
 ##############################################################################
 @dataclass(frozen=True)

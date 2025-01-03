@@ -59,4 +59,18 @@ def test_sort_tags() -> None:
     assert sorted(source) == ["a", "A", "b", "c"]
 
 
+##############################################################################
+@pytest.mark.parametrize("string", ("", "1"))
+def test_tag_langth(string: str) -> None:
+    """We should be able to get the len of a tag."""
+    assert len(Tag(string)) == len(string)
+
+
+##############################################################################
+@pytest.mark.parametrize("string, expected", (("", False), ("1", True)))
+def test_tag_as_bool(string: str, expected: bool) -> None:
+    """We should be able to treat a tag as a bool, in respect to its length."""
+    assert bool(Tag(string)) is expected
+
+
 ### test_tags.py ends here
