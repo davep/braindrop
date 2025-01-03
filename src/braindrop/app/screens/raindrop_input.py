@@ -152,7 +152,7 @@ class RaindropInput(ModalScreen[Raindrop | None]):
             yield Label("Tags:")
             yield Input(
                 placeholder=f"Raindrop tags ({Raindrop.TAG_STRING_SEPARATOR_TITLE} separated)",
-                suggester=SuggestTags(tag.tag for tag in self._data.all.tags),
+                suggester=SuggestTags(self._data.all.tags),
                 id="tags",
             )
             # TODO: Tag suggestions
