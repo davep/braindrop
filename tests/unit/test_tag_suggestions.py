@@ -48,7 +48,6 @@ async def test_no_suggestion_when_no_next_tag(
 ##############################################################################
 async def test_no_repeat_suggestion(suggest_tags: SuggestTags) -> None:
     """The same tag should not be suggested once it's in the value."""
-    print(f"{TAGS['a']}, a")
     assert await suggest_tags.get_suggestion(f"{TAGS['a']}, a") is None
 
 
