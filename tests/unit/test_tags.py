@@ -34,6 +34,7 @@ def test_tag_vs_str_equality(tag: str, string: str) -> None:
 def test_tag_vs_tag_equality(tag0: str, tag1: str) -> None:
     """A `Tag` should be able to compare against another `Tag`."""
     assert Tag(tag0) == Tag(tag1)
+    assert Tag(Tag(tag0)) == Tag(Tag(tag1))
 
 
 ##############################################################################

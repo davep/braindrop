@@ -16,13 +16,13 @@ from typing import Any, Callable
 class Tag:
     """A class for holding a tag."""
 
-    def __init__(self, tag: str) -> None:
+    def __init__(self, tag: str | Tag) -> None:
         """Initialise the object.
 
         Args:
             tag: The tag to hold.
         """
-        self.__tag = tag
+        self.__tag = str(tag)
 
     def __repr__(self) -> str:
         """The representation of the tag."""
