@@ -59,4 +59,19 @@ def test_make_tag_list_squishes_duplicates_including_case() -> None:
     assert Raindrop.string_to_tags(",,a,,,A,,a,A,, b,,,") == target
 
 
+##############################################################################
+@pytest.mark.parametrize(
+    "string",
+    (
+        "a,A,b,B,a,a",
+        "A,A,B,B,A,A",
+        "a,,A,b,,B,,a,,a,,",
+        "a , , A , b , , B , , a , , a , , ",
+    ),
+)
+def test_make_raw_tag_list(string: str) -> None:
+    target = [Tag("a"), Tag("A"), Tag("b"), Tag("B"), Tag("a"), Tag("A")]
+    assert Raindrop.string_to_raw_tags(string) == target
+
+
 ### test_raindrop.py ends here

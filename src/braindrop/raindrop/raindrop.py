@@ -213,6 +213,26 @@ class Raindrop:
         )
 
     @classmethod
+    def string_to_raw_tags(cls, tags: str) -> list[Tag]:
+        """Convert a string of tags into a list of tags.
+
+        Args:
+            tags: The tags in a string.
+
+        Returns:
+            A list of `Tag` objects.
+
+        Notes:
+            Unlike `string_to_tags` this method keeps the order of the tags
+            in the string and also keeps any duplicates.
+        """
+        return [
+            Tag(tag.strip())
+            for tag in tags.split(cls.TAG_STRING_SEPARATOR)
+            if tag.strip()
+        ]
+
+    @classmethod
     def string_to_tags(cls, tags: str) -> list[Tag]:
         """Convert a string of tags into a list of tags.
 
@@ -229,13 +249,7 @@ class Raindrop:
             This method guarantees that there will be no repeats of a tag,
             even if the input string has repeats.
         """
-        return sorted(
-            {
-                Tag(tag.strip())
-                for tag in tags.split(cls.TAG_STRING_SEPARATOR)
-                if tag.strip()
-            }
-        )
+        return sorted(set(cls.string_to_raw_tags(tags)))
 
 
 ### raindrop.py ends here
