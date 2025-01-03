@@ -306,7 +306,7 @@ class API:
             The updated raindrop data, or `None` if there was a problem.
 
         Raises:
-            RequestError: if there was a problem with the request.
+            RequestError: If there was a problem with the request.
         """
         result, resulting_raindrop = await self._result_of(
             self._put, "item", "raindrop", str(raindrop.identity), **raindrop.as_json
@@ -323,7 +323,7 @@ class API:
             `True` if the delete worked, `False` if not.
 
         Raises:
-            RequestError: if there was a problem with the request.
+            RequestError: If there was a problem with the request.
 
         Notes:
             The Raindrop API itself will move the raindrop to the trash
