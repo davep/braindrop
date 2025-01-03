@@ -51,23 +51,47 @@ class Raindrops:
         tags: Sequence[Tag] | None = None,
         search_text: tuple[str, ...] | None = None,
         source: Raindrops | None = None,
+        root_collection: Collection | None = None,
     ) -> None:
         """Initialise the Raindrop grouping.
 
         Args:
             title: The title for the Raindrop grouping.
             raindrops: The raindrops to hold in the group.
+            tags: Any tags associated with the given raindrops.
+            search_text: Any search text associated with the given raindrops.
+            source: The source data for the raindrops.
+            root_collection: The root collection for the raindrops.
         """
         self._title = title
         """The title for the group of Raindrops."""
         self._raindrops = [] if raindrops is None else list(raindrops)
         """The raindrops."""
+        self._index: dict[int, int] = {}
+        """The index of IDs to locations in the list."""
         self._tags = () if tags is None else tags
         """The list of tags that resulted in this Raindrop group."""
         self._search_text = () if search_text is None else search_text
         """The search text related to this Raindrop group."""
         self._source = source or self
         """The original source for the Raindrops."""
+        self._root_collection = (
+            SpecialCollection.ALL() if root_collection is None else root_collection
+        )
+        """The collection that was the root."""
+        self._reindex()
+
+    def _reindex(self) -> Self:
+        """Reindex the raindrops.
+
+        Returns:
+            Self.
+        """
+        self._index = {
+            raindrop.identity: location
+            for location, raindrop in enumerate(self._raindrops)
+        }
+        return self
 
     def set_to(self, raindrops: Iterable[Raindrop]) -> Self:
         """Set the group to the given group of Raindrops.
@@ -79,7 +103,48 @@ class Raindrops:
             Self.
         """
         self._raindrops = list(raindrops)
+        return self._reindex()
+
+    @property
+    def originally_from(self) -> Collection:
+        """The collection these raindrops originally came from."""
+        return self._root_collection
+
+    def push(self, raindrop: Raindrop) -> Self:
+        """Push a new Raindrop into the contained raindrops.
+
+        Args:
+            raindrop: The Raindrop to push.
+
+        Returns:
+            Self.
+        """
+        self._raindrops.insert(0, raindrop)
+        return self._reindex()
+
+    def replace(self, raindrop: Raindrop) -> Self:
+        """Replace a raindrop with a new version.
+
+        Args:
+            raindrop: The raindrop to replace.
+
+        Returns:
+            Self.
+        """
+        self._raindrops[self._index[raindrop.identity]] = raindrop
         return self
+
+    def remove(self, raindrop: Raindrop) -> Self:
+        """Remove a raindrop.
+
+        Args:
+            raindrop: The raindrop to remove.
+
+        Returns:
+            Self.
+        """
+        del self._raindrops[self._index[raindrop.identity]]
+        return self._reindex()
 
     @property
     def title(self) -> str:
@@ -129,6 +194,7 @@ class Raindrops:
             tuple(set((*self._tags, *tags))),
             self._search_text,
             self._source,
+            self._root_collection,
         )
 
     def containing(self, search_text: str) -> Raindrops:
@@ -146,7 +212,28 @@ class Raindrops:
             self._tags,
             (*self._search_text, search_text),
             self._source,
+            self._root_collection,
         )
+
+    def refilter(self, raindrops: Raindrops | None = None) -> Raindrops:
+        """Reapply any filtering.
+
+        Args:
+            raindrops: An optional list of raindrops to apply to.
+
+        Returns:
+            The given raindrops with this object's filters applied.
+        """
+        raindrops = (self if raindrops is None else raindrops).unfiltered.tagged(
+            *self._tags
+        )
+        for search_text in self._search_text:
+            raindrops = raindrops.containing(search_text)
+        return raindrops
+
+    def __contains__(self, raindrop: Raindrop) -> bool:
+        """Is the given raindrop in here?"""
+        return raindrop.identity in self._index
 
     def __iter__(self) -> Iterator[Raindrop]:
         return iter(self._raindrops)
@@ -171,7 +258,9 @@ class LocalData:
         """The details of the user who is the owner of the Raindrops."""
         self._all: Raindrops = Raindrops("All")
         """All non-trashed Raindrops."""
-        self._trash: Raindrops = Raindrops("Trash")
+        self._trash: Raindrops = Raindrops(
+            "Trash", root_collection=SpecialCollection.TRASH()
+        )
         """All Raindrops in trash."""
         self._collections: dict[int, Collection] = {}
         """An index of all of the Raindrops we know about."""
@@ -199,6 +288,7 @@ class LocalData:
         return Raindrops(
             "Unsorted",
             (raindrop for raindrop in self._all if raindrop.is_unsorted),
+            root_collection=SpecialCollection.UNSORTED(),
         )
 
     @property
@@ -207,6 +297,7 @@ class LocalData:
         return Raindrops(
             "Untagged",
             (raindrop for raindrop in self._all if not raindrop.tags),
+            root_collection=SpecialCollection.UNTAGGED(),
         )
 
     @property
@@ -215,6 +306,7 @@ class LocalData:
         return Raindrops(
             "Broken",
             (raindrop for raindrop in self._all if raindrop.broken),
+            root_collection=SpecialCollection.BROKEN(),
         )
 
     @property
@@ -250,7 +342,19 @@ class LocalData:
                         for raindrop in self._all
                         if raindrop.collection == user_collection
                     ],
+                    root_collection=collection,
                 )
+
+    def rebuild(self, raindrops: Raindrops) -> Raindrops:
+        """Rebuild the given Raindrops from the current data.
+
+        Args:
+            raindrops: The `Raindrops` instance to rebuild.
+
+        Returns:
+            The `Raindrops` instance remade with the current data.
+        """
+        return raindrops.refilter(self.in_collection(raindrops.originally_from))
 
     def collection_size(self, collection: Collection) -> int:
         """Get the size of a given collection.
@@ -381,6 +485,62 @@ class LocalData:
                 for k, v in data.get("collections", {}).items()
             }
         return self
+
+    def add(self, raindrop: Raindrop) -> Self:
+        """Add a raindrop to the local data.
+
+        Args:
+            raindrop: The raindrop to add.
+
+        Notes:
+            As a side effect the data is saved to storage.
+        """
+        # Add the raindrop to the start of the list of Raindrops.
+        self._all.push(raindrop)
+        return self.mark_downloaded().save()
+
+    def update(self, raindrop: Raindrop) -> Self:
+        """Update a raindrop in the local data.
+
+        Args:
+            raindrop: The raindrop to update.
+
+        Notes:
+            As a side-effect the data is saved to storage.
+        """
+        if raindrop in self._all and raindrop.collection == SpecialCollection.TRASH:
+            # Looks like the raindrop is currently not in trash, but the
+            # update puts it there; so trash it.
+            return self.delete(raindrop)
+        elif raindrop in self._trash and raindrop.collection != SpecialCollection.TRASH:
+            # Looks like the raindrop is currently in trash, and the update
+            # moves it out of there; so restore it.
+            self._trash.remove(raindrop)
+            self._all.push(raindrop)
+        else:
+            # Just a normal update.
+            self._all.replace(raindrop)
+        return self.mark_downloaded().save()
+
+    def delete(self, raindrop: Raindrop) -> Self:
+        """Delete a raindrop in the local data.
+
+        Args:
+            raindrop: The raindrop to delete.
+
+        Notes:
+            This method mimics out raindrop.io works when you remove a
+            raindrop: if the raindrop isn't in trash, it is moved to trash;
+            if it is in trash it is fully removed.
+
+            As a side-effect the data is saved to storage.
+        """
+        if raindrop in self._all:
+            self._trash.push(raindrop.edit(collection=SpecialCollection.TRASH))
+            self._all.remove(raindrop)
+        else:
+            self._trash.remove(raindrop)
+        return self.mark_downloaded().save()
 
 
 ### local.py ends here

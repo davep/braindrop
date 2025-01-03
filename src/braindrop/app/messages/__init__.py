@@ -4,12 +4,15 @@
 # Local imports.
 from .base_command import Command
 from .commands import (
+    AddRaindrop,
     ChangeTheme,
     CheckTheWaybackMachine,
     ClearFilters,
     CompactMode,
     CopyLinkToClipboard,
+    DeleteRaindrop,
     Details,
+    EditRaindrop,
     Escape,
     Help,
     Logout,
@@ -30,13 +33,16 @@ from .commands import (
 ##############################################################################
 # Exports.
 __all__ = [
+    "AddRaindrop",
     "ChangeTheme",
     "CheckTheWaybackMachine",
     "ClearFilters",
     "Command",
     "CompactMode",
     "CopyLinkToClipboard",
+    "DeleteRaindrop",
     "Details",
+    "EditRaindrop",
     "Escape",
     "Help",
     "Logout",

@@ -6,15 +6,15 @@ from __future__ import annotations
 
 ##############################################################################
 # Python imports.
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from datetime import datetime
-from typing import Any, Literal, TypeAlias
+from typing import Any, Final, Iterable, Literal, TypeAlias
 
 ##############################################################################
 # Local imports.
 from .collection import SpecialCollection
-from .parse_time import get_time
 from .tag import Tag
+from .time_tools import get_time, json_time
 
 ##############################################################################
 RaindropType: TypeAlias = Literal[
@@ -47,13 +47,18 @@ class Media:
 
 
 ##############################################################################
+UNSAVED_IDENTITY: Final[int] = -1
+"""The ID used to mark a Raindrop as unsaved."""
+
+
+##############################################################################
 @dataclass(frozen=True)
 class Raindrop:
     """Class that holds the details of a Raindrop."""
 
     raw: dict[str, Any] = field(default_factory=dict)
     """The raw data for the Raindrop."""
-    identity: int = -1
+    identity: int = UNSAVED_IDENTITY
     """The ID of the raindrop."""
     collection: int = SpecialCollection.UNSORTED
     """The ID of the collection that this raindrop belongs to."""
@@ -120,11 +125,11 @@ class Raindrop:
         return {
             "collection": {"$id": self.collection},
             "cover": self.cover,
-            "created": self.created,
+            "created": json_time(self.created),
             "domain": self.domain,
             "excerpt": self.excerpt,
             "note": self.note,
-            "lastUpdate": self.last_update,
+            "lastUpdate": json_time(self.last_update),
             "link": self.link,
             # media
             "tags": [str(tag) for tag in self.tags],
@@ -133,6 +138,22 @@ class Raindrop:
             # user
             "broken": False,
         }
+
+    def edit(self, **replacements: Any) -> Raindrop:
+        """Edit some values in the raindrop.
+
+        Args:
+            replacement: Values to replace while cloning.
+
+        Returns:
+            A copy of the raindrop with the edits made.
+        """
+        return replace(self, **replacements)
+
+    @property
+    def is_brand_new(self) -> bool:
+        """Is this a brand new Raindrop that hasn't been saved yet?"""
+        return self.identity == UNSAVED_IDENTITY
 
     @property
     def is_unsorted(self) -> bool:
@@ -163,6 +184,72 @@ class Raindrop:
             f"{self.excerpt.casefold()} {self.title.casefold()} {self.note.casefold()} "
             f"{' '.join(str(tag) for tag in self.tags).casefold()}"
         )
+
+    TAG_STRING_SEPARATOR: Final[str] = ","
+    """The separator for a string version of the tags."""
+
+    TAG_STRING_SEPARATOR_TITLE: Final[str] = "comma"
+    """The title of the separator for the string version of tags."""
+
+    @classmethod
+    def tags_to_string(cls, tags: Iterable[Tag]) -> str:
+        """Convert a sequence of tags to a string.
+
+        This method should be used when you wish to create a single string
+        that can be edited in something like an `Input` field.
+
+        Args:
+            tags: The sequence of tags to convert.
+
+        Returns:
+            A comma-separated string of tags.
+
+        Notes:
+            The resulting string will ensure that duplicate tags are
+            stripped and that the order is natural sort order.
+        """
+        return f"{cls.TAG_STRING_SEPARATOR} ".join(
+            str(tag) for tag in sorted(set(tags))
+        )
+
+    @classmethod
+    def string_to_raw_tags(cls, tags: str) -> list[Tag]:
+        """Convert a string of tags into a list of tags.
+
+        Args:
+            tags: The tags in a string.
+
+        Returns:
+            A list of `Tag` objects.
+
+        Notes:
+            Unlike `string_to_tags` this method keeps the order of the tags
+            in the string and also keeps any duplicates.
+        """
+        return [
+            Tag(tag.strip())
+            for tag in tags.split(cls.TAG_STRING_SEPARATOR)
+            if tag.strip()
+        ]
+
+    @classmethod
+    def string_to_tags(cls, tags: str) -> list[Tag]:
+        """Convert a string of tags into a list of tags.
+
+        This method should be used when you have a comma-separated string of
+        tags and want to turn it into a list of `Tag` objects.
+
+        Args:
+            tags: The tags in a string.
+
+        Returns:
+            A list of `Tag` objects.
+
+        Notes:
+            This method guarantees that there will be no repeats of a tag,
+            even if the input string has repeats.
+        """
+        return sorted(set(cls.string_to_raw_tags(tags)))
 
 
 ### raindrop.py ends here

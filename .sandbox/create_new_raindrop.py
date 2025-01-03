@@ -2,6 +2,8 @@
 
 from asyncio import run
 
+from rich.pretty import pprint as print
+
 from braindrop.app.data import token_file
 from braindrop.raindrop import API, Raindrop
 

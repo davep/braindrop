@@ -2,6 +2,7 @@
 
 ##############################################################################
 # Python imports.
+from typing import Callable
 from webbrowser import open as open_url
 
 ##############################################################################
@@ -20,9 +21,13 @@ from textual.screen import Screen
 from textual.widgets import Footer, Header
 
 ##############################################################################
+# Typing extension imports.
+from typing_extensions import TypeIs
+
+##############################################################################
 # Local imports.
 from ... import __version__
-from ...raindrop import API, SpecialCollection, User
+from ...raindrop import API, Raindrop, SpecialCollection, User
 from ..commands import CollectionCommands, CommandsProvider, MainCommands, TagCommands
 from ..data import (
     ExitState,
@@ -34,13 +39,16 @@ from ..data import (
     token_file,
 )
 from ..messages import (
+    AddRaindrop,
     ChangeTheme,
     CheckTheWaybackMachine,
     ClearFilters,
     Command,
     CompactMode,
     CopyLinkToClipboard,
+    DeleteRaindrop,
     Details,
+    EditRaindrop,
     Escape,
     Help,
     Logout,
@@ -61,6 +69,7 @@ from ..widgets import Navigation, RaindropDetails, RaindropsView
 from .confirm import Confirm
 from .downloading import Downloading
 from .help import HelpScreen
+from .raindrop_input import RaindropInput
 from .search_input import SearchInput
 from .wayback_checker import WaybackChecker
 
@@ -133,10 +142,13 @@ class Main(Screen[None]):
         TagOrder,
         CompactMode,
         # Everything else.
+        AddRaindrop,
         ChangeTheme,
         CheckTheWaybackMachine,
         ClearFilters,
         CopyLinkToClipboard,
+        DeleteRaindrop,
+        EditRaindrop,
         Escape,
         Logout,
         Quit,
@@ -169,6 +181,10 @@ class Main(Screen[None]):
         """Details of the Raindrop user."""
         self._data = LocalData(api)
         """The local copy of the Raindrop data."""
+        self._draft_raindrop: Raindrop | None = None
+        """Used to hold on to Raindrop data until we know it's been added or edited."""
+        self._redownload_wiggle_room = 2
+        """The number of seconds difference needs to exist to consider a full redownload."""
         CollectionCommands.data = self._data
 
     def compose(self) -> ComposeResult:
@@ -216,9 +232,18 @@ class Main(Screen[None]):
         if self._data.last_downloaded is None:
             self.notify("No local data found; checking in with the server.")
         elif (
-            self._user.last_action is None
-            or self._user.last_action > self._data.last_downloaded
+            self._user.last_update is not None
+            and (self._user.last_update - self._data.last_downloaded).total_seconds()
+            > self._redownload_wiggle_room
         ):
+            # NOTE: for this check, I'm still undecided if I should be using
+            # last_update or last_action. The latter seems more sensible,
+            # but I think it can record the last action that *didn't* result
+            # in an update (eg: for Pro users it may look if a new link is
+            # broken, and so record an action, and then not update because
+            # it isn't broken); as such I'm going with last update for now.
+            #
+            # This may change.
             self.notify(
                 "Data on the server appears to be newer; downloading a fresh copy."
             )
@@ -435,6 +460,24 @@ class Main(Screen[None]):
         """Quit the application."""
         self.app.exit(ExitState.OKAY)
 
+    def _current_raindrop(self, action: str) -> Raindrop | None:
+        """Get the current raindrop.
+
+        Args:
+            action: The action that we're getting the raindrop for.
+
+        Returns:
+            The highlighted raindrop, or `None`.
+        """
+        if (raindrop := self.query_one(RaindropsView).highlighted_raindrop) is None:
+            self.notify(
+                f"No Raindrop is highlighted, there is nothing to {action}!",
+                title="No Raindrop",
+                severity="warning",
+            )
+            return None
+        return raindrop
+
     def _current_link(self, action: str) -> str | None:
         """Get the current link.
 
@@ -444,12 +487,7 @@ class Main(Screen[None]):
         Returns:
             The link if there is one, or `None`.
         """
-        if (raindrop := self.query_one(RaindropsView).highlighted_raindrop) is None:
-            self.notify(
-                f"No Raindrop is highlighted, there is nothing to {action}!",
-                title="No Raindrop",
-                severity="warning",
-            )
+        if (raindrop := self._current_raindrop(action)) is None:
             return None
         if not raindrop.link:
             self.notify(
@@ -493,6 +531,178 @@ class Main(Screen[None]):
         if (link := self._current_link("check")) is None:
             return
         self.app.push_screen(WaybackChecker(link))
+
+    def _was_not_saved(self, raindrop: Raindrop | None) -> TypeIs[None]:
+        """Check if the raindrop data wasn't saved.
+
+        Args:
+            raindrop: The raindrop data to check.
+
+        Returns:
+            `True` if the data looks saved, `False` if not.
+
+        Notes:
+            As a side-effect of calling this method, if the save appears to
+            have failed the user will be notified of this.
+        """
+        if raindrop is None:
+            self.notify(
+                "Raindrop.io did not confirm the save of the data, try again...",
+                title="Save not confirmed",
+                severity="warning",
+            )
+            return True
+        return False
+
+    def _locally_refresh(
+        self,
+        local_save: Callable[[Raindrop], LocalData],
+        raindrop: Raindrop,
+        confirmation: str,
+    ) -> None:
+        """Refresh the local state.
+
+        Args:
+            local_save: The callable that locally saves the change.
+            raindrop: The raindrop causing the refresh.
+            confirmation: The message to show the user.
+        """
+        with self.query_one(Navigation).preserved_highlight:
+            # Ensure local storage is updated.
+            local_save(raindrop)
+            # Get the navigation bar to refresh its content.
+            self.query_one(Navigation).data = self._data
+            # Remake the active collection from the new data, keeping all
+            # filtering intact.
+            self.active_collection = self._data.rebuild(self.active_collection)
+            # Let the user know what happened.
+            self.notify(confirmation)
+
+    @on(AddRaindrop)
+    @work
+    async def action_add_raindrop_command(self) -> None:
+        """Add a new Raindrop."""
+
+        # Get the details of the new Raindrop from the user.
+        self._draft_raindrop = await self.app.push_screen_wait(
+            RaindropInput(self._api, self._data, self._draft_raindrop)
+        )
+        if self._draft_raindrop is None:
+            return
+
+        # They've provided the new details, so now push them to the server.
+        # In doing so get the full version of the data back from the server;
+        # it's this that we'll actually add locally.
+        try:
+            added_raindrop = await self._api.add_raindrop(self._draft_raindrop)
+        except API.Error as error:
+            self.notify(
+                str(error),
+                title="Error adding new Raindrop",
+                severity="error",
+                timeout=8,
+            )
+            return
+
+        # GTFO if it looks like it didn't save.
+        if self._was_not_saved(added_raindrop):
+            return
+
+        # Reflect the change locally.
+        self._locally_refresh(self._data.add, added_raindrop, "Saved")
+
+        # We're safe to drop the draft now.
+        self._draft_raindrop = None
+
+    @on(EditRaindrop)
+    @work
+    async def action_edit_raindrop_command(self) -> None:
+        """Edit the currently-highlighted raindrop."""
+
+        # Get the highlighted raindrop, or GTFO if we're somehow in here
+        # when nothing is highlighted.
+        if (raindrop := self._current_raindrop("edit")) is None:
+            return
+
+        # If we've got a draft, and it's for the current raindrop...
+        if (
+            self._draft_raindrop is not None
+            and self._draft_raindrop.identity == raindrop.identity
+        ):
+            # ...let's roll with the draft.
+            raindrop = self._draft_raindrop
+
+        # We now have the data we want to edit, throw up the edit dialog.
+        self._draft_raindrop = await self.app.push_screen_wait(
+            RaindropInput(self._api, self._data, raindrop)
+        )
+        if self._draft_raindrop is None:
+            return
+
+        # The user has confirmed their save, update to the server.
+        try:
+            updated_raindrop = await self._api.update_raindrop(self._draft_raindrop)
+        except API.Error as error:
+            self.notify(
+                str(error),
+                title="Error updating the Raindrop",
+                severity="error",
+                timeout=8,
+            )
+            return
+
+        # GTFO if it looks like it didn't save.
+        if self._was_not_saved(updated_raindrop):
+            return
+
+        # Reflect the change locally.
+        self._locally_refresh(self._data.update, updated_raindrop, "Saved")
+
+        # We're safe to drop the draft now.
+        self._draft_raindrop = None
+
+    @on(DeleteRaindrop)
+    @work
+    async def action_delete_raindrop_command(self) -> None:
+        """Delete the currently-highlighted raindrop."""
+
+        # Get the highlighted raindrop, or GTFO if we're somehow in here
+        # when nothing is highlighted.
+        if (raindrop := self._current_raindrop("delete")) is None:
+            return
+
+        # Check the user actually wants to do this.
+        if not await self.app.push_screen_wait(
+            Confirm(
+                "Delete Raindrop",
+                "Are you sure you want to delete the currently-highlighted Raindrop?",
+            )
+        ):
+            return
+
+        # We know the raindrop, we know the user wants to nuke it. So be
+        # it...
+        try:
+            deleted = await self._api.remove_raindrop(raindrop)
+        except API.Error as error:
+            self.notify(
+                str(error),
+                title="Error deleting the Raindrop",
+                severity="error",
+                timeout=8,
+            )
+            return
+
+        # Act on how that went down.
+        if deleted:
+            self._locally_refresh(self._data.delete, raindrop, "Deleted")
+        else:
+            self.notify(
+                "Raindrop.io reported that the delete operation failed.",
+                title="Failed to delete",
+                severity="error",
+                timeout=8,
+            )
 
 
 ### main.py ends here

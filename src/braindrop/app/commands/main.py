@@ -4,12 +4,15 @@
 # Local imports.
 from ..data import Raindrops
 from ..messages import (
+    AddRaindrop,
     ChangeTheme,
     CheckTheWaybackMachine,
     ClearFilters,
     CompactMode,
     CopyLinkToClipboard,
+    DeleteRaindrop,
     Details,
+    EditRaindrop,
     Escape,
     Help,
     Logout,
@@ -40,13 +43,16 @@ class MainCommands(CommandsProvider):
         Yields:
             The commands for the command palette.
         """
+        yield AddRaindrop()
         yield ChangeTheme()
         yield CheckTheWaybackMachine()
         yield ClearFilters()
         yield CompactMode()
         yield CopyLinkToClipboard()
+        yield DeleteRaindrop()
         yield Details()
         yield Escape()
+        yield EditRaindrop()
         yield Help()
         yield Logout()
         yield Quit()

@@ -23,6 +23,7 @@ def parse_time(text: str) -> datetime:
     )
 
 
+##############################################################################
 def get_time(data: dict[str, str], name: str) -> datetime | None:
     """Get a datetime value from a given dictionary.
 
@@ -37,4 +38,17 @@ def get_time(data: dict[str, str], name: str) -> datetime | None:
     return parse_time(data[name]) if name in data else None
 
 
-### parse_time.py ends here
+##############################################################################
+def json_time(time: datetime | None) -> str | None:
+    """Convert a time value into a JSON-friendly string.
+
+    Args:
+        time: The time to convert.
+
+    Returns:
+        The time formatted as a string, if not `None`, else `None.
+    """
+    return time if time is None else time.isoformat()
+
+
+### time_tools.py ends here

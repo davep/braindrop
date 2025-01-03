@@ -34,6 +34,7 @@ def test_tag_vs_str_equality(tag: str, string: str) -> None:
 def test_tag_vs_tag_equality(tag0: str, tag1: str) -> None:
     """A `Tag` should be able to compare against another `Tag`."""
     assert Tag(tag0) == Tag(tag1)
+    assert Tag(Tag(tag0)) == Tag(Tag(tag1))
 
 
 ##############################################################################
@@ -57,6 +58,38 @@ def test_sort_tags() -> None:
     source = (Tag("c"), Tag("b"), Tag("a"), Tag("A"))
     assert sorted(source) == ["A", "a", "b", "c"]
     assert sorted(source) == ["a", "A", "b", "c"]
+
+
+##############################################################################
+@pytest.mark.parametrize("string", ("", "1"))
+def test_tag_langth(string: str) -> None:
+    """We should be able to get the len of a tag."""
+    assert len(Tag(string)) == len(string)
+
+
+##############################################################################
+@pytest.mark.parametrize("string, expected", (("", False), ("1", True)))
+def test_tag_as_bool(string: str, expected: bool) -> None:
+    """We should be able to treat a tag as a bool, in respect to its length."""
+    assert bool(Tag(string)) is expected
+
+
+##############################################################################
+@pytest.mark.parametrize(
+    "tag, startswith, expected",
+    (
+        ("foo", "bar", False),
+        ("foo", "foo", True),
+        ("FOO", "foo", True),
+        ("foobarbaz", "foo", True),
+        ("FOOBARBAZ", "foo", True),
+        ("foobarbaz", "bar", False),
+    ),
+)
+def test_tag_startswith(tag: str, startswith: str, expected: bool) -> None:
+    """We should be able to see if one tag starts with another."""
+    assert Tag(tag).startswith(startswith) is expected
+    assert Tag(tag).startswith(Tag(startswith)) is expected
 
 
 ### test_tags.py ends here

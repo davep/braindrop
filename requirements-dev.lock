@@ -95,6 +95,8 @@ pygments==2.18.0
 pyperclip==1.9.0
     # via braindrop
 pytest==8.3.4
+    # via pytest-asyncio
+pytest-asyncio==0.25.1
 pytz==2024.2
     # via braindrop
 pyyaml==6.0.2
@@ -114,6 +116,7 @@ textual-serve==1.1.1
 types-pytz==2024.2.0.20241221
 typing-extensions==4.12.2
     # via anyio
+    # via braindrop
     # via mypy
     # via textual
     # via textual-dev

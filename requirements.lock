@@ -52,6 +52,7 @@ textual==1.0.0
     # via braindrop
 typing-extensions==4.12.2
     # via anyio
+    # via braindrop
     # via textual
 uc-micro-py==1.0.3
     # via linkify-it-py

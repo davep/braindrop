@@ -181,7 +181,7 @@ class Quit(Command):
 
 ##############################################################################
 class CopyLinkToClipboard(Command):
-    """Copy the currently-highlighted link to the clipboard."""
+    """Copy the currently-highlighted link to the clipboard"""
 
     BINDING_KEY = "c"
     SHOW_IN_FOOTER = False
@@ -192,6 +192,30 @@ class CheckTheWaybackMachine(Command):
     """Check if the currently-highlighted Raindrop is archived in the Wayback Machine"""
 
     BINDING_KEY = "w"
+    SHOW_IN_FOOTER = False
+
+
+##############################################################################
+class AddRaindrop(Command):
+    """Add a new raindrop"""
+
+    BINDING_KEY = "n"
+    SHOW_IN_FOOTER = False
+
+
+##############################################################################
+class EditRaindrop(Command):
+    """Edit the currently-highlighted raindrop"""
+
+    BINDING_KEY = "e"
+    SHOW_IN_FOOTER = False
+
+
+##############################################################################
+class DeleteRaindrop(Command):
+    """Delete the currently-highlighted raindrop"""
+
+    BINDING_KEY = "d, delete"
     SHOW_IN_FOOTER = False
 
 
