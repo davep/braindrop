@@ -69,6 +69,7 @@ dev-dependencies = [
     "textual-dev>=1.7.0",
     "types-pytz>=2024.2.0.20241003",
     "pytest>=8.3.4",
+    "pytest-asyncio>=0.25.1",
 ]
 
 [tool.hatch.metadata]
@@ -77,3 +78,5 @@ allow-direct-references = true
 [tool.hatch.build.targets.wheel]
 packages = ["src/braindrop"]
 
+[tool.pytest.ini_options]
+asyncio_mode = "auto"

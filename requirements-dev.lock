@@ -95,6 +95,8 @@ pygments==2.18.0
 pyperclip==1.9.0
     # via braindrop
 pytest==8.3.4
+    # via pytest-asyncio
+pytest-asyncio==0.25.1
 pytz==2024.2
     # via braindrop
 pyyaml==6.0.2
