@@ -1,6 +1,10 @@
 """Tests for the Raindrop class."""
 
 ##############################################################################
+# Pytest imports.
+import pytest
+
+##############################################################################
 # Local imports.
 from braindrop.raindrop import Raindrop, Tag
 
@@ -33,12 +37,17 @@ def test_make_tag_list() -> None:
 
 
 ##############################################################################
-def test_make_tag_list_squishes_duplicates() -> None:
+@pytest.mark.parametrize(
+    "string",
+    (
+        "a,a,a,b",
+        "a, a, a, b",
+        ",,a,,,a,,a,a,, b,,,",
+    ),
+)
+def test_make_tag_list_squishes_duplicates(string: str) -> None:
     """When making a list from a string of tags, it will squish duplicates."""
-    target = [Tag("a"), Tag("b")]
-    assert Raindrop.string_to_tags("a,a,a,b") == target
-    assert Raindrop.string_to_tags("a, a, a, b") == target
-    assert Raindrop.string_to_tags(",,a,,,a,,a,a,, b,,,") == target
+    assert Raindrop.string_to_tags(string) == [Tag("a"), Tag("b")]
 
 
 ##############################################################################
