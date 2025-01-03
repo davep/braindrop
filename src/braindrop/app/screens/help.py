@@ -39,7 +39,7 @@ HELP = f"""\
 ## Licence
 
 Braindrop - A client for the Raindrop bookmarking service.[EOL]
-Copyright (C) 2024 Dave Pearson
+Copyright (C) 2024-2025 Dave Pearson
 
 This program is free software: you can redistribute it and/or modify it
 under the terms of the GNU General Public License as published by the Free

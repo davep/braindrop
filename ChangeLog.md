@@ -1,8 +1,8 @@
 # Braindrop ChangeLog
 
-## Unreleased
+## v0.1.0
 
-**Released: WiP**
+**Released: 2025-01-03**
 
 - Added the ability to add a raindrop.
 - Added the ability to edit a raindrop.
