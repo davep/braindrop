@@ -1,15 +1,5 @@
 # Braindrop
 
-> [!NOTE]
-> This is still pre-release. Right now the client works read-only; [Raindrop
-> creation and editing is being added at the
-> moment](https://github.com/davep/braindrop/pull/2). The repository is
-> available so anyone can have a play with the client UI.
->
-> This also means I'm not accepting any code contributions right now, as the
-> code is still under very active development. On the other hand feedback
-> and ideas are **very** welcome.
-
 ![Braindrop](https://raw.githubusercontent.com/davep/braindrop/refs/heads/main/.images/braindrop.png)
 
 ## Introduction
@@ -91,16 +81,8 @@ discussion](https://github.com/davep/braindrop/discussions).
 
 ## TODO
 
-Things I'm considering adding or addressing:
-
-- [X] Textual's help system is keyboard-hostile despite being of most use to
-      keyboard-first users. Replace the current slide-in help panel with
-      something useful and helpful.
-      [#1](https://github.com/davep/braindrop/issues/1)
-- [ ] Add the ability to add a Raindrop (current WIP)
-- [ ] Add the ability to edit a Raindrop (current WIP)
-- [ ] Add the ability to delete a Raindrop (current WIP)
-- [ ] Add a user information dialog. There's some useful information about
-      the user, so add a little dialog that will show it.
+See [the TODO tag in
+issues](https://github.com/davep/braindrop/issues?q=is%3Aissue+is%3Aopen+label%3ATODO)
+to see what I'm planning.
 
 [//]: # (README.md ends here)
