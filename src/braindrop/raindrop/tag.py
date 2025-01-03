@@ -22,11 +22,11 @@ class Tag:
         Args:
             tag: The tag to hold.
         """
-        self.__tag = str(tag)
+        self._tag = str(tag)
 
     def __repr__(self) -> str:
         """The representation of the tag."""
-        return self.__tag
+        return self._tag
 
     def __gt__(self, value: object, /) -> bool:
         """Is the tag greater than another value?
@@ -44,7 +44,7 @@ class Tag:
         if isinstance(value, Tag):
             return self > str(value)
         if isinstance(value, str):
-            return self.__tag.casefold() > value.casefold()
+            return self._tag.casefold() > value.casefold()
         raise NotImplementedError
 
     def __eq__(self, value: object, /) -> bool:
@@ -63,7 +63,7 @@ class Tag:
         if isinstance(value, Tag):
             return self == str(value)
         if isinstance(value, str):
-            return self.__tag.casefold() == value.casefold()
+            return self._tag.casefold() == value.casefold()
         raise NotImplementedError
 
     def __hash__(self) -> int:
@@ -72,11 +72,11 @@ class Tag:
         Returns:
             The hash.
         """
-        return hash(self.__tag.casefold())
+        return hash(self._tag.casefold())
 
     def __len__(self) -> int:
         """The length of the tag."""
-        return len(self.__tag)
+        return len(self._tag)
 
 
 ##############################################################################
