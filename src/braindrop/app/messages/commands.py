@@ -176,7 +176,7 @@ class ChangeTheme(Command):
 class Quit(Command):
     """Quit the application"""
 
-    BINDING_KEY = "f10, ctrl+c, ctrl+q"
+    BINDING_KEY = "f10, ctrl+q"
 
 
 ##############################################################################
