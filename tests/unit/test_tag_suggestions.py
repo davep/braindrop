@@ -15,6 +15,7 @@ from braindrop.raindrop import Tag
 
 ##############################################################################
 TAGS: Final[dict[str, Tag]] = {tag: Tag(tag * 10) for tag in "abcdefg"}
+"""The tags to test with."""
 
 
 ##############################################################################
