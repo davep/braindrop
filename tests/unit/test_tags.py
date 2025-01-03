@@ -74,4 +74,22 @@ def test_tag_as_bool(string: str, expected: bool) -> None:
     assert bool(Tag(string)) is expected
 
 
+##############################################################################
+@pytest.mark.parametrize(
+    "tag, startswith, expected",
+    (
+        ("foo", "bar", False),
+        ("foo", "foo", True),
+        ("FOO", "foo", True),
+        ("foobarbaz", "foo", True),
+        ("FOOBARBAZ", "foo", True),
+        ("foobarbaz", "bar", False),
+    ),
+)
+def test_tag_startswith(tag: str, startswith: str, expected: bool) -> None:
+    """We should be able to see if one tag starts with another."""
+    assert Tag(tag).startswith(startswith) is expected
+    assert Tag(tag).startswith(Tag(startswith)) is expected
+
+
 ### test_tags.py ends here

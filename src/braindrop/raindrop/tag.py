@@ -24,6 +24,18 @@ class Tag:
         """
         self._tag = str(tag)
 
+    def startswith(self, other: str | Tag) -> bool:
+        """Does this tag start with the other tag?
+
+        Args:
+            other: The other tag to test against.
+
+        Returns:
+
+            `True` if this tag starts with the other, `False` if not.
+        """
+        return Tag(str(self)[: len(other)]) == Tag(other)
+
     def __repr__(self) -> str:
         """The representation of the tag."""
         return self._tag
