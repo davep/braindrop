@@ -149,7 +149,10 @@ class RaindropInput(ModalScreen[Raindrop | None]):
                 id="collection",
             )
             yield Label("Tags:")
-            yield Input(placeholder="Raindrop tags (comma separated)", id="tags")
+            yield Input(
+                placeholder=f"Raindrop tags ({Raindrop.TAG_STRING_SEPARATOR_TITLE} separated)",
+                id="tags",
+            )
             # TODO: Tag suggestions
             with Horizontal(id="buttons"):
                 yield Button("Save [dim]\\[F2][/]", id="save", variant="success")

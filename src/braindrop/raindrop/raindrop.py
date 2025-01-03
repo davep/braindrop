@@ -185,8 +185,14 @@ class Raindrop:
             f"{' '.join(str(tag) for tag in self.tags).casefold()}"
         )
 
-    @staticmethod
-    def tags_to_string(tags: Iterable[Tag]) -> str:
+    TAG_STRING_SEPARATOR: Final[str] = ","
+    """The separator for a string version of the tags."""
+
+    TAG_STRING_SEPARATOR_TITLE: Final[str] = "comma"
+    """The title of the separator for the string version of tags."""
+
+    @classmethod
+    def tags_to_string(cls, tags: Iterable[Tag]) -> str:
         """Convert a sequence of tags to a string.
 
         This method should be used when you wish to create a single string
@@ -202,10 +208,12 @@ class Raindrop:
             The resulting string will ensure that duplicate tags are
             stripped and that the order is natural sort order.
         """
-        return ", ".join(str(tag) for tag in sorted(set(tags)))
+        return f"{cls.TAG_STRING_SEPARATOR} ".join(
+            str(tag) for tag in sorted(set(tags))
+        )
 
-    @staticmethod
-    def string_to_tags(tags: str) -> list[Tag]:
+    @classmethod
+    def string_to_tags(cls, tags: str) -> list[Tag]:
         """Convert a string of tags into a list of tags.
 
         This method should be used when you have a comma-separated string of
@@ -221,7 +229,13 @@ class Raindrop:
             This method guarantees that there will be no repeats of a tag,
             even if the input string has repeats.
         """
-        return sorted({Tag(tag.strip()) for tag in tags.split(",") if tag.strip()})
+        return sorted(
+            {
+                Tag(tag.strip())
+                for tag in tags.split(cls.TAG_STRING_SEPARATOR)
+                if tag.strip()
+            }
+        )
 
 
 ### raindrop.py ends here
