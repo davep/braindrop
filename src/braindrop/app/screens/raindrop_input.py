@@ -15,6 +15,7 @@ from pyperclip import paste as from_clipboard
 from textual import on, work
 from textual.app import ComposeResult
 from textual.containers import Horizontal, Vertical
+from textual.events import DescendantBlur, DescendantFocus
 from textual.screen import ModalScreen
 from textual.validation import Length, ValidationResult
 from textual.widgets import Button, Input, Label, Select, TextArea
@@ -62,6 +63,15 @@ class RaindropInput(ModalScreen[Raindrop | None]):
         Label {
             margin: 1 0 0 1;
         }
+
+        #tag-suggestions {
+            display: none;
+            width: 1fr;
+            color: $text-muted;
+            &.got-suggestions {
+                display: block;
+            }
+        }
     }
     """
 
@@ -82,6 +92,8 @@ class RaindropInput(ModalScreen[Raindrop | None]):
         """The local raindrop data."""
         self._raindrop = raindrop or Raindrop()
         """The raindrop to edit, or `None` if this is a new raindrop."""
+        self._last_url = self._raindrop.link
+        """Keeps track of the last URL entered. Used to decide when to get suggestions."""
 
     def _selectable_child_collections_of(
         self, parent: Collection, indent: int = 0
@@ -155,10 +167,38 @@ class RaindropInput(ModalScreen[Raindrop | None]):
                 suggester=SuggestTags(self._data.all.tags),
                 id="tags",
             )
-            # TODO: Tag suggestions
+            yield Label(id="tag-suggestions")
             with Horizontal(id="buttons"):
                 yield Button("Save [dim]\\[F2][/]", id="save", variant="success")
                 yield Button("Cancel [dim]\\[Esc][/]", id="cancel", variant="error")
+
+    @work(exclusive=True)
+    async def _get_tag_suggestions(self) -> None:
+        """Load up fresh tag suggestions based on the URL."""
+        try:
+            suggestions = await self._api.suggestions_for(
+                self.query_one("#url", Input).value
+            )
+        except API.Error as error:
+            self.app.bell()
+            self.notify(
+                str(error),
+                title="Error getting suggested tags from raindrop.io",
+                severity="error",
+                timeout=8,
+            )
+            return
+        self.query_one("#tag-suggestions", Label).update(
+            f"[b]Suggested:[/] {Raindrop.tags_to_string(suggestions.tags)}"
+            if suggestions.tags
+            else ""
+        )
+        self.query_one("#tag-suggestions").set_class(
+            bool(suggestions.tags), "got-suggestions"
+        )
+        self.query_one("#tags", Input).suggester = SuggestTags(
+            set(self._data.all.tags + suggestions.tags)
+        )
 
     def _paste(self, url: str) -> None:
         """Paste the given URL into the link field.
@@ -172,6 +212,7 @@ class RaindropInput(ModalScreen[Raindrop | None]):
         """
         if not (link := self.query_one("#url", Input)).value:
             link.value = url
+            self._get_tag_suggestions()
 
     @work(thread=True)
     def _suggest_link(self) -> None:
@@ -199,8 +240,31 @@ class RaindropInput(ModalScreen[Raindrop | None]):
             self.query_one("#tags", Input).value = Raindrop.tags_to_string(
                 self._raindrop.tags
             )
-        if not self._raindrop.link:
+        if self._raindrop.link:
+            self._get_tag_suggestions()
+        else:
             self._suggest_link()
+
+    @on(DescendantFocus, "#url")
+    def _remember_url(self, event: DescendantFocus) -> None:
+        """Save the URL on entry to the URL field.
+
+        Args:
+            event: The event to handle.
+        """
+        if isinstance(event.widget, Input):  # It should be, but narrow the type.
+            self._last_url = event.widget.value.strip()
+
+    @on(DescendantBlur, "#url")
+    def _refresh_tag_suggestions(self, event: DescendantBlur) -> None:
+        """Refresh the tag suggestions when leaving the URL field, having modified it."""
+        if isinstance(event.widget, Input):  # It should be, but narrow the type.
+            if (
+                event.widget.value.strip()
+                and event.widget.value.strip() != self._last_url
+            ):
+                self.query_one("#tag-suggestions").set_class(False, "got-suggestions")
+                self._get_tag_suggestions()
 
     def _all_looks_good(self) -> bool:
         """Does everything on the dialog look okay?
