@@ -197,7 +197,7 @@ class RaindropInput(ModalScreen[Raindrop | None]):
             bool(suggestions.tags), "got-suggestions"
         )
         self.query_one("#tags", Input).suggester = SuggestTags(
-            set(self._data.all.tags + suggestions.tags)
+            set([*self._data.all.tags, *suggestions.tags])
         )
 
     def _paste(self, url: str) -> None:
