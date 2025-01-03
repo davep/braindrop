@@ -23,6 +23,7 @@ from textual.widgets import Button, Input, Label, Select, TextArea
 # Local imports.
 from ...raindrop import API, Collection, Raindrop, SpecialCollection
 from ..data import LocalData
+from ..suggestions import SuggestTags
 
 
 ##############################################################################
@@ -151,6 +152,7 @@ class RaindropInput(ModalScreen[Raindrop | None]):
             yield Label("Tags:")
             yield Input(
                 placeholder=f"Raindrop tags ({Raindrop.TAG_STRING_SEPARATOR_TITLE} separated)",
+                suggester=SuggestTags(tag.tag for tag in self._data.all.tags),
                 id="tags",
             )
             # TODO: Tag suggestions
