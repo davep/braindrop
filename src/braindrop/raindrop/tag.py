@@ -31,7 +31,6 @@ class Tag:
             other: The other tag to test against.
 
         Returns:
-
             `True` if this tag starts with the other, `False` if not.
         """
         return Tag(str(self)[: len(other)]) == Tag(other)
