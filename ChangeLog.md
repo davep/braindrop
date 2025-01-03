@@ -1,5 +1,14 @@
 # Braindrop ChangeLog
 
+## Unreleased
+
+**Released: WiP**
+
+- Fixed unnecessary error notifications when asking raindrop.io for
+  suggestions for an URL that isn't really an URL.
+- Suggested URL when making a new raindrop is now taken from the first line
+  of the clipboard, ignoring any other text.
+
 ## v0.1.0
 
 **Released: 2025-01-03**

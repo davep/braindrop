@@ -3,7 +3,10 @@
 ##############################################################################
 # Python imports.
 from typing import Iterator
-from urllib.parse import urlparse
+
+##############################################################################
+# httpx imports.
+from httpx import URL
 
 ##############################################################################
 # Pyperclip imports.
@@ -25,6 +28,22 @@ from textual.widgets import Button, Input, Label, Select, TextArea
 from ...raindrop import API, Collection, Raindrop, SpecialCollection
 from ..data import LocalData
 from ..suggestions import SuggestTags
+
+
+##############################################################################
+def looks_urlish(possible_url: str) -> bool:
+    """Test if a string looks like a web-oriented URL.
+
+    Args:
+        possible_url: The string that might be a URL.
+
+    Returns:
+        `True` if the string looks like it might be a URL, `False` if not.
+    """
+    return (url := URL(possible_url)).is_absolute_url and url.scheme in (
+        "http",
+        "https",
+    )
 
 
 ##############################################################################
@@ -175,10 +194,13 @@ class RaindropInput(ModalScreen[Raindrop | None]):
     @work(exclusive=True)
     async def _get_tag_suggestions(self) -> None:
         """Load up fresh tag suggestions based on the URL."""
+        # Don't bother trying to get suggestions if the URL in the URL input
+        # doesn't look like an URL.
+        if not looks_urlish(url := self.query_one("#url", Input).value):
+            return
+        # Ask raindrop.io for suggestions.
         try:
-            suggestions = await self._api.suggestions_for(
-                self.query_one("#url", Input).value
-            )
+            suggestions = await self._api.suggestions_for(url)
         except API.Error as error:
             self.app.bell()
             self.notify(
@@ -188,6 +210,8 @@ class RaindropInput(ModalScreen[Raindrop | None]):
                 timeout=8,
             )
             return
+        # We got suggestions, so show them and set them up for
+        # auto-completion too.
         self.query_one("#tag-suggestions", Label).update(
             f"[b]Suggested:[/] {Raindrop.tags_to_string(suggestions.tags)}"
             if suggestions.tags
@@ -217,15 +241,22 @@ class RaindropInput(ModalScreen[Raindrop | None]):
     @work(thread=True)
     def _suggest_link(self) -> None:
         """Get a link suggestion by peeking in the user's clipboard."""
+        # Look for something in the external clipboard.
         try:
             external = from_clipboard()
         except PyperclipException:
             external = ""
+        # Looking at the Textual-internal clipboard, then the external
+        # clipboard...
         for candidate in (self.app.clipboard, external):
-            if urlparse(candidate).scheme in (  # pylint:disable=no-member
-                "http",
-                "https",
-            ):
+            # ...only looking at the first line of what we find...
+            try:
+                candidate = candidate.strip().splitlines()[0]
+            except IndexError:
+                candidate = ""
+            # If it looks like it might be a URL...
+            if looks_urlish(candidate):
+                # ...paste it into the URL field.
                 self.app.call_from_thread(self._paste, candidate)
                 break
 
