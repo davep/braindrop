@@ -57,7 +57,13 @@ async def test_subsequent_suggestion(suggest_tags) -> None:
     )
 
 
-# async def test_order_should_not_matter() -> None:
-#     assert await SuggestTags(TAGS).get_suggestion(f"{TAGS[3]}, a") == f"{TAGS[3]}, {TAGS[0]}"
+##############################################################################
+async def test_order_should_not_matter(suggest_tags) -> None:
+    """The sort order of entered tags should not matter."""
+    assert (
+        await suggest_tags.get_suggestion(f"{TAGS['d']}, a")
+        == f"{TAGS['d']}, {TAGS['a']}"
+    )
+
 
 ### test_tag_suggestions.py ends here
