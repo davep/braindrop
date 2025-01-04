@@ -12,9 +12,10 @@ jobs:
   style-lint-and-test:
 
     name: Style, lint, test
-    runs-on: ubuntu-latest
+    runs-on: $({ matrix.os })
     strategy:
       matrix:
+        os:["ubuntu-latest", "macos-latest"]
         python-version: ["3.11", "3.12", "3.13"]
 
     steps:
