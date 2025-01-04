@@ -1,6 +1,6 @@
 # Braindrop
 
-![Braindrop](https://raw.githubusercontent.com/davep/braindrop/refs/heads/main/.images/braindrop.png)
+![Braindrop](https://raw.githubusercontent.com/davep/braindrop/refs/heads/main/.images/braindrop-social-banner.png)
 
 ## Introduction
 
