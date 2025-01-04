@@ -6,7 +6,7 @@
 
 - Small tweaks to the styling of the raindrop details panel.
 - Improved the way the age and the tags share the line in the raindrops view
-  widget.
+  widget. ([#31](https://github.com/davep/braindrop/pull/31))
 
 ## v0.1.1
 
