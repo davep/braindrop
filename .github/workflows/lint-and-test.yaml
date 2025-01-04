@@ -28,34 +28,32 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: Install Rye
-        run: |
-          curl -sSf https://rye.astral.sh/get | RYE_INSTALL_OPTION="--yes" bash
-          export PATH="$HOME/.rye/bin:$PATH"
-          rye self install
+        uses: eifinger/setup-rye@v4
+        with:
+          version: "latest"
+        # run: |
+        #   curl -sSf https://rye.astral.sh/get | RYE_INSTALL_OPTION="--yes" bash
+        #   export PATH="$HOME/.rye/bin:$PATH"
+        #   rye self install
 
       - name: Install Dependencies
         run: |
-          export PATH="$HOME/.rye/bin:$PATH"
           make setup
 
       - name: Check the Code style
         run: |
-          export PATH="$HOME/.rye/bin:$PATH"
           make codestyle
 
       - name: Lint the code
         run: |
-          export PATH="$HOME/.rye/bin:$PATH"
           make lint
 
       - name: Type check the code
         run: |
-          export PATH="$HOME/.rye/bin:$PATH"
           make stricttypecheck
 
       - name: Run unit tests
         run: |
-          export PATH="$HOME/.rye/bin:$PATH"
           make test
 
 ### lint-and-test.yaml ends here
