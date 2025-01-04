@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - ci-tweaks
   pull_request:
 
 jobs:
