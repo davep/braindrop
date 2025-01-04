@@ -11,7 +11,7 @@ jobs:
 
   style-lint-and-test:
 
-    name: Code style, linting and unit tests
+    name: Style, lint, test
     runs-on: ubuntu-latest
     strategy:
       matrix:
