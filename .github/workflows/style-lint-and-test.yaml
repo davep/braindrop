@@ -1,8 +1,6 @@
 name: Code quality tests
 
 python-code-for-main: &python-code-for-main
-  branches:
-    - main
   paths:
     - "pyproject.toml"
     - ".github/workflows/style-lint-and-test.yml"
