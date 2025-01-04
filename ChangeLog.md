@@ -1,8 +1,8 @@
 # Braindrop ChangeLog
 
-## Unreleased
+## v0.1.1
 
-**Released: WiP**
+**Released: 2025-01-04**
 
 - Fixed unnecessary error notifications when asking raindrop.io for
   suggestions for an URL that isn't really an URL.
