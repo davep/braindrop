@@ -112,6 +112,9 @@ class RaindropDetails(VerticalScroll):
 
         &:focus, &:focus-within {
             background-tint: $foreground 5%;
+            .detail, Tags, Tags:focus{
+                background: $boost 150%;
+            }
         }
 
         .hidden {
@@ -130,7 +133,8 @@ class RaindropDetails(VerticalScroll):
         }
 
         .detail {
-            background: $panel;
+            color: $foreground;
+            background: $boost 150%;
         }
 
         #title {
@@ -161,9 +165,11 @@ class RaindropDetails(VerticalScroll):
         }
 
         Tags, Tags:focus {
+            & > .option-list--option {
+                color: $foreground;
+            }
             border: none;
-            background: $panel;
-            background-tint: transparent;
+            background: $boost 150%;
             margin: 1 2 1 2;
             padding: 1 2 1 2;
             height: auto;
