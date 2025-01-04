@@ -93,11 +93,11 @@ class RaindropView(Option):
             body.append(excerpt)
 
         details = Table.grid(expand=True)
-        details.add_column(ratio=1)
         details.add_column()
+        details.add_column(justify="right")
         details.add_row(
-            f"[dim][italic]{naturaltime(self._raindrop.created) if self._raindrop.created else 'Unknown'}[/][/]",
-            f" [dim bold italic]{', '.join(str(tag) for tag in sorted(self._raindrop.tags))}[/]",
+            f"[dim][italic]{naturaltime(self._raindrop.created) if self._raindrop.created else 'Unknown'}[/][/] ",
+            f"[dim bold italic]{', '.join(str(tag) for tag in sorted(self._raindrop.tags))}[/]",
         )
 
         return Group(title, *body, details, self.RULE)
