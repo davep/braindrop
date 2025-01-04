@@ -1,0 +1,61 @@
+name: Code quality tests
+
+on:
+  push:
+    branches:
+      - main
+      - add-testing-actions
+  pull_request:
+
+jobs:
+
+  style-lint-and-test:
+
+    name: Lint and Test
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12", "3.13"]
+
+    steps:
+
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install Rye
+        run: |
+          curl -sSf https://rye-up.com/install.sh | bash
+          export PATH="$HOME/.rye/bin:$PATH"
+          rye self install
+
+      - name: Install Dependencies
+        run: |
+          export PATH="$HOME/.rye/bin:$PATH"
+          make setup
+
+      - name: Check the Code style
+        run: |
+          export PATH="$HOME/.rye/bin:$PATH"
+          make codestyle
+
+      - name: Lint the code
+        run: |
+          export PATH="$HOME/.rye/bin:$PATH"
+          make lint
+
+      - name: Type check the code
+        run: |
+          export PATH="$HOME/.rye/bin:$PATH"
+          make stricttypecheck
+
+      - name: Run unit tests
+        run: |
+          export PATH="$HOME/.rye/bin:$PATH"
+          make test
+
+### lint-and-test.yaml ends here
