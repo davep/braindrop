@@ -1,20 +1,10 @@
 name: Code quality tests
 
-python-code-for-main: &python-code-for-main
-  paths:
-    - "pyproject.toml"
-    - ".github/workflows/style-lint-and-test.yml"
-    - "**.lock"
-    - "Makefile"
-    - "**.py"
-    - "**.pyi"
-    - "**.scss"
-
 on:
   push:
-    <<: *python-code-for-main
+    branches:
+      - main
   pull_request:
-    <<: *python-code-for-main
 
 jobs:
 
