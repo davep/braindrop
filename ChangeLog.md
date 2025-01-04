@@ -1,5 +1,11 @@
 # Braindrop ChangeLog
 
+## Unreleased
+
+**Released: WiP**
+
+- Small tweaks to the styling of the raindrop details panel.
+
 ## v0.1.1
 
 **Released: 2025-01-04**
