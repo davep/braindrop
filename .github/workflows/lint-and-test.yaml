@@ -29,7 +29,7 @@ jobs:
 
       - name: Install Rye
         run: |
-          curl -sSf https://rye-up.com/install.sh | bash
+          curl -sSf https://rye.astral.sh/get | bash
           export PATH="$HOME/.rye/bin:$PATH"
           rye self install
 
