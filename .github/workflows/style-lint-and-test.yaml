@@ -10,7 +10,7 @@ jobs:
 
   style-lint-and-test:
 
-    name: Lint and Test
+    name: Style, lint, test
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -32,23 +32,18 @@ jobs:
           version: "latest"
 
       - name: Install Dependencies
-        run: |
-          make setup
+        run: make setup
 
       - name: Check the Code style
-        run: |
-          make codestyle
+        run: make codestyle
 
       - name: Lint the code
-        run: |
-          make lint
+        run: make lint
 
       - name: Type check the code
-        run: |
-          make stricttypecheck
+        run: make stricttypecheck
 
       - name: Run unit tests
-        run: |
-          make test
+        run: make test
 
 ### style-lint-and-test.yaml ends here
