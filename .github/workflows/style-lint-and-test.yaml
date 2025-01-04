@@ -56,4 +56,4 @@ jobs:
         run: |
           make test
 
-### lint-and-test.yaml ends here
+### style-lint-and-test.yaml ends here
