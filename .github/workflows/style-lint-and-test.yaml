@@ -30,10 +30,6 @@ jobs:
         uses: eifinger/setup-rye@v4
         with:
           version: "latest"
-        # run: |
-        #   curl -sSf https://rye.astral.sh/get | RYE_INSTALL_OPTION="--yes" bash
-        #   export PATH="$HOME/.rye/bin:$PATH"
-        #   rye self install
 
       - name: Install Dependencies
         run: |
