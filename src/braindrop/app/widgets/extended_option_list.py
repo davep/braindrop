@@ -72,6 +72,14 @@ class PreservedHighlight:
 class OptionListEx(OptionList):
     """The Textual `OptionList` with more features."""
 
+    DEFAULT_CSS = """
+    OptionListEx {
+        &:focus {
+            background-tint: initial;
+        }
+    }
+    """
+
     BINDINGS = [
         Binding("j, right", "cursor_down", show=False),
         Binding("k, left", "cursor_up", show=False),

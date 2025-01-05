@@ -111,9 +111,8 @@ class RaindropDetails(VerticalScroll):
         background: $surface;
 
         &:focus, &:focus-within {
-            background-tint: $foreground 5%;
             .detail, Tags, Tags:focus{
-                background: $boost 150%;
+                background: $boost 200%;
             }
         }
 
