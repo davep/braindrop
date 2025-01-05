@@ -11,6 +11,7 @@
 - Improved the styling of the main panels.
   ([#34](https://github.com/davep/braindrop/pull/34))
 - Existing data is now shown a wee bit earlier on startup.
+  ([#37](https://github.com/davep/braindrop/pull/37))
 
 ## v0.1.1
 
