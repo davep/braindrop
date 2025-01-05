@@ -98,13 +98,13 @@ class Downloading(ModalScreen[None]):
 
             try:
                 await self._data.download(self._user, self._update_status)
-            except API.Error:
+            except API.Error as error:
                 self.app.bell()
                 self.notify(
-                    "Error downloading data from the server.",
-                    title="Download Error",
+                    str(error),
+                    title="Error downloading data from the server.",
                     severity="error",
-                    timeout=8,
+                    timeout=80,
                 )
                 return
 

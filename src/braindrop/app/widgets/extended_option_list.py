@@ -3,13 +3,16 @@
 ##############################################################################
 # Python imports.
 from types import TracebackType
-from typing import Self
 
 ##############################################################################
 # Textual imports.
 from textual.binding import Binding
 from textual.widgets import OptionList
 from textual.widgets.option_list import OptionDoesNotExist
+
+##############################################################################
+# Typing extension imports.
+from typing_extensions import Self
 
 
 ##############################################################################

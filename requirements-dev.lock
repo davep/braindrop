@@ -115,7 +115,6 @@ textual-serve==1.1.1
     # via textual-dev
 types-pytz==2024.2.0.20241221
 typing-extensions==4.12.2
-    # via anyio
     # via braindrop
     # via mypy
     # via textual
