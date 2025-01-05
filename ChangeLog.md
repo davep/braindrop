@@ -5,6 +5,7 @@
 **Released: WiP**
 
 - Small tweaks to the styling of the raindrop details panel.
+  ([#30](https://github.com/davep/braindrop/pull/30))
 - Improved the way the age and the tags share the line in the raindrops view
   widget. ([#31](https://github.com/davep/braindrop/pull/31))
 
@@ -14,18 +15,20 @@
 
 - Fixed unnecessary error notifications when asking raindrop.io for
   suggestions for an URL that isn't really an URL.
+  ([#21](https://github.com/davep/braindrop/pull/21))
 - Suggested URL when making a new raindrop is now taken from the first line
   of the clipboard, ignoring any other text.
+  ([#21](https://github.com/davep/braindrop/pull/21))
 
 ## v0.1.0
 
 **Released: 2025-01-03**
 
-- Added the ability to add a raindrop.
-- Added the ability to edit a raindrop.
-- Added the ability to delete a raindrop.
+- Added the ability to add a raindrop. ([#2](https://github.com/davep/braindrop/pull/2))
+- Added the ability to edit a raindrop. ([#2](https://github.com/davep/braindrop/pull/2))
+- Added the ability to delete a raindrop. ([#2](https://github.com/davep/braindrop/pull/2))
 - Changed the redownload decision to work off last update rather than last
-  action.
+  action. ([#2](https://github.com/davep/braindrop/pull/2))
 
 ## v0.0.2
 
