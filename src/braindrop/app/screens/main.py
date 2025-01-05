@@ -211,6 +211,9 @@ class Main(Screen[None]):
     async def maybe_redownload(self) -> None:
         """Redownload the Raindrop data if it looks like server data is newer."""
 
+        # Ensure that whatever we have at the moment is visible.
+        self.populate_display()
+
         # First off, get the user information. It's via this where we'll
         # figure out the last server activity and will then be able to
         # figure out if we're out of date down here.
@@ -256,8 +259,7 @@ class Main(Screen[None]):
             )
         else:
             # It doesn't look like we're in a situation where we need to
-            # download data from the server. Display the local copy.
-            self.populate_display()
+            # download data from the server.
             return
 
         # Having got to this point, it looks like we really do need to pull
