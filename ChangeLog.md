@@ -1,8 +1,8 @@
 # Braindrop ChangeLog
 
-## Unreleased
+## v0.2.0
 
-**Released: WiP**
+**Released: 2025-01-05**
 
 - Small tweaks to the styling of the raindrop details panel.
   ([#30](https://github.com/davep/braindrop/pull/30))
