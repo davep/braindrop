@@ -28,12 +28,17 @@ def test_make_tag_string_squishes_duplicates_including_case() -> None:
 
 
 ##############################################################################
-def test_make_tag_list() -> None:
+@pytest.mark.parametrize(
+    "string",
+    (
+        "a,b",
+        "a, b",
+        ",,a,,, b,,,",
+    ),
+)
+def test_make_tag_list(string: str) -> None:
     """Given a string of tags, we should get a list of them back."""
-    target = [Tag("a"), Tag("b")]
-    assert Raindrop.string_to_tags("a,b") == target
-    assert Raindrop.string_to_tags("a, b") == target
-    assert Raindrop.string_to_tags(",,a,,, b,,,") == target
+    assert Raindrop.string_to_tags(string) == [Tag("a"), Tag("b")]
 
 
 ##############################################################################
@@ -51,12 +56,17 @@ def test_make_tag_list_squishes_duplicates(string: str) -> None:
 
 
 ##############################################################################
-def test_make_tag_list_squishes_duplicates_including_case() -> None:
+@pytest.mark.parametrize(
+    "string",
+    (
+        "a,A,a,b",
+        "a, A, a, b",
+        ",,a,,,A,,a,A,, b,,,",
+    ),
+)
+def test_make_tag_list_squishes_duplicates_including_case(string: str) -> None:
     """When making a list from a string of tags, it will case-insensitive squish duplicates."""
-    target = [Tag("a"), Tag("b")]
-    assert Raindrop.string_to_tags("a,A,a,b") == target
-    assert Raindrop.string_to_tags("a, A, a, b") == target
-    assert Raindrop.string_to_tags(",,a,,,A,,a,A,, b,,,") == target
+    assert Raindrop.string_to_tags(string) == [Tag("a"), Tag("b")]
 
 
 ##############################################################################
