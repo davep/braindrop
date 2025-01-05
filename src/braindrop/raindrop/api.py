@@ -253,7 +253,11 @@ class API:
             count_update(0)
         while True:
             _, data = await self._items_of(
-                self._get, "raindrops", str(collection), page=str(page), pagesize="50"
+                self._get,
+                "raindrops",
+                str(int(collection)),
+                page=str(page),
+                pagesize="50",
             )
             if data:
                 raindrops += [Raindrop.from_json(raindrop) for raindrop in data]
