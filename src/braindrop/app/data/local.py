@@ -9,11 +9,15 @@ from __future__ import annotations
 from datetime import datetime
 from json import dumps, loads
 from pathlib import Path
-from typing import Any, Callable, Counter, Iterable, Iterator, Self, Sequence
+from typing import Any, Callable, Counter, Iterable, Iterator, Sequence
 
 ##############################################################################
 # pytz imports.
 from pytz import UTC
+
+##############################################################################
+# Typing extension imports.
+from typing_extensions import Self
 
 ##############################################################################
 # Local imports.
