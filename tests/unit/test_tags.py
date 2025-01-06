@@ -6,7 +6,7 @@ from collections import Counter
 
 ##############################################################################
 # Pytest imports.
-import pytest
+from pytest import mark
 
 ##############################################################################
 # Application imports.
@@ -22,7 +22,7 @@ COMBINATIONS = (
 
 
 ##############################################################################
-@pytest.mark.parametrize("tag, string", COMBINATIONS)
+@mark.parametrize("tag, string", COMBINATIONS)
 def test_tag_vs_str_equality(tag: str, string: str) -> None:
     """A `Tag` should be able to compare against a string."""
     assert Tag(tag) == string
@@ -30,7 +30,7 @@ def test_tag_vs_str_equality(tag: str, string: str) -> None:
 
 
 ##############################################################################
-@pytest.mark.parametrize("tag0, tag1", COMBINATIONS)
+@mark.parametrize("tag0, tag1", COMBINATIONS)
 def test_tag_vs_tag_equality(tag0: str, tag1: str) -> None:
     """A `Tag` should be able to compare against another `Tag`."""
     assert Tag(tag0) == Tag(tag1)
@@ -61,21 +61,21 @@ def test_sort_tags() -> None:
 
 
 ##############################################################################
-@pytest.mark.parametrize("string", ("", "1"))
+@mark.parametrize("string", ("", "1"))
 def test_tag_langth(string: str) -> None:
     """We should be able to get the len of a tag."""
     assert len(Tag(string)) == len(string)
 
 
 ##############################################################################
-@pytest.mark.parametrize("string, expected", (("", False), ("1", True)))
+@mark.parametrize("string, expected", (("", False), ("1", True)))
 def test_tag_as_bool(string: str, expected: bool) -> None:
     """We should be able to treat a tag as a bool, in respect to its length."""
     assert bool(Tag(string)) is expected
 
 
 ##############################################################################
-@pytest.mark.parametrize(
+@mark.parametrize(
     "tag, startswith, expected",
     (
         ("foo", "bar", False),

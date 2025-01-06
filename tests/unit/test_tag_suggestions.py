@@ -6,7 +6,7 @@ from typing import Final
 
 ##############################################################################
 # Pytest imports.
-import pytest
+from pytest import fixture, mark
 
 ##############################################################################
 # Local imports.
@@ -19,7 +19,7 @@ TAGS: Final[dict[str, Tag]] = {tag: Tag(tag * 10) for tag in "abcdefg"}
 
 
 ##############################################################################
-@pytest.fixture
+@fixture
 def suggest_tags() -> SuggestTags:
     """Fixture for the tag suggestion object."""
     return SuggestTags(TAGS.values(), use_cache=False)
@@ -38,7 +38,7 @@ async def test_simple_suggestion(suggest_tags: SuggestTags) -> None:
 
 
 ##############################################################################
-@pytest.mark.parametrize("tail", (",", ", ", " , ", ",  "))
+@mark.parametrize("tail", (",", ", ", " , ", ",  "))
 async def test_no_suggestion_when_no_next_tag(
     suggest_tags: SuggestTags, tail: str
 ) -> None:

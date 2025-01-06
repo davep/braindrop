@@ -180,9 +180,12 @@ class Raindrop:
         Returns:
             `True` if the text can be found, `False` if not.
         """
-        return search_text.casefold() in (
-            f"{self.excerpt.casefold()} {self.title.casefold()} {self.note.casefold()} "
-            f"{' '.join(str(tag) for tag in self.tags).casefold()}"
+        search_text = search_text.casefold()
+        return (
+            search_text in self.title.casefold()
+            or search_text in self.excerpt.casefold()
+            or search_text in self.note.casefold()
+            or self.is_tagged(Tag(search_text))
         )
 
     TAG_STRING_SEPARATOR: Final[str] = ","
