@@ -10,6 +10,12 @@ from braindrop.raindrop import Raindrop, Tag
 
 
 ##############################################################################
+def test_brand_new_randrop_reports_brand_new() -> None:
+    """A brand new Raindrop should report itself as brand new."""
+    assert Raindrop().is_brand_new is True
+
+
+##############################################################################
 def test_make_tag_string() -> None:
     """Given a list of tags we should be able to make a string."""
     assert Raindrop.tags_to_string([Tag("a"), Tag("b")]) == "a, b"
@@ -82,12 +88,6 @@ def test_make_tag_list_squishes_duplicates_including_case(string: str) -> None:
 def test_make_raw_tag_list(string: str) -> None:
     target = [Tag("a"), Tag("A"), Tag("b"), Tag("B"), Tag("a"), Tag("A")]
     assert Raindrop.string_to_raw_tags(string) == target
-
-
-##############################################################################
-def test_brand_new_randrop_reports_brand_new() -> None:
-    """A brand new Raindrop should report itself as brand new."""
-    assert Raindrop().is_brand_new is True
 
 
 ### test_raindrop.py ends here
