@@ -25,6 +25,7 @@ from ..messages import (
     ShowUnsorted,
     ShowUntagged,
     TagOrder,
+    VisitLink,
     VisitRaindrop,
 )
 from .commands_provider import CommandHits, CommandsProvider
@@ -65,6 +66,7 @@ class MainCommands(CommandsProvider):
         yield ShowUnsorted()
         yield ShowUntagged()
         yield TagOrder()
+        yield VisitLink()
         yield VisitRaindrop()
 
 

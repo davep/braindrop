@@ -6,6 +6,10 @@
 
 - Fixed doubling-up of the raindrop details panel's help when the raindrop's
   tags have focus. ([#39](https://github.com/davep/braindrop/issues/39))
+- Added a `Visit Link` command to the command palette.
+  ([#43](https://github.com/davep/braindrop/pull/43))
+- Added <kbd>v</kbd> as a global key for visiting a currently-highlighted
+  link. ([#43](https://github.com/davep/braindrop/pull/43))
 
 ## v0.2.0
 

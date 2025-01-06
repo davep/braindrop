@@ -27,6 +27,7 @@ from .commands import (
     ShowUnsorted,
     ShowUntagged,
     TagOrder,
+    VisitLink,
     VisitRaindrop,
 )
 
@@ -57,6 +58,7 @@ __all__ = [
     "ShowUnsorted",
     "ShowUntagged",
     "TagOrder",
+    "VisitLink",
     "VisitRaindrop",
 ]
 

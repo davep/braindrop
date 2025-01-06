@@ -27,6 +27,7 @@ from textual.widgets.option_list import Option, OptionDoesNotExist
 # Local imports.
 from ...raindrop import Raindrop
 from ..data import Raindrops
+from ..messages import VisitLink
 from .extended_option_list import OptionListEx
 
 
@@ -111,8 +112,7 @@ class RaindropsView(OptionListEx):
         Binding(
             "enter",
             "visit",
-            description="Visit",
-            tooltip="Visit the currently-highlighted Raindrop",
+            show=False,
         ),
     ]
 
@@ -173,15 +173,7 @@ class RaindropsView(OptionListEx):
 
     def action_visit(self) -> None:
         """Action that visits the currently-selected raindrop link, if there is one."""
-        if (raindrop := self.highlighted_raindrop) is not None:
-            if raindrop.link:
-                open_url(raindrop.link)
-            else:
-                self.notify(
-                    "There is no link associated with that Raindrop",
-                    title="No link",
-                    severity="error",
-                )
+        self.post_message(VisitLink())
 
 
 ### raindrops_view.py ends here
