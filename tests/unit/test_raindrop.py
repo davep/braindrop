@@ -2,7 +2,7 @@
 
 ##############################################################################
 # Pytest imports.
-import pytest
+from pytest import mark
 
 ##############################################################################
 # Local imports.
@@ -28,7 +28,7 @@ def test_make_tag_string_squishes_duplicates_including_case() -> None:
 
 
 ##############################################################################
-@pytest.mark.parametrize(
+@mark.parametrize(
     "string",
     (
         "a,b",
@@ -42,7 +42,7 @@ def test_make_tag_list(string: str) -> None:
 
 
 ##############################################################################
-@pytest.mark.parametrize(
+@mark.parametrize(
     "string",
     (
         "a,a,a,b",
@@ -56,7 +56,7 @@ def test_make_tag_list_squishes_duplicates(string: str) -> None:
 
 
 ##############################################################################
-@pytest.mark.parametrize(
+@mark.parametrize(
     "string",
     (
         "a,A,a,b",
@@ -70,7 +70,7 @@ def test_make_tag_list_squishes_duplicates_including_case(string: str) -> None:
 
 
 ##############################################################################
-@pytest.mark.parametrize(
+@mark.parametrize(
     "string",
     (
         "a,A,b,B,a,a",
