@@ -6,7 +6,7 @@ from pytest import mark, raises
 
 ##############################################################################
 # Local imports.
-from braindrop.raindrop import Raindrop, Tag
+from braindrop.raindrop import Raindrop, SpecialCollection, Tag
 
 
 ##############################################################################
@@ -28,6 +28,25 @@ def test_editing_a_raindrop() -> None:
     raindrop = Raindrop(title=TITLE)
     assert raindrop.title == TITLE
     assert raindrop.edit(title="Changed").title != TITLE
+
+
+##############################################################################
+@mark.parametrize(
+    "collection, is_unsorted",
+    (
+        (SpecialCollection.ALL, False),
+        (SpecialCollection.TRASH, False),
+        (SpecialCollection.UNSORTED, True),
+        (SpecialCollection.UNTAGGED, False),
+        (SpecialCollection.BROKEN, False),
+        (42, False),
+    ),
+)
+def test_detect_unsorted(
+    collection: SpecialCollection | int, is_unsorted: bool
+) -> None:
+    """Only Raindrops in the unsorted collection should report as such."""
+    assert Raindrop(collection=collection).is_unsorted is is_unsorted
 
 
 ##############################################################################
