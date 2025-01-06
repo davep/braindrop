@@ -50,6 +50,42 @@ def test_detect_unsorted(
 
 
 ##############################################################################
+@mark.parametrize(
+    "tags, look_for, result",
+    (
+        (("tag",), ("tag",), True),
+        (("Tag",), ("tag",), True),
+        (("tag",), ("Tag",), True),
+        (("t a g",), ("T a g",), True),
+        (("tag", "tag"), ("tag",), True),
+        (("Tag", "tag"), ("tag",), True),
+        (("tag", "tag"), ("Tag",), True),
+        (("tag",), ("tag", "tag"), True),
+        (("Tag",), ("tag", "tag"), True),
+        (("tag",), ("Tag", "tag"), True),
+        (("gat", "tag", "gta"), ("tag",), True),
+        (("gat", "tag", "gta"), ("tag", "gat"), True),
+        (("gat", "tag", "gta"), ("TAG", "GAT"), True),
+        (("gat",), ("tag",), False),
+        (("gat", "tag"), ("gattag",), False),
+        (("gat", "tag"), ("gat tag",), False),
+        (("gat", "tag"), ("gat,tag",), False),
+        (("gat", "tag"), ("gat, tag",), False),
+    ),
+)
+def test_is_tagged(
+    tags: tuple[str, ...], look_for: tuple[str, ...], result: bool
+) -> None:
+    """We should be able to check that a Raindrop has certain tags."""
+    assert (
+        Raindrop(tags=[Tag(tag) for tag in tags]).is_tagged(
+            *(Tag(tag) for tag in look_for)
+        )
+        is result
+    )
+
+
+##############################################################################
 def test_editing_a_raindrop_property_that_does_not_exist() -> None:
     """Attempting to edit a property that doesn't exist should be an error."""
     with raises(TypeError):
