@@ -220,6 +220,26 @@ class API:
         result, user = await self._result_of(self._get, "user", "user")
         return User.from_json(user) if result and user is not None else None
 
+    @staticmethod
+    def maybe_on_the_server(collection: int | SpecialCollection) -> bool:
+        """Check if the given collection is likely to be on the server.
+
+        Args:
+            collection: The collection to check.
+
+        Returns:
+            `True` if likely on the server, `False` if not.
+
+        Notes:
+            This method doesn't check that the collection *is* on the
+            server, it just helps check that it might be.
+        """
+        try:
+            collection = SpecialCollection(collection)
+        except ValueError:
+            return collection > 0
+        return not collection.is_local
+
     async def raindrops(
         self,
         collection: int = SpecialCollection.ALL,
@@ -243,10 +263,8 @@ class API:
             - `SpecialCollection.UNSORTED` - All `Raindrop`s not in a `Collection`.
             - `SpecialCollection.TRASH` - All trashed `Raindrop`s.
         """
-        assert collection not in (
-            SpecialCollection.UNTAGGED,
-            SpecialCollection.BROKEN,
-        ), f"{collection} is not a valid collection ID"
+        if not self.maybe_on_the_server(collection):
+            raise self.Error(f"{collection} is not a valid collection ID")
         page = 0
         raindrops: list[Raindrop] = []
         if count_update is not None:

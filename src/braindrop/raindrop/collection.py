@@ -94,11 +94,20 @@ class SpecialCollection(IntEnum):
     """A collection that contains all broken raindrops.
 
     Note:
-        Unlike the other special collection IDs defined here, the broken
-        collection isn't one that is supported via the API; but it's
-        available here so that it can be treated as just another
+
+        Unlike the other special collection IDs defined here, the untagged
+        and broken collections aren't supported via the API; but are
+        available here so that they can be treated as just another
         collection, with special handling within the main application.
+
+        See the `is_local` property to test if a collection is local in this
+        way.
     """
+
+    @property
+    def is_local(self) -> bool:
+        """Is this a locally-defined collection?"""
+        return self in (self.UNTAGGED, self.BROKEN)
 
     def __call__(self) -> Collection:
         """Turn a collection ID into a `Collection` object."""
