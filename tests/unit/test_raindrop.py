@@ -16,6 +16,12 @@ def test_brand_new_randrop_reports_brand_new() -> None:
 
 
 ##############################################################################
+def test_a_raindrop_with_an_identity_is_not_brand_new() -> None:
+    """A Raindrop with an identity isn't seen as new."""
+    assert Raindrop(identity=1).is_brand_new is False
+
+
+##############################################################################
 def test_editing_a_raindrop() -> None:
     """Test using the edit method to change a value in a Raindrop."""
     TITLE = "This is a test"
