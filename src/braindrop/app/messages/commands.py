@@ -180,6 +180,14 @@ class Quit(Command):
 
 
 ##############################################################################
+class VisitLink(Command):
+    """Visit currently-highlighted link"""
+
+    BINDING_KEY = "v"
+    SHOW_IN_FOOTER = False
+
+
+##############################################################################
 class CopyLinkToClipboard(Command):
     """Copy the currently-highlighted link to the clipboard"""
 

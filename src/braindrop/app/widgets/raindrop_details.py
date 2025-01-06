@@ -28,7 +28,7 @@ from textual.widgets.option_list import Option
 ##############################################################################
 # Local imports.
 from ...raindrop import Raindrop, Tag
-from ..messages import ShowTagged
+from ..messages import ShowTagged, VisitLink
 from .extended_option_list import OptionListEx
 
 
@@ -84,12 +84,9 @@ class Link(Label):
     https://github.com/Textualize/textual/issues/3690
     """
 
-    class Visit(Message):
-        """Message to indicate that the link should be visited."""
-
     def action_visit(self) -> None:
         """Handle a UI request to visit the link."""
-        self.post_message(self.Visit())
+        self.post_message(VisitLink())
 
 
 ##############################################################################
@@ -178,8 +175,7 @@ class RaindropDetails(VerticalScroll):
         Binding(
             "enter",
             "visit_link",
-            description="Visit",
-            tooltip="Visit the current Raindrop's link",
+            show=False,
         )
     ]
 
@@ -275,11 +271,9 @@ class RaindropDetails(VerticalScroll):
         finally:
             self.query("*").set_class(not bool(self.raindrop), "hidden")
 
-    @on(Link.Visit)
     def action_visit_link(self) -> None:
         """Visit a link associated with the raindrop."""
-        if self.raindrop is not None and self.raindrop.link:
-            open_url(self.raindrop.link)
+        self.post_message(VisitLink())
 
 
 ### raindrop_details.py ends here

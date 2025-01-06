@@ -63,6 +63,7 @@ from ..messages import (
     ShowUnsorted,
     ShowUntagged,
     TagOrder,
+    VisitLink,
     VisitRaindrop,
 )
 from ..widgets import Navigation, RaindropDetails, RaindropsView
@@ -166,6 +167,7 @@ class Main(Screen[None]):
         ShowAll,
         ShowUnsorted,
         ShowUntagged,
+        VisitLink,
     )
 
     BINDINGS = Command.bindings(*COMMAND_MESSAGES)
@@ -506,6 +508,13 @@ class Main(Screen[None]):
             )
             return None
         return raindrop.link
+
+    @on(VisitLink)
+    def action_visit_link_command(self) -> None:
+        """Visit the currently-highlighted link."""
+        if (link := self._current_link("visit")) is None:
+            return
+        open_url(link)
 
     @on(CopyLinkToClipboard)
     def action_copy_link_to_clipboard_command(self) -> None:
