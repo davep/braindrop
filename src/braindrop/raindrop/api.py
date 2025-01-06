@@ -263,10 +263,8 @@ class API:
             - `SpecialCollection.UNSORTED` - All `Raindrop`s not in a `Collection`.
             - `SpecialCollection.TRASH` - All trashed `Raindrop`s.
         """
-        assert collection not in (
-            SpecialCollection.UNTAGGED,
-            SpecialCollection.BROKEN,
-        ), f"{collection} is not a valid collection ID"
+        if not self.maybe_on_the_server(collection):
+            raise self.Error(f"{collection} is not a valid collection ID")
         page = 0
         raindrops: list[Raindrop] = []
         if count_update is not None:
