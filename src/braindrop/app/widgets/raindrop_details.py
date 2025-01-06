@@ -173,7 +173,6 @@ class RaindropDetails(VerticalScroll):
 
     This panel contains the details of the currently-highlighted Raindrop.
     """
-    """The help to use in the widgets."""
 
     BINDINGS = [
         Binding(
