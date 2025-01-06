@@ -84,4 +84,10 @@ def test_make_raw_tag_list(string: str) -> None:
     assert Raindrop.string_to_raw_tags(string) == target
 
 
+##############################################################################
+def test_brand_new_randrop_reports_brand_new() -> None:
+    """A brand new Raindrop should report itself as brand new."""
+    assert Raindrop().is_brand_new is True
+
+
 ### test_raindrop.py ends here
