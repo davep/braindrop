@@ -384,11 +384,17 @@ class LocalData:
         Returns:
             The collection with that identity.
         """
+        if identity in SpecialCollection:
+            return SpecialCollection(identity)()
         return self._collections[identity]
 
     @property
     def collections(self) -> list[Collection]:
-        """A list of all known collections."""
+        """A list of all known collections.
+
+        Notes:
+            This is just the list of user-defined collections.
+        """
         return list(self._collections.values())
 
     def mark_downloaded(self) -> Self:
