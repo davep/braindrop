@@ -161,6 +161,19 @@ class Raindrop:
         """
         return replace(self, **replacements)
 
+    def move_to(self, collection: int | SpecialCollection) -> Raindrop:
+        """Move the raindrop to a different collection.
+
+        Args:
+            The collection to move the raindrop into.
+
+        Returns:
+            A copy of the raindrop with its collection changed.
+        """
+        moved = self.edit(collection=int(collection))
+        moved.raw.get("collection", {})["$id"] = collection
+        return moved
+
     @property
     def is_brand_new(self) -> bool:
         """Is this a brand new Raindrop that hasn't been saved yet?"""
