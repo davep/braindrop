@@ -152,6 +152,12 @@ class Raindrop:
 
         Returns:
             A copy of the raindrop with the edits made.
+
+        Notes:
+            This DOES NOT update the raw data, which should be considered
+            stale and unsafe to use. If you wish to use the `raw` property
+            after using this method you should update the server and pull
+            back a fresh copy of the raindrop.
         """
         return replace(self, **replacements)
 
