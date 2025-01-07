@@ -26,8 +26,23 @@ def test_editing_a_raindrop() -> None:
     """Test using the edit method to change a value in a Raindrop."""
     TITLE = "This is a test"
     raindrop = Raindrop(title=TITLE)
+    updated = raindrop.edit(title="Changed")
     assert raindrop.title == TITLE
-    assert raindrop.edit(title="Changed").title != TITLE
+    assert updated.title != TITLE
+
+
+##############################################################################
+def test_an_edited_raindrop_should_be_a_different_instance() -> None:
+    """When you edit a Raindrop it should result in a new instance."""
+    raindrop = Raindrop()
+    assert raindrop.edit(title="Changed") is not raindrop
+
+
+##############################################################################
+def test_editing_a_raindrop_property_that_does_not_exist() -> None:
+    """Attempting to edit a property that doesn't exist should be an error."""
+    with raises(TypeError):
+        Raindrop().edit(not_a_property=42)
 
 
 ##############################################################################
@@ -126,20 +141,6 @@ def test_contains(
             tags=[Tag(tag) for tag in tags],
         )
     ) is result
-
-
-##############################################################################
-def test_editing_a_raindrop_property_that_does_not_exist() -> None:
-    """Attempting to edit a property that doesn't exist should be an error."""
-    with raises(TypeError):
-        Raindrop().edit(not_a_property=42)
-
-
-##############################################################################
-def test_an_edited_raindrop_should_be_a_different_instance() -> None:
-    """When you edit a Raindrop it should result in a new instance."""
-    raindrop = Raindrop()
-    assert raindrop.edit(title="Changed") is not raindrop
 
 
 ##############################################################################
