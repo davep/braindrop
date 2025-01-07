@@ -14,6 +14,9 @@
   ([#48](https://github.com/davep/braindrop/pull/48))
 - Added public/private icons and the collection name to the raindrop detail
   view. ([#48](https://github.com/davep/braindrop/pull/48))
+- Fixed a trashed raindrop, while still in trash, thinking its collection is
+  the last collection it was in.
+  ([#47](https://github.com/davep/braindrop/issues/47))
 
 ## v0.2.0
 
