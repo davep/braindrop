@@ -25,7 +25,7 @@ from textual.widgets.option_list import Option, OptionDoesNotExist
 ##############################################################################
 # Local imports.
 from ...raindrop import Raindrop
-from ..data import Raindrops
+from ..data import LocalData, Raindrops
 from ..messages import VisitLink
 from .extended_option_list import OptionListEx
 
@@ -40,10 +40,18 @@ class RaindropView(Option):
     UNSORTED_ICON: Final[str] = Emoji.replace(":thinking_face:")
     """The icon for unsorted raindrops."""
 
+    PUBLIC_ICON: Final[str] = Emoji.replace(":globe_with_meridians:")
+    """The icon to use for a public raindrop."""
+
+    PRIVATE_ICON: Final[str] = Emoji.replace(":lock:")
+    """The icon to use for a private raindrop."""
+
     RULE: Final[Rule] = Rule(style="dim")
     """The rule to place at the end of each view."""
 
-    def __init__(self, raindrop: Raindrop, compact: bool = False) -> None:
+    def __init__(
+        self, raindrop: Raindrop, data: LocalData | None, compact: bool = False
+    ) -> None:
         """Initialise the object.
 
         Args:
@@ -51,6 +59,10 @@ class RaindropView(Option):
         """
         self._raindrop = raindrop
         """The raindrop to view."""
+        self._public = (
+            False if data is None else data.collection(raindrop.collection).public
+        )
+        """Is this raindrop visible to the public?"""
         self._compact = compact
         """Use a compact view?"""
         super().__init__(self.prompt, id=self.id_of(raindrop))
@@ -82,7 +94,8 @@ class RaindropView(Option):
         title.add_row(
             escape(self._raindrop.title),
             f"{self.BROKEN_ICON if self._raindrop.broken else ''}"
-            f"{self.UNSORTED_ICON if self._raindrop.is_unsorted else ''}",
+            f"{self.UNSORTED_ICON if self._raindrop.is_unsorted else ''}"
+            f"{self.PUBLIC_ICON if self._public else self.PRIVATE_ICON}",
         )
 
         body: list[Table] = []
@@ -124,11 +137,14 @@ class RaindropsView(OptionListEx):
     Each Raindrop may have one or more icons showing to the right, these
     include:
 
-    ## {RaindropView.BROKEN_ICON}
-    The Raindrop has a broken link (*Raindrop Pro only*)
-    ## {RaindropView.UNSORTED_ICON}
-    The Raindrop hasn't been sorted into a collection yet
+    - {RaindropView.BROKEN_ICON} - The Raindrop has a broken link (*Raindrop Pro only*)
+    - {RaindropView.UNSORTED_ICON} - The Raindrop hasn't been sorted into a collection yet
+    - {RaindropView.PUBLIC_ICON} - The Raindrop is in a collection that is visible to the public
+    - {RaindropView.PRIVATE_ICON} - The Raindrop is in a collection that is private
     """
+
+    data: var[LocalData | None] = var(None, always_update=True)
+    """The local data."""
 
     raindrops: var[Raindrops] = var(Raindrops)
     """The list of raindrops being shown."""
@@ -140,8 +156,15 @@ class RaindropsView(OptionListEx):
         """Add the current raindrops to the display."""
         with self.preserved_highlight:
             self.clear_options().add_options(
-                [RaindropView(raindrop, self.compact) for raindrop in self.raindrops]
+                [
+                    RaindropView(raindrop, self.data, self.compact)
+                    for raindrop in self.raindrops
+                ]
             )
+
+    def watch_data(self) -> None:
+        """React to the data being changed."""
+        self._add_raindrops()
 
     def watch_raindrops(self) -> None:
         """React to the raindrops being changed."""
