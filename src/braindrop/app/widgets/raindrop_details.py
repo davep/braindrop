@@ -4,7 +4,6 @@
 # Python imports.
 from datetime import datetime
 from typing import Any, Callable, Final
-from webbrowser import open as open_url
 
 ##############################################################################
 # Humanize imports.
@@ -20,7 +19,6 @@ from textual import on
 from textual.app import ComposeResult
 from textual.binding import Binding
 from textual.containers import VerticalScroll
-from textual.message import Message
 from textual.reactive import var
 from textual.widgets import Label
 from textual.widgets.option_list import Option
