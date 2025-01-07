@@ -121,7 +121,12 @@ class Raindrop:
 
     @property
     def as_json(self) -> dict[str, Any]:
-        """The Raindrop as a JSON-friendly dictionary."""
+        """The Raindrop as a JSON-friendly dictionary.
+
+        Notes:
+            The data in here is a subset of all of the data and is only
+            intended for use with returning to the raindrop.io API.
+        """
         return {
             "collection": {"$id": self.collection},
             "cover": self.cover,
@@ -147,8 +152,27 @@ class Raindrop:
 
         Returns:
             A copy of the raindrop with the edits made.
+
+        Notes:
+            This DOES NOT update the raw data, which should be considered
+            stale and unsafe to use. If you wish to use the `raw` property
+            after using this method you should update the server and pull
+            back a fresh copy of the raindrop.
         """
         return replace(self, **replacements)
+
+    def move_to(self, collection: int | SpecialCollection) -> Raindrop:
+        """Move the raindrop to a different collection.
+
+        Args:
+            The collection to move the raindrop into.
+
+        Returns:
+            A copy of the raindrop with its collection changed.
+        """
+        moved = self.edit(collection=int(collection))
+        moved.raw.get("collection", {})["$id"] = collection
+        return moved
 
     @property
     def is_brand_new(self) -> bool:

@@ -548,7 +548,7 @@ class LocalData:
             As a side-effect the data is saved to storage.
         """
         if raindrop in self._all:
-            self._trash.push(raindrop.edit(collection=SpecialCollection.TRASH))
+            self._trash.push(raindrop.move_to(SpecialCollection.TRASH))
             self._all.remove(raindrop)
         else:
             self._trash.remove(raindrop)
