@@ -70,14 +70,6 @@ class Downloading(ModalScreen[None]):
         self.query_one("Vertical").loading = True
         self.download_data()
 
-    def _update_status(self, status: str) -> None:
-        """Update the status label.
-
-        Args:
-            status: The status message to update with.
-        """
-        self.query_one("#status", Label).update(status)
-
     @work
     async def download_data(self) -> None:
         """Download the data from the serer.
@@ -97,7 +89,9 @@ class Downloading(ModalScreen[None]):
                 return
 
             try:
-                await self._data.download(self._user, self._update_status)
+                await self._data.download(
+                    self._user, self.query_one("#status", Label).update
+                )
             except API.Error as error:
                 self.app.bell()
                 self.notify(
