@@ -3,7 +3,6 @@
 ##############################################################################
 # Python imports.
 from typing import Final, cast
-from webbrowser import open as open_url
 
 ##############################################################################
 # Humanize imports.
