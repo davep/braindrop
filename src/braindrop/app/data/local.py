@@ -384,9 +384,11 @@ class LocalData:
         Returns:
             The collection with that identity.
         """
-        if identity in SpecialCollection:
-            return SpecialCollection(identity)()
-        return self._collections[identity]
+        return (
+            SpecialCollection(identity)()
+            if identity in SpecialCollection
+            else self._collections[identity]
+        )
 
     @property
     def collections(self) -> list[Collection]:
