@@ -64,7 +64,7 @@ class HelpScreen(ModalScreen[None]):
     HelpScreen {
         align: center middle;
 
-        Vertical {
+        &> Vertical {
             width: 75%;
             height: 90%;
             background: $panel;
