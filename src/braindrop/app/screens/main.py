@@ -289,6 +289,7 @@ class Main(Screen[None]):
         config = load_configuration()
         self.set_class(not config.details_visible, "details-hidden")
         self.query_one(Navigation).tags_by_count = config.show_tags_by_count
+        self.query_one(RaindropsView).compact = config.compact_mode
         self.load_data()
 
     def watch_active_collection(self) -> None:
@@ -436,6 +437,9 @@ class Main(Screen[None]):
         self.query_one(RaindropsView).compact = not self.query_one(
             RaindropsView
         ).compact
+        config = load_configuration()
+        config.compact_mode = self.query_one(RaindropsView).compact
+        save_configuration(config)
 
     @on(Search)
     @work

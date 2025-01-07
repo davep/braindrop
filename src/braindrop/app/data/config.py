@@ -26,6 +26,9 @@ class Configuration:
     show_tags_by_count: bool = False
     """Show the tags ordered by their count?"""
 
+    compact_mode: bool = False
+    """Use compact mode?"""
+
 
 ##############################################################################
 def configuration_file() -> Path:
