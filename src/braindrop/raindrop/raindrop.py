@@ -121,7 +121,12 @@ class Raindrop:
 
     @property
     def as_json(self) -> dict[str, Any]:
-        """The Raindrop as a JSON-friendly dictionary."""
+        """The Raindrop as a JSON-friendly dictionary.
+
+        Notes:
+            The data in here is a subset of all of the data and is only
+            intended for use with returning to the raindrop.io API.
+        """
         return {
             "collection": {"$id": self.collection},
             "cover": self.cover,
