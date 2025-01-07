@@ -26,8 +26,10 @@ from textual.widgets.option_list import Option
 ##############################################################################
 # Local imports.
 from ...raindrop import Raindrop, Tag
+from ..data import LocalData
 from ..messages import ShowTagged, VisitLink
 from .extended_option_list import OptionListEx
+from .icons import PRIVATE_ICON, PUBLIC_ICON
 
 
 ##############################################################################
@@ -177,6 +179,9 @@ class RaindropDetails(VerticalScroll):
         )
     ]
 
+    data: var[LocalData | None] = var(None, always_update=True)
+    """The local raindrop data."""
+
     raindrop: var[Raindrop | None] = var(None)
     """The raindrop to view the details of."""
 
@@ -189,6 +194,7 @@ class RaindropDetails(VerticalScroll):
         yield Label(id="title")
         yield Label(id="borked")
         yield Label(id="excerpt")
+        yield Label(id="collection", classes="detail")
         yield Label(id="note", classes="detail")
         yield Label(id="created-ish", classes="detail ish")
         yield Label(id="created", classes="detail exact")
@@ -233,14 +239,19 @@ class RaindropDetails(VerticalScroll):
             "" if time == if_different_to else f"{prefix} {strify(time or 'Unknown')}"
         )
 
-    def _watch_raindrop(self) -> None:
-        """React to the raindrop being changed."""
+    def _refresh_display(self) -> None:
+        """Refresh the raindrop data display."""
         try:
-            if self.raindrop is None:
+            if self.data is None or self.raindrop is None:
                 return
             self._set("title", self.raindrop.title)
             self._set("borked", "Broken link!" if self.raindrop.broken else "")
             self._set("excerpt", self.raindrop.excerpt)
+            self._set(
+                "collection",
+                f"{PUBLIC_ICON if self.data.collection(self.raindrop.collection).public else PRIVATE_ICON}"
+                f" {self.data.collection(self.raindrop.collection).title}",
+            )
             self._set("note", self.raindrop.note)
             self._set(
                 "created-ish", self._time(self.raindrop.created, "Created", naturaltime)
@@ -267,7 +278,17 @@ class RaindropDetails(VerticalScroll):
                 f"[@click=visit]{self.raindrop.link}[/]" if self.raindrop.link else "",
             )
         finally:
-            self.query("*").set_class(not bool(self.raindrop), "hidden")
+            self.query("*").set_class(
+                not (bool(self.data) and bool(self.raindrop)), "hidden"
+            )
+
+    def _watch_data(self) -> None:
+        """React to the data being changed."""
+        self._refresh_display()
+
+    def _watch_raindrop(self) -> None:
+        """React to the raindrop being changed."""
+        self._refresh_display()
 
     def action_visit_link(self) -> None:
         """Visit a link associated with the raindrop."""

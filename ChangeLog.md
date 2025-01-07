@@ -10,6 +10,10 @@
   ([#43](https://github.com/davep/braindrop/pull/43))
 - Added <kbd>v</kbd> as a global key for visiting a currently-highlighted
   link. ([#43](https://github.com/davep/braindrop/pull/43))
+- Added public/private icons to the raindrops list.
+  ([#48](https://github.com/davep/braindrop/pull/48))
+- Added public/private icons and the collection name to the raindrop detail
+  view. ([#48](https://github.com/davep/braindrop/pull/48))
 
 ## v0.2.0
 
