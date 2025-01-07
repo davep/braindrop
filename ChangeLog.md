@@ -17,6 +17,7 @@
 - Fixed a trashed raindrop, while still in trash, thinking its collection is
   the last collection it was in.
   ([#47](https://github.com/davep/braindrop/issues/47))
+- Made compact mode sticky.
 
 ## v0.2.0
 
