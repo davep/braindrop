@@ -18,6 +18,7 @@
   the last collection it was in.
   ([#47](https://github.com/davep/braindrop/issues/47))
 - Made compact mode sticky.
+  ([#51](https://github.com/davep/braindrop/pull/51))
 
 ## v0.2.0
 
