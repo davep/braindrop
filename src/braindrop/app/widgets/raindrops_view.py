@@ -28,23 +28,12 @@ from ...raindrop import Raindrop
 from ..data import LocalData, Raindrops
 from ..messages import VisitLink
 from .extended_option_list import OptionListEx
+from .icons import BROKEN_ICON, PRIVATE_ICON, PUBLIC_ICON, UNSORTED_ICON
 
 
 ##############################################################################
 class RaindropView(Option):
     """An individual raindrop."""
-
-    BROKEN_ICON: Final[str] = Emoji.replace(":skull:")
-    """The icon for broken links."""
-
-    UNSORTED_ICON: Final[str] = Emoji.replace(":thinking_face:")
-    """The icon for unsorted raindrops."""
-
-    PUBLIC_ICON: Final[str] = Emoji.replace(":globe_with_meridians:")
-    """The icon to use for a public raindrop."""
-
-    PRIVATE_ICON: Final[str] = Emoji.replace(":lock:")
-    """The icon to use for a private raindrop."""
 
     RULE: Final[Rule] = Rule(style="dim")
     """The rule to place at the end of each view."""
@@ -93,9 +82,9 @@ class RaindropView(Option):
         title.add_column(justify="right")
         title.add_row(
             escape(self._raindrop.title),
-            f"{self.BROKEN_ICON if self._raindrop.broken else ''}"
-            f"{self.UNSORTED_ICON if self._raindrop.is_unsorted else ''}"
-            f"{self.PUBLIC_ICON if self._public else self.PRIVATE_ICON}",
+            f"{BROKEN_ICON if self._raindrop.broken else ''}"
+            f"{UNSORTED_ICON if self._raindrop.is_unsorted else ''}"
+            f"{PUBLIC_ICON if self._public else PRIVATE_ICON}",
         )
 
         body: list[Table] = []
@@ -137,10 +126,10 @@ class RaindropsView(OptionListEx):
     Each Raindrop may have one or more icons showing to the right, these
     include:
 
-    - {RaindropView.BROKEN_ICON} - The Raindrop has a broken link (*Raindrop Pro only*)
-    - {RaindropView.UNSORTED_ICON} - The Raindrop hasn't been sorted into a collection yet
-    - {RaindropView.PUBLIC_ICON} - The Raindrop is in a collection that is visible to the public
-    - {RaindropView.PRIVATE_ICON} - The Raindrop is in a collection that is private
+    - {BROKEN_ICON} - The Raindrop has a broken link (*Raindrop Pro only*)
+    - {UNSORTED_ICON} - The Raindrop hasn't been sorted into a collection yet
+    - {PUBLIC_ICON} - The Raindrop is in a collection that is visible to the public
+    - {PRIVATE_ICON} - The Raindrop is in a collection that is private
     """
 
     data: var[LocalData | None] = var(None, always_update=True)
