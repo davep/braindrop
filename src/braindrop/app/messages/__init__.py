@@ -22,14 +22,13 @@ from .commands import (
     SearchCollections,
     SearchTags,
     ShowAll,
-    ShowCollection,
-    ShowTagged,
     ShowUnsorted,
     ShowUntagged,
     TagOrder,
     VisitLink,
     VisitRaindrop,
 )
+from .main import ShowCollection, ShowTagged
 
 ##############################################################################
 # Exports.
