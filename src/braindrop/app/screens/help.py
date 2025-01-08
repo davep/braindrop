@@ -87,7 +87,7 @@ class HelpScreen(ModalScreen[None]):
     }
     """
 
-    BINDINGS = [("escape", "close")]
+    BINDINGS = [("escape, f1", "close")]
 
     def __init__(self, help_for: Screen[Any]) -> None:
         """Initialise the help screen.
