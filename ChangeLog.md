@@ -1,5 +1,14 @@
 # Braindrop ChangeLog
 
+## Unreleased
+
+**Released: WiP**
+
+- Updated the help screen so that the command table shows the command name
+  first.
+- Updated the help screen so that the commands are sorted by the command
+  name.
+
 ## v0.3.0
 
 **Released: 2025-01-08**

@@ -129,9 +129,9 @@ class HelpScreen(ModalScreen[None]):
         """
         if (commands := getattr(node, "COMMAND_MESSAGES", None)) is None:
             return ""
-        keys = "| Key | Command | Description |\n| - | - | - |\n"
-        for command in commands:
-            keys += f"| {self._all_keys(command)} | {command.command()} | {command.tooltip()} |\n"
+        keys = "| Command | Key | Description |\n| - | - | - |\n"
+        for command in sorted(commands, key=lambda command: command.command()):
+            keys += f"| {command.command()} | {self._all_keys(command)} | {command.tooltip()} |\n"
         return f"\n\n{keys}"
 
     def compose(self) -> ComposeResult:
