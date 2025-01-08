@@ -8,6 +8,7 @@
   first.
 - Updated the help screen so that the commands are sorted by the command
   name.
+- Various cosmetic tweaks to the help screen.
 
 ## v0.3.0
 
