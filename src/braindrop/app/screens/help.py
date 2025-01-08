@@ -71,7 +71,7 @@ class HelpScreen(ModalScreen[None]):
             border: solid $border;
         }
 
-        Markdown {
+        Markdown, MarkdownTable {
             background: $panel;
         }
 
