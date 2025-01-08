@@ -72,7 +72,13 @@ class HelpScreen(ModalScreen[None]):
         }
 
         Markdown, MarkdownTable {
+            padding: 0 1 0 1;
             background: $panel;
+        }
+
+        MarkdownH1 {
+            padding: 1 0 1 0;
+            background: $foreground 10%;
         }
 
         VerticalScroll {
