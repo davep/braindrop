@@ -1,8 +1,8 @@
 # Braindrop ChangeLog
 
-## Unreleased
+## v0.3.0
 
-**Released: WiP**
+**Released: 2025-01-08**
 
 - Fixed doubling-up of the raindrop details panel's help when the raindrop's
   tags have focus. ([#39](https://github.com/davep/braindrop/issues/39))
