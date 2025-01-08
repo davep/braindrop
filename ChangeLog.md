@@ -5,10 +5,11 @@
 **Released: WiP**
 
 - Updated the help screen so that the command table shows the command name
-  first.
+  first. ([#53](https://github.com/davep/braindrop/pull/53))
 - Updated the help screen so that the commands are sorted by the command
-  name.
+  name. ([#53](https://github.com/davep/braindrop/pull/53))
 - Various cosmetic tweaks to the help screen.
+  ([#53](https://github.com/davep/braindrop/pull/53))
 
 ## v0.3.0
 
