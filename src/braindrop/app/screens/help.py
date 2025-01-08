@@ -71,12 +71,21 @@ class HelpScreen(ModalScreen[None]):
             border: solid $border;
         }
 
-        Markdown {
+        Markdown, MarkdownTable {
+            padding: 0 1 0 1;
             background: $panel;
+        }
+
+        MarkdownH1 {
+            padding: 1 0 1 0;
+            background: $foreground 10%;
         }
 
         VerticalScroll {
             scrollbar-gutter: stable;
+            scrollbar-background: $panel;
+            scrollbar-background-hover: $panel;
+            scrollbar-background-active: $panel;
         }
 
         Center {
@@ -87,7 +96,7 @@ class HelpScreen(ModalScreen[None]):
     }
     """
 
-    BINDINGS = [("escape", "close")]
+    BINDINGS = [("escape, f1", "close")]
 
     def __init__(self, help_for: Screen[Any]) -> None:
         """Initialise the help screen.
@@ -129,9 +138,9 @@ class HelpScreen(ModalScreen[None]):
         """
         if (commands := getattr(node, "COMMAND_MESSAGES", None)) is None:
             return ""
-        keys = "| Key | Command | Description |\n| - | - | - |\n"
-        for command in commands:
-            keys += f"| {self._all_keys(command)} | {command.command()} | {command.tooltip()} |\n"
+        keys = "| Command | Key | Description |\n| - | - | - |\n"
+        for command in sorted(commands, key=lambda command: command.command()):
+            keys += f"| {command.command()} | {self._all_keys(command)} | {command.tooltip()} |\n"
         return f"\n\n{keys}"
 
     def compose(self) -> ComposeResult:
