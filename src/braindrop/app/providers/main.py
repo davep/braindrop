@@ -2,8 +2,7 @@
 
 ##############################################################################
 # Local imports.
-from ..data import Raindrops
-from ..messages import (
+from ..commands import (
     AddRaindrop,
     ChangeTheme,
     CheckTheWaybackMachine,
@@ -28,6 +27,7 @@ from ..messages import (
     VisitLink,
     VisitRaindrop,
 )
+from ..data import Raindrops
 from .commands_provider import CommandHits, CommandsProvider
 
 

@@ -25,8 +25,8 @@ from textual.widgets.option_list import Option, OptionDoesNotExist
 ##############################################################################
 # Local imports.
 from ...raindrop import Raindrop
+from ..commands import VisitLink
 from ..data import LocalData, Raindrops
-from ..messages import VisitLink
 from .extended_option_list import OptionListEx
 from .icons import BROKEN_ICON, PRIVATE_ICON, PUBLIC_ICON, UNSORTED_ICON
 

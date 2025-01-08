@@ -26,8 +26,9 @@ from textual.widgets.option_list import Option
 ##############################################################################
 # Local imports.
 from ...raindrop import Raindrop, Tag
+from ..commands import VisitLink
 from ..data import LocalData
-from ..messages import ShowTagged, VisitLink
+from ..messages import ShowTagged
 from .extended_option_list import OptionListEx
 from .icons import PRIVATE_ICON, PUBLIC_ICON
 

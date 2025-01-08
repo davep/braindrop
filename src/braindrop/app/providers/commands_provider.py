@@ -17,7 +17,7 @@ from textual.message import Message
 
 ##############################################################################
 # Local imports.
-from ..messages import Command
+from ..commands import Command
 
 
 ##############################################################################

@@ -7,7 +7,7 @@ from dataclasses import dataclass
 ##############################################################################
 # Local imports.
 from ..data import Raindrops
-from .base_command import Command
+from .base import Command
 
 
 ##############################################################################

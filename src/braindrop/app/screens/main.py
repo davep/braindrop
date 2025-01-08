@@ -28,17 +28,7 @@ from typing_extensions import TypeIs
 # Local imports.
 from ... import __version__
 from ...raindrop import API, Raindrop, SpecialCollection, User
-from ..commands import CollectionCommands, CommandsProvider, MainCommands, TagCommands
-from ..data import (
-    ExitState,
-    LocalData,
-    Raindrops,
-    load_configuration,
-    local_data_file,
-    save_configuration,
-    token_file,
-)
-from ..messages import (
+from ..commands import (
     AddRaindrop,
     ChangeTheme,
     CheckTheWaybackMachine,
@@ -58,14 +48,23 @@ from ..messages import (
     SearchCollections,
     SearchTags,
     ShowAll,
-    ShowCollection,
-    ShowTagged,
     ShowUnsorted,
     ShowUntagged,
     TagOrder,
     VisitLink,
     VisitRaindrop,
 )
+from ..data import (
+    ExitState,
+    LocalData,
+    Raindrops,
+    load_configuration,
+    local_data_file,
+    save_configuration,
+    token_file,
+)
+from ..messages import ShowCollection, ShowTagged
+from ..providers import CollectionCommands, CommandsProvider, MainCommands, TagCommands
 from ..widgets import Navigation, RaindropDetails, RaindropsView
 from .confirm import Confirm
 from .downloading import Downloading
