@@ -13,10 +13,11 @@ from rich.text import Text
 ##############################################################################
 # Textual imports.
 from textual.command import DiscoveryHit, Hit, Hits, Provider
+from textual.message import Message
 
 ##############################################################################
 # Local imports.
-from ..messages import Command
+from ..commands import Command
 
 
 ##############################################################################
@@ -27,7 +28,7 @@ class CommandHit(NamedTuple):
     """The command."""
     description: str
     """The description of the command."""
-    message: Command
+    message: Message
     """The message to emit when the command is chosen."""
 
 
@@ -64,11 +65,11 @@ class CommandsProvider(Provider):
             for command in self.commands()
         )
 
-    def _maybe_add_binding(self, command: Command, text: str | Text) -> Text:
+    def _maybe_add_binding(self, message: Command | Message, text: str | Text) -> Text:
         """Maybe add binding details to some text.
 
         Args:
-            command: The command message to get the binding for.
+            message: The command message to maybe get the binding for.
             text: The text to add the binding details to.
 
         Returns:
@@ -76,16 +77,14 @@ class CommandsProvider(Provider):
         """
         if isinstance(text, str):
             text = Text(text)
+        if not isinstance(message, Command) or not message.has_binding:
+            return text
         style = self.app.current_theme.accent if self.app.current_theme else None
-        return (
-            text.append_text(Text(" ")).append_text(
-                Text(
-                    f"[{self.app.get_key_display(command.primary_binding())}]",
-                    style=style or "dim",
-                )
+        return text.append_text(Text(" ")).append_text(
+            Text(
+                f"[{self.app.get_key_display(message.primary_binding())}]",
+                style=style or "dim",
             )
-            if command.has_binding
-            else text
         )
 
     async def discover(self) -> Hits:

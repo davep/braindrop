@@ -6,9 +6,8 @@ from dataclasses import dataclass
 
 ##############################################################################
 # Local imports.
-from ...raindrop import Collection, Tag
 from ..data import Raindrops
-from .base_command import Command
+from .base import Command
 
 
 ##############################################################################
@@ -21,17 +20,8 @@ class SearchCollections(Command):
 
 ##############################################################################
 @dataclass
-class ShowCollection(Command):
-    """A message that requests that a particular collection is shown."""
-
-    collection: Collection
-    """The collection to show."""
-
-
-##############################################################################
-@dataclass
 class SearchTags(Command):
-    """A message that requests that the tag-based command palette is shown."""
+    """A message that requests that the tag-based command palette is shown"""
 
     BINDING_KEY = "t"
     SHOW_IN_FOOTER = False
@@ -52,15 +42,6 @@ class SearchTags(Command):
             if self.active_collection.is_filtered
             else "Filter the current collection with a tag"
         )
-
-
-##############################################################################
-@dataclass
-class ShowTagged(Command):
-    """A message that requests that Raindrops with a particular tag are shown."""
-
-    tag: Tag
-    """The tag to show."""
 
 
 ##############################################################################

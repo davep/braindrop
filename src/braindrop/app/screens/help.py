@@ -19,7 +19,7 @@ from textual.widgets import Button, Markdown
 ##############################################################################
 # Local imports.
 from ... import __version__
-from ..messages import Command
+from ..commands import Command
 
 ##############################################################################
 # The help text.
