@@ -83,6 +83,9 @@ class HelpScreen(ModalScreen[None]):
 
         VerticalScroll {
             scrollbar-gutter: stable;
+            scrollbar-background: $panel;
+            scrollbar-background-hover: $panel;
+            scrollbar-background-active: $panel;
         }
 
         Center {
