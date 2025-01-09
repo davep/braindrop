@@ -9,15 +9,10 @@ information, etc.
 # Local imports.
 from .base import Command
 from .commands import (
-    AddRaindrop,
     ChangeTheme,
-    CheckTheWaybackMachine,
     ClearFilters,
     CompactMode,
-    CopyLinkToClipboard,
-    DeleteRaindrop,
     Details,
-    EditRaindrop,
     Escape,
     Help,
     Logout,
@@ -30,8 +25,15 @@ from .commands import (
     ShowUnsorted,
     ShowUntagged,
     TagOrder,
-    VisitLink,
     VisitRaindrop,
+)
+from .raindrop import (
+    AddRaindrop,
+    CheckTheWaybackMachine,
+    CopyLinkToClipboard,
+    DeleteRaindrop,
+    EditRaindrop,
+    VisitLink,
 )
 
 ##############################################################################
