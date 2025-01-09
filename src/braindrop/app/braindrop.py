@@ -24,6 +24,9 @@ class Braindrop(App[ExitState]):
     CommandPalette > Vertical {
         width: 75%; /* Full-width command palette looks like garbage. Fix that. */
         background: $panel;
+        SearchIcon {
+            display: none;
+        }
         OptionList {
             /* Make the scrollbar less gross. */
             scrollbar-background: $panel;
