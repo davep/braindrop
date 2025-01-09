@@ -21,10 +21,15 @@ class Braindrop(App[ExitState]):
     """The Braindrop application class."""
 
     CSS = """
-    /* Textual went to a full-width command palette and it looks like garbage.
-       This makes it look less like it was unfinished and forgotten about. */
     CommandPalette > Vertical {
-        width: 75%;
+        width: 75%; /* Full-width command palette looks like garbage. Fix that. */
+        background: $panel;
+        OptionList {
+            /* Make the scrollbar less gross. */
+            scrollbar-background: $panel;
+            scrollbar-background-hover: $panel;
+            scrollbar-background-active: $panel;
+        }
     }
 
     /* Remove cruft from the Header. */
