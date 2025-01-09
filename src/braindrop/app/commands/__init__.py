@@ -8,30 +8,36 @@ information, etc.
 ##############################################################################
 # Local imports.
 from .base import Command
-from .commands import (
-    AddRaindrop,
-    ChangeTheme,
-    CheckTheWaybackMachine,
+from .collection import (
+    SearchCollections,
+    ShowAll,
+    ShowUnsorted,
+    ShowUntagged,
+)
+from .filtering import (
     ClearFilters,
+    Search,
+    SearchTags,
+)
+from .main import (
+    ChangeTheme,
     CompactMode,
-    CopyLinkToClipboard,
-    DeleteRaindrop,
     Details,
-    EditRaindrop,
     Escape,
     Help,
     Logout,
     Quit,
     Redownload,
-    Search,
-    SearchCollections,
-    SearchTags,
-    ShowAll,
-    ShowUnsorted,
-    ShowUntagged,
     TagOrder,
-    VisitLink,
     VisitRaindrop,
+)
+from .raindrop import (
+    AddRaindrop,
+    CheckTheWaybackMachine,
+    CopyLinkToClipboard,
+    DeleteRaindrop,
+    EditRaindrop,
+    VisitLink,
 )
 
 ##############################################################################
