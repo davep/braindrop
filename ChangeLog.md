@@ -12,6 +12,9 @@
   ([#53](https://github.com/davep/braindrop/pull/53))
 - Notes are now rendered as a Markdown document.
   ([#60](https://github.com/davep/braindrop/pull/60))
+- Fixed a crash caused by Raindrop sometimes including collections without
+  parents in the list of child collections.
+  ([#61](https://github.com/davep/braindrop/pull/61))
 
 ## v0.3.0
 

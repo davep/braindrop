@@ -74,7 +74,13 @@ class Collection:
             sort=data.get("sort", 0),
             title=data.get("title", ""),
             view=data.get("view", ""),
-            parent=data.get("parent", {}).get("$id"),
+            # The rather awkward defaulting here comes from the fact that
+            # the Raindrop API seems to include a child collection that has
+            # been moved to the top-level in the list of child collections;
+            # but has its `parent` be `null` -- not even an empty object.
+            # This feels like a bug in Raindrop, or at least in its API.
+            # This works around that.
+            parent=(data.get("parent") or {}).get("$id"),
         )
 
 
