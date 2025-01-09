@@ -3,7 +3,7 @@
 ##############################################################################
 # Python imports.
 from datetime import datetime
-from typing import Any, Callable, Final
+from typing import Any, Callable, Final, cast
 
 ##############################################################################
 # Humanize imports.
@@ -20,7 +20,7 @@ from textual.app import ComposeResult
 from textual.binding import Binding
 from textual.containers import VerticalScroll
 from textual.reactive import var
-from textual.widgets import Label
+from textual.widgets import Label, Markdown
 from textual.widgets.option_list import Option
 
 ##############################################################################
@@ -112,11 +112,18 @@ class RaindropDetails(VerticalScroll):
             display: none;
         }
 
-        Label {
+        Label, Markdown {
             margin: 0 2 1 2;
-            padding: 1 2 1 2;
             width: 1fr;
             color: $text;
+        }
+
+        Label {
+            padding: 1 2 1 2;
+        }
+
+        Markdown {
+            padding: 1 2 0 2;
         }
 
         .detail {
@@ -196,7 +203,7 @@ class RaindropDetails(VerticalScroll):
         yield Label(id="borked")
         yield Label(id="excerpt")
         yield Label(id="collection", classes="detail")
-        yield Label(id="note", classes="detail")
+        yield Markdown(id="note", classes="detail")
         yield Label(id="created-ish", classes="detail ish")
         yield Label(id="created", classes="detail exact")
         yield Label(id="updated-ish", classes="detail ish")
@@ -204,14 +211,16 @@ class RaindropDetails(VerticalScroll):
         yield Link(id="link", classes="detail")
         yield Tags().data_bind(RaindropDetails.raindrop)
 
-    def _set(self, widget: str, value: str) -> None:
+    def _set(
+        self, widget: str, value: str, widget_type: type[Label | Markdown] = Label
+    ) -> None:
         """Set the value of a detail widget.
 
         Args:
             widget: The ID of the widget to set.
             value: The value to set.
         """
-        self.query_one(f"#{widget}", Label).update(value)
+        cast(Label | Markdown, self.query_one(f"#{widget}", widget_type)).update(value)
         self.query_one(f"#{widget}").set_class(not bool(value), "empty")
 
     @staticmethod
@@ -253,7 +262,7 @@ class RaindropDetails(VerticalScroll):
                 f"{PUBLIC_ICON if self.data.collection(self.raindrop.collection).public else PRIVATE_ICON}"
                 f" {self.data.collection(self.raindrop.collection).title}",
             )
-            self._set("note", self.raindrop.note)
+            self._set("note", self.raindrop.note, Markdown)
             self._set(
                 "created-ish", self._time(self.raindrop.created, "Created", naturaltime)
             )
