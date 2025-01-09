@@ -16,7 +16,6 @@ from .collection import (
 )
 from .commands import (
     ChangeTheme,
-    ClearFilters,
     CompactMode,
     Details,
     Escape,
@@ -24,10 +23,13 @@ from .commands import (
     Logout,
     Quit,
     Redownload,
-    Search,
-    SearchTags,
     TagOrder,
     VisitRaindrop,
+)
+from .filtering import (
+    ClearFilters,
+    Search,
+    SearchTags,
 )
 from .raindrop import (
     AddRaindrop,

@@ -1,39 +1,8 @@
 """The commands used within the application."""
 
 ##############################################################################
-# Python imports.
-from dataclasses import dataclass
-
-##############################################################################
 # Local imports.
-from ..data import Raindrops
 from .base import Command
-
-
-##############################################################################
-@dataclass
-class SearchTags(Command):
-    """A message that requests that the tag-based command palette is shown"""
-
-    BINDING_KEY = "t"
-    SHOW_IN_FOOTER = False
-
-    active_collection: Raindrops = Raindrops()
-    """The active collection to search within."""
-
-    @property
-    def context_command(self) -> str:
-        """The command in context."""
-        return "Also tagged..." if self.active_collection.is_filtered else "Tagged..."
-
-    @property
-    def context_tooltip(self) -> str:
-        """The tooltip in context."""
-        return (
-            "Add another tag to the current filter"
-            if self.active_collection.is_filtered
-            else "Filter the current collection with a tag"
-        )
 
 
 ##############################################################################
@@ -45,28 +14,12 @@ class Logout(Command):
 
 
 ##############################################################################
-class ClearFilters(Command):
-    """Clear all tags and other filters."""
-
-    BINDING_KEY = "f"
-    SHOW_IN_FOOTER = False
-
-
-##############################################################################
 class VisitRaindrop(Command):
     """Open the web-based raindrop.io application in your default web browser"""
 
     COMMAND = "Visit raindrop.io"
     BINDING_KEY = "f2"
     FOOTER_TEXT = "raindrop.io"
-
-
-##############################################################################
-class Search(Command):
-    """Search for text anywhere in the raindrops"""
-
-    BINDING_KEY = "/"
-    SHOW_IN_FOOTER = False
 
 
 ##############################################################################
