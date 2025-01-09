@@ -3,6 +3,7 @@
 ##############################################################################
 # Python imports.
 from inspect import cleandoc
+from operator import methodcaller
 from typing import Any
 from webbrowser import open as open_url
 
@@ -139,7 +140,7 @@ class HelpScreen(ModalScreen[None]):
         if (commands := getattr(node, "COMMAND_MESSAGES", None)) is None:
             return ""
         keys = "| Command | Key | Description |\n| - | - | - |\n"
-        for command in sorted(commands, key=lambda command: command.command()):
+        for command in sorted(commands, key=methodcaller("command")):
             keys += f"| {command.command()} | {self._all_keys(command)} | {command.tooltip()} |\n"
         return f"\n\n{keys}"
 
