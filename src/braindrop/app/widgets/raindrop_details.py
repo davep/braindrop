@@ -114,9 +114,16 @@ class RaindropDetails(VerticalScroll):
 
         Label, Markdown {
             margin: 0 2 1 2;
-            padding: 1 2 1 2;
             width: 1fr;
             color: $text;
+        }
+
+        Label {
+            padding: 1 2 1 2;
+        }
+
+        Markdown {
+            padding: 1 2 0 2;
         }
 
         .detail {
