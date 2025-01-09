@@ -166,7 +166,7 @@ class RaindropInput(ModalScreen[Raindrop | None]):
             yield Label("Excerpt:")
             yield TextArea(id="excerpt")
             yield Label("Note:")
-            yield TextArea(id="note")
+            yield TextArea(id="note", language="markdown")
             yield Label("URL:")
             yield Input(
                 placeholder="The URL of the link for the Raindrop",
