@@ -1,5 +1,13 @@
 # Braindrop ChangeLog
 
+## Unreleased
+
+**Released: WiP**
+
+- Fixed title and excerpt content not fully showing if there was text
+  wrapped in square brackets within them.
+  ([#64](https://github.com/davep/braindrop/issues/64))
+
 ## v0.4.0
 
 **Released: 2025-01-09**

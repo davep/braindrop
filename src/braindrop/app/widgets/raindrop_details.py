@@ -12,6 +12,7 @@ from humanize import naturaltime
 ##############################################################################
 # Rich imports.
 from rich.emoji import Emoji
+from rich.markup import escape
 
 ##############################################################################
 # Textual imports.
@@ -254,9 +255,9 @@ class RaindropDetails(VerticalScroll):
         try:
             if self.data is None or self.raindrop is None:
                 return
-            self._set("title", self.raindrop.title)
+            self._set("title", escape(self.raindrop.title))
             self._set("borked", "Broken link!" if self.raindrop.broken else "")
-            self._set("excerpt", self.raindrop.excerpt)
+            self._set("excerpt", escape(self.raindrop.excerpt))
             self._set(
                 "collection",
                 f"{PUBLIC_ICON if self.data.collection(self.raindrop.collection).public else PRIVATE_ICON}"
