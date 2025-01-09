@@ -11,7 +11,6 @@ from humanize import naturaltime
 ##############################################################################
 # Rich imports.
 from rich.console import Group
-from rich.emoji import Emoji
 from rich.markup import escape
 from rich.rule import Rule
 from rich.table import Table
