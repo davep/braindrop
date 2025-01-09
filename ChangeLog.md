@@ -1,8 +1,8 @@
 # Braindrop ChangeLog
 
-## Unreleased
+## v0.4.0
 
-**Released: WiP**
+**Released: 2025-01-09**
 
 - Updated the help screen so that the command table shows the command name
   first. ([#53](https://github.com/davep/braindrop/pull/53))
