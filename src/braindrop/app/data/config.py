@@ -2,10 +2,12 @@
 
 ##############################################################################
 # Python imports.
+from contextlib import contextmanager
 from dataclasses import asdict, dataclass
 from functools import lru_cache
 from json import dumps, loads
 from pathlib import Path
+from typing import Iterator
 
 ##############################################################################
 # Local imports.
@@ -79,6 +81,27 @@ def load_configuration() -> Configuration:
         if source.exists()
         else save_configuration(Configuration())
     )
+
+
+##############################################################################
+@contextmanager
+def update_configuration() -> Iterator[Configuration]:
+    """Context manager for updating the configuration.
+
+    Loads the configuration and makes it available, then ensures it is
+    saved.
+
+    Example:
+        ```python
+        with update_configuration() as config:
+            config.meaning = 42
+        ```
+    """
+    configuration = load_configuration()
+    try:
+        yield configuration
+    finally:
+        save_configuration(configuration)
 
 
 ### config.py ends here
