@@ -113,38 +113,6 @@ textual==1.0.0
 textual-dev==1.7.0
 textual-serve==1.1.1
     # via textual-dev
-tree-sitter==0.23.2
-    # via textual
-tree-sitter-bash==0.23.3
-    # via textual
-tree-sitter-css==0.23.1
-    # via textual
-tree-sitter-go==0.23.4
-    # via textual
-tree-sitter-html==0.23.2
-    # via textual
-tree-sitter-java==0.23.5
-    # via textual
-tree-sitter-javascript==0.23.1
-    # via textual
-tree-sitter-json==0.24.8
-    # via textual
-tree-sitter-markdown==0.3.2
-    # via textual
-tree-sitter-python==0.23.6
-    # via textual
-tree-sitter-regex==0.24.3
-    # via textual
-tree-sitter-rust==0.23.2
-    # via textual
-tree-sitter-sql==0.3.7
-    # via textual
-tree-sitter-toml==0.7.0
-    # via textual
-tree-sitter-xml==0.7.0
-    # via textual
-tree-sitter-yaml==0.7.0
-    # via textual
 types-pytz==2024.2.0.20241221
 typing-extensions==4.12.2
     # via braindrop
