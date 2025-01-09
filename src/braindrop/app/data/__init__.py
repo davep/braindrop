@@ -2,7 +2,12 @@
 
 ##############################################################################
 # Local imports.
-from .config import configuration_file, load_configuration, save_configuration
+from .config import (
+    configuration_file,
+    load_configuration,
+    save_configuration,
+    update_configuration,
+)
 from .exit_state import ExitState
 from .local import LocalData, Raindrops, local_data_file
 from .token import token_file
@@ -18,6 +23,7 @@ __all__ = [
     "Raindrops",
     "save_configuration",
     "token_file",
+    "update_configuration",
 ]
 
 
