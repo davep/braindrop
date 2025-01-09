@@ -3,7 +3,7 @@
 ##############################################################################
 # Python imports.
 from datetime import datetime
-from typing import Any, Callable, Final, Type
+from typing import Any, Callable, Final, cast
 
 ##############################################################################
 # Humanize imports.
@@ -212,7 +212,7 @@ class RaindropDetails(VerticalScroll):
         yield Tags().data_bind(RaindropDetails.raindrop)
 
     def _set(
-        self, widget: str, value: str, widget_type: Type[Label | Markdown] = Label
+        self, widget: str, value: str, widget_type: type[Label | Markdown] = Label
     ) -> None:
         """Set the value of a detail widget.
 
@@ -220,7 +220,7 @@ class RaindropDetails(VerticalScroll):
             widget: The ID of the widget to set.
             value: The value to set.
         """
-        self.query_one(f"#{widget}", widget_type).update(value)
+        cast(Label | Markdown, self.query_one(f"#{widget}", widget_type)).update(value)
         self.query_one(f"#{widget}").set_class(not bool(value), "empty")
 
     @staticmethod
