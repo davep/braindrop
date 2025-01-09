@@ -10,6 +10,8 @@
   name. ([#53](https://github.com/davep/braindrop/pull/53))
 - Various cosmetic tweaks to the help screen.
   ([#53](https://github.com/davep/braindrop/pull/53))
+- Notes are now rendered as a Markdown document.
+  ([#60](https://github.com/davep/braindrop/pull/60))
 
 ## v0.3.0
 
