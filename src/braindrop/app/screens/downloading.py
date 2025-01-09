@@ -27,6 +27,7 @@ class Downloading(ModalScreen[None]):
             border: round $border;
             width: auto;
             height: auto;
+            background: $panel;
             Vertical {
                 margin-top: 1;
                 margin-bottom: 1;
