@@ -14,7 +14,12 @@ from .collection import (
     ShowUnsorted,
     ShowUntagged,
 )
-from .commands import (
+from .filtering import (
+    ClearFilters,
+    Search,
+    SearchTags,
+)
+from .main import (
     ChangeTheme,
     CompactMode,
     Details,
@@ -25,11 +30,6 @@ from .commands import (
     Redownload,
     TagOrder,
     VisitRaindrop,
-)
-from .filtering import (
-    ClearFilters,
-    Search,
-    SearchTags,
 )
 from .raindrop import (
     AddRaindrop,
