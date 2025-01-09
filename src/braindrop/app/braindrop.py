@@ -12,7 +12,13 @@ from textual.binding import Binding
 ##############################################################################
 # Local imports.
 from ..raindrop import API
-from .data import ExitState, load_configuration, save_configuration, token_file
+from .data import (
+    ExitState,
+    load_configuration,
+    save_configuration,
+    token_file,
+    update_configuration,
+)
 from .screens import Main, TokenInput
 
 
@@ -71,9 +77,8 @@ class Braindrop(App[ExitState]):
 
     def watch_theme(self) -> None:
         """Save the application's theme when it's changed."""
-        configuration = load_configuration()
-        configuration.theme = self.theme
-        save_configuration(configuration)
+        with update_configuration() as config:
+            config.theme = self.theme
 
     @staticmethod
     def environmental_token() -> str | None:

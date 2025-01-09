@@ -62,6 +62,7 @@ from ..data import (
     local_data_file,
     save_configuration,
     token_file,
+    update_configuration,
 )
 from ..messages import ShowCollection, ShowTagged
 from ..providers import CollectionCommands, CommandsProvider, MainCommands, TagCommands
@@ -379,9 +380,8 @@ class Main(Screen[None]):
         self.query_one(Navigation).tags_by_count = (
             by_count := not self.query_one(Navigation).tags_by_count
         )
-        config = load_configuration()
-        config.show_tags_by_count = by_count
-        save_configuration(config)
+        with update_configuration() as config:
+            config.show_tags_by_count = by_count
 
     @on(ShowAll)
     def action_show_all_command(self) -> None:
@@ -426,9 +426,8 @@ class Main(Screen[None]):
     def action_details_command(self) -> None:
         """Toggle the details of the raindrop details view."""
         self.toggle_class("details-hidden")
-        config = load_configuration()
-        config.details_visible = not self.has_class("details-hidden")
-        save_configuration(config)
+        with update_configuration() as config:
+            config.details_visible = not self.has_class("details-hidden")
 
     @on(CompactMode)
     def action_compact_mode_command(self) -> None:
@@ -436,9 +435,8 @@ class Main(Screen[None]):
         self.query_one(RaindropsView).compact = not self.query_one(
             RaindropsView
         ).compact
-        config = load_configuration()
-        config.compact_mode = self.query_one(RaindropsView).compact
-        save_configuration(config)
+        with update_configuration() as config:
+            config.compact_mode = self.query_one(RaindropsView).compact
 
     @on(Search)
     @work
