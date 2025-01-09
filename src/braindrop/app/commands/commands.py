@@ -11,14 +11,6 @@ from .base import Command
 
 
 ##############################################################################
-class SearchCollections(Command):
-    """Search for a collection by name and show its contents"""
-
-    BINDING_KEY = "C"
-    SHOW_IN_FOOTER = False
-
-
-##############################################################################
 @dataclass
 class SearchTags(Command):
     """A message that requests that the tag-based command palette is shown"""
@@ -103,30 +95,6 @@ class Redownload(Command):
     "Download a fresh copy of all data from raindrop.io"
 
     BINDING_KEY = "ctrl+r"
-    SHOW_IN_FOOTER = False
-
-
-##############################################################################
-class ShowAll(Command):
-    """Show all Raindrops"""
-
-    BINDING_KEY = "a"
-    SHOW_IN_FOOTER = False
-
-
-##############################################################################
-class ShowUnsorted(Command):
-    "Show all unsorted Raindrops"
-
-    BINDING_KEY = "u"
-    SHOW_IN_FOOTER = False
-
-
-##############################################################################
-class ShowUntagged(Command):
-    """Show all Raindrops that are lacking tags"""
-
-    BINDING_KEY = "U"
     SHOW_IN_FOOTER = False
 
 

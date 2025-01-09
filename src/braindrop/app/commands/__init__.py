@@ -8,6 +8,12 @@ information, etc.
 ##############################################################################
 # Local imports.
 from .base import Command
+from .collection import (
+    SearchCollections,
+    ShowAll,
+    ShowUnsorted,
+    ShowUntagged,
+)
 from .commands import (
     ChangeTheme,
     ClearFilters,
@@ -19,11 +25,7 @@ from .commands import (
     Quit,
     Redownload,
     Search,
-    SearchCollections,
     SearchTags,
-    ShowAll,
-    ShowUnsorted,
-    ShowUntagged,
     TagOrder,
     VisitRaindrop,
 )
