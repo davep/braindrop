@@ -5,7 +5,7 @@
 from datetime import datetime
 from json import dumps, loads
 from pathlib import Path
-from typing import Any, Callable
+from typing import Any, Callable, Final
 
 ##############################################################################
 # pytz imports.
@@ -43,6 +43,9 @@ def local_data_file() -> Path:
 class LocalData:
     """Holds and manages the local copy of the Raindrop data."""
 
+    VERSION: Final[int] = 0
+    """The version of the format of the local data."""
+
     def __init__(self, api: API) -> None:
         """Initialise the object.
 
@@ -63,11 +66,18 @@ class LocalData:
         """An index of all of the Raindrops we know about."""
         self._last_downloaded: datetime | None = None
         """The time the data was last downloaded from the server."""
+        self._version: int | None = None
+        """The version of the format of the data."""
 
     @property
     def last_downloaded(self) -> datetime | None:
         """The time the data was downloaded, or `None` if not yet."""
         return self._last_downloaded
+
+    @property
+    def outdated_format(self) -> bool:
+        """Is the format of the local data outdated?"""
+        return self._version is None or self._version < self.VERSION
 
     @property
     def user(self) -> User | None:
@@ -252,6 +262,7 @@ class LocalData:
             "last_downloaded": None
             if self._last_downloaded is None
             else self._last_downloaded.isoformat(),
+            "version": self.VERSION,
             "user": None if self._user is None else self._user.raw,
             "all": [raindrop.raw for raindrop in self._all],
             "trash": [raindrop.raw for raindrop in self._trash],
@@ -277,6 +288,11 @@ class LocalData:
         """
         if local_data_file().exists():
             data = loads(local_data_file().read_text(encoding="utf-8"))
+            self._version = data.get("version")
+            if self.outdated_format:
+                # The version is unknown, or older than we're expecting, so
+                # let's pretend it doesn't exist.
+                return self
             self._last_downloaded = get_time(data, "last_downloaded")
             self._user = User.from_json(data.get("user", {}))
             self._all.set_to(

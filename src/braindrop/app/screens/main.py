@@ -241,7 +241,9 @@ class Main(Screen[None]):
             )
             return
 
-        if self._data.last_downloaded is None:
+        if self._data.outdated_format:
+            self.notify("Local file format has changed; rebuilding from the server.")
+        elif self._data.last_downloaded is None:
             self.notify("No local data found; checking in with the server.")
         elif (
             self._user.last_update is not None
