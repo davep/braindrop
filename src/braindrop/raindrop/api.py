@@ -339,8 +339,7 @@ class API:
                 continue
             if data:
                 raindrops += [Raindrop.from_json(raindrop) for raindrop in data]
-                if count_update is not None:
-                    count_update(len(raindrops))
+                count_update(len(raindrops))
                 page += 1
             else:
                 break
