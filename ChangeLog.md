@@ -7,6 +7,8 @@
 - Fixed title and excerpt content not fully showing if there was text
   wrapped in square brackets within them.
   ([#64](https://github.com/davep/braindrop/issues/64))
+- Added collection suggestions to the raindrop edit dialog.
+  ([#73](https://github.com/davep/braindrop/pull/73))
 
 ## v0.4.0
 
