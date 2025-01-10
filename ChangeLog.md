@@ -7,6 +7,8 @@
 - Fixed title and excerpt content not fully showing if there was text
   wrapped in square brackets within them.
   ([#64](https://github.com/davep/braindrop/issues/64))
+- Added <kbd>#</kbd> as an alternative key for pulling up the tag search in
+  the command palette. ([#71](https://github.com/davep/braindrop/pull/71))
 
 ## v0.4.0
 
