@@ -9,6 +9,8 @@
   ([#64](https://github.com/davep/braindrop/issues/64))
 - Added <kbd>#</kbd> as an alternative key for pulling up the tag search in
   the command palette. ([#71](https://github.com/davep/braindrop/pull/71))
+- Added collection suggestions to the raindrop edit dialog.
+  ([#73](https://github.com/davep/braindrop/pull/73))
 
 ## v0.4.0
 

@@ -83,7 +83,7 @@ class RaindropInput(ModalScreen[Raindrop | None]):
             margin: 1 0 0 1;
         }
 
-        #tag-suggestions {
+        .suggestions {
             display: none;
             width: 1fr;
             color: $text-muted;
@@ -180,20 +180,36 @@ class RaindropInput(ModalScreen[Raindrop | None]):
                 allow_blank=False,
                 id="collection",
             )
+            yield Label(id="collection-suggestions", classes="suggestions")
             yield Label("Tags:")
             yield Input(
                 placeholder=f"Raindrop tags ({Raindrop.TAG_STRING_SEPARATOR_TITLE} separated)",
                 suggester=SuggestTags(self._data.all.tags),
                 id="tags",
             )
-            yield Label(id="tag-suggestions")
+            yield Label(id="tag-suggestions", classes="suggestions")
             with Horizontal(id="buttons"):
                 yield Button("Save [dim]\\[F2][/]", id="save", variant="success")
                 yield Button("Cancel [dim]\\[Esc][/]", id="cancel", variant="error")
 
+    def _collection_names(self, collections: list[int]) -> Iterator[str]:
+        """Turn a list of collection IDs into their names.
+
+        Args:
+            collections: The collection IDs to get the names for.
+
+        Yields:
+            The collection names
+        """
+        for collection in collections:
+            try:
+                yield self._data.collection(collection).title
+            except KeyError:
+                yield f"Unknown#{collection})"
+
     @work(exclusive=True)
-    async def _get_tag_suggestions(self) -> None:
-        """Load up fresh tag suggestions based on the URL."""
+    async def _get_suggestions(self) -> None:
+        """Load up fresh suggestions based on the URL."""
         # Don't bother trying to get suggestions if the URL in the URL input
         # doesn't look like an URL.
         if not looks_urlish(url := self.query_one("#url", Input).value):
@@ -201,21 +217,21 @@ class RaindropInput(ModalScreen[Raindrop | None]):
         # Ask raindrop.io for suggestions.
         try:
             suggestions = await self._api.suggestions_for(url)
-        except API.Error as error:
-            self.app.bell()
+        except API.Error:
             self.notify(
-                str(error),
-                title="Error getting suggested tags from raindrop.io",
-                severity="error",
-                timeout=8,
+                "Could not get suggestions for that URL from raindrop.io",
+                severity="warning",
             )
             return
-        # We got suggestions, so show them and set them up for
-        # auto-completion too.
+        # We got some suggestions data back, so make use of them.
+        self.query_one("#collection-suggestions", Label).update(
+            f"[b]Suggested:[/] {', '.join(self._collection_names(suggestions.collections))}"
+        )
         self.query_one("#tag-suggestions", Label).update(
             f"[b]Suggested:[/] {Raindrop.tags_to_string(suggestions.tags)}"
-            if suggestions.tags
-            else ""
+        )
+        self.query_one("#collection-suggestions").set_class(
+            bool(suggestions.collections), "got-suggestions"
         )
         self.query_one("#tag-suggestions").set_class(
             bool(suggestions.tags), "got-suggestions"
@@ -236,7 +252,7 @@ class RaindropInput(ModalScreen[Raindrop | None]):
         """
         if not (link := self.query_one("#url", Input)).value:
             link.value = url
-            self._get_tag_suggestions()
+            self._get_suggestions()
 
     @work(thread=True)
     def _suggest_link(self) -> None:
@@ -272,7 +288,7 @@ class RaindropInput(ModalScreen[Raindrop | None]):
                 self._raindrop.tags
             )
         if self._raindrop.link:
-            self._get_tag_suggestions()
+            self._get_suggestions()
         else:
             self._suggest_link()
 
@@ -287,15 +303,19 @@ class RaindropInput(ModalScreen[Raindrop | None]):
             self._last_url = event.widget.value.strip()
 
     @on(DescendantBlur, "#url")
-    def _refresh_tag_suggestions(self, event: DescendantBlur) -> None:
-        """Refresh the tag suggestions when leaving the URL field, having modified it."""
+    def _refresh_suggestions(self, event: DescendantBlur) -> None:
+        """Refresh the suggestions when leaving the URL field, having modified it."""
         if isinstance(event.widget, Input):  # It should be, but narrow the type.
-            if (
-                event.widget.value.strip()
-                and event.widget.value.strip() != self._last_url
-            ):
-                self.query_one("#tag-suggestions").set_class(False, "got-suggestions")
-                self._get_tag_suggestions()
+            if not event.widget.value.strip():
+                # The URL field is empty; clear the display of any
+                # suggestions and give up.
+                self.query(".suggestions").set_class(False, "got-suggestions")
+                return
+            if event.widget.value.strip() != self._last_url:
+                # The URL has changed since last time; clear the display of
+                # any suggestions and try and get some new ones.
+                self.query(".suggestions").set_class(False, "got-suggestions")
+                self._get_suggestions()
 
     def _all_looks_good(self) -> bool:
         """Does everything on the dialog look okay?
