@@ -29,7 +29,7 @@ class Search(Command):
 ##############################################################################
 @dataclass
 class SearchTags(Command):
-    """A message that requests that the tag-based command palette is shown"""
+    """Search for a tag and then filter with it"""
 
     BINDING_KEY = "t, #"
     SHOW_IN_FOOTER = False
