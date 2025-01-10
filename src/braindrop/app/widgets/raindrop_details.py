@@ -170,6 +170,7 @@ class RaindropDetails(VerticalScroll):
             height: auto;
             /* Stop a flash of unnecessary scrollbar. */
             scrollbar-size-vertical: 0;
+            overflow-y: hidden;
         }
     }
     """
