@@ -12,7 +12,7 @@ from .base import Command
 
 ##############################################################################
 class ClearFilters(Command):
-    """Clear all tags and other filters."""
+    """Clear all tags and other filters"""
 
     BINDING_KEY = "f"
     SHOW_IN_FOOTER = False
@@ -29,9 +29,9 @@ class Search(Command):
 ##############################################################################
 @dataclass
 class SearchTags(Command):
-    """A message that requests that the tag-based command palette is shown"""
+    """Search for a tag and then filter with it"""
 
-    BINDING_KEY = "t"
+    BINDING_KEY = "t, #"
     SHOW_IN_FOOTER = False
 
     active_collection: Raindrops = Raindrops()
