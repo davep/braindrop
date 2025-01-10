@@ -9,7 +9,8 @@ from .config import (
     update_configuration,
 )
 from .exit_state import ExitState
-from .local import LocalData, Raindrops, local_data_file
+from .local import LocalData, local_data_file
+from .raindrops import Raindrops
 from .token import token_file
 
 ##############################################################################
