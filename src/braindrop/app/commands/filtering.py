@@ -12,7 +12,7 @@ from .base import Command
 
 ##############################################################################
 class ClearFilters(Command):
-    """Clear all tags and other filters."""
+    """Clear all tags and other filters"""
 
     BINDING_KEY = "f"
     SHOW_IN_FOOTER = False
