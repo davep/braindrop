@@ -222,7 +222,15 @@ class LocalData:
         """
 
         def _update(count: int) -> None:
-            status_update(f"{message} ({count})")
+            if count >= 0:
+                status_update(f"{message} ({count})")
+            else:
+                # A negative count means that we're downloading things, but
+                # we've paused for a moment at this point to let the
+                # Raindrop.IO API have a breather.
+                status_update(
+                    f"{message} ({abs(count)})\n\nPaused - Waiting for Raindrop.IO"
+                )
 
         return _update
 
