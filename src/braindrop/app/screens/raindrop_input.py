@@ -217,7 +217,7 @@ class RaindropInput(ModalScreen[Raindrop | None]):
         # Ask raindrop.io for suggestions.
         try:
             suggestions = await self._api.suggestions_for(url)
-        except API.Error as error:
+        except API.Error:
             self.notify(
                 "Could not get suggestions for that URL from raindrop.io",
                 severity="warning",
