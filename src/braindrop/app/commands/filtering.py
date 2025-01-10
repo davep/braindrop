@@ -31,7 +31,7 @@ class Search(Command):
 class SearchTags(Command):
     """A message that requests that the tag-based command palette is shown"""
 
-    BINDING_KEY = "t"
+    BINDING_KEY = "t, #"
     SHOW_IN_FOOTER = False
 
     active_collection: Raindrops = Raindrops()
