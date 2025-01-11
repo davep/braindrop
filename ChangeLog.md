@@ -11,6 +11,9 @@
   the command palette. ([#71](https://github.com/davep/braindrop/pull/71))
 - Added collection suggestions to the raindrop edit dialog.
   ([#73](https://github.com/davep/braindrop/pull/73))
+- Added handling of the Raindrop.IO API rate limit when downloading all the
+  data. ([#22](https://github.com/davep/braindrop/issues/22),
+  [#72](https://github.com/davep/braindrop/issues/72))
 
 ## v0.4.0
 

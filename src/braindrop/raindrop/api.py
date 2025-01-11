@@ -1,7 +1,20 @@
-"""Provides a simple raindrop.io client."""
+"""Provides a simple raindrop.io client.
+
+NOTE: For the moment rate-limit handling, while it is in the core method
+here, is only taken care of when it comes to downloading raindrops. At some
+point I want to clean this up and ensure that *all* calls have such
+protection. Mostly though this is good enough for what I need.
+
+Also note that the status update callback is a wee bit janky in that it lets
+the caller know that we're paused by sending a negative raindrop count.
+Again, for now, this is good enough for my needs.
+"""
 
 ##############################################################################
 # Python imports.
+from asyncio import sleep
+from dataclasses import dataclass
+from http import HTTPStatus
 from json import loads
 from ssl import SSLCertVerificationError
 from typing import Any, Awaitable, Callable, Final, Literal
@@ -34,6 +47,16 @@ class API:
 
     class RequestError(Error):
         """Exception raised if there was a problem making an API request."""
+
+    @dataclass
+    class RateLimit(Error):
+        """Exception raised when we hit a rate limit."""
+
+        retry_after: int | None = None
+        """The number of seconds to wait to retry."""
+
+        def __str__(self) -> str:
+            return f"Rate limit hit; retry after {self.retry_after} seconds"
 
     def __init__(self, access_token: str) -> None:
         """Initialise the client object.
@@ -76,6 +99,10 @@ class API:
 
         Returns:
             The text returned from the call.
+
+        Raises:
+            API.RequestError: If there was a problem with the request.
+            API.RateLimit: If a rate limit was hit.
         """
         payload: dict[str, Any] = (
             {
@@ -101,7 +128,22 @@ class API:
         try:
             response.raise_for_status()
         except HTTPStatusError as error:
-            raise self.RequestError(str(error)) from None
+            # If we've hit a rate limit...
+            if error.response.status_code == HTTPStatus.TOO_MANY_REQUESTS:
+                # ...we'll raise an exception to let the caller know and let
+                # them decide what to do.
+                #
+                # NOTE: https://developer.raindrop.io/#rate-limiting says
+                # that X-RateLimit-Reset should be available and should tell
+                # us when it's safe to make a fresh request. In testing I'm
+                # not seeing this at all, but I *am* seeing Retry-After.
+                raise self.RateLimit(
+                    int(error.response.headers["Retry-After"])
+                    if "Retry-After" in error.response.headers
+                    else None
+                )
+            else:
+                raise self.RequestError(str(error)) from None
 
         return response.text
 
@@ -262,30 +304,46 @@ class API:
             - `SpecialCollection.ALL` - All non-trashed `Raindrop`s.
             - `SpecialCollection.UNSORTED` - All `Raindrop`s not in a `Collection`.
             - `SpecialCollection.TRASH` - All trashed `Raindrop`s.
+
+            If a negative value is passed to `count_update`, this is the
+            number of raindrops that have been downloaded, but at that point
+            the download has been paused due to a rate limit.
         """
         if not self.maybe_on_the_server(collection):
             raise self.Error(f"{collection} is not a valid collection ID")
         page = 0
         raindrops: list[Raindrop] = []
-        if count_update is not None:
-            count_update(0)
+        if count_update is None:
+
+            def gndn(_: int) -> None:
+                pass
+
+            count_update = gndn
+        count_update(0)
         while True:
-            _, data = await self._items_of(
-                self._get,
-                "raindrops",
-                str(int(collection)),
-                page=str(page),
-                pagesize="50",
-            )
+            try:
+                _, data = await self._items_of(
+                    self._get,
+                    "raindrops",
+                    str(int(collection)),
+                    page=str(page),
+                    pagesize="50",
+                )
+            except self.RateLimit as limit:
+                if limit.retry_after is None:
+                    raise self.RequestError(
+                        "Raindrop.io API limit exceeded with no option to retry"
+                    )
+                count_update(-len(raindrops))
+                await sleep(limit.retry_after)
+                continue
             if data:
                 raindrops += [Raindrop.from_json(raindrop) for raindrop in data]
-                if count_update is not None:
-                    count_update(len(raindrops))
+                count_update(len(raindrops))
                 page += 1
             else:
                 break
-        if count_update is not None:
-            count_update(len(raindrops))
+        count_update(len(raindrops))
         return raindrops
 
     async def tags(self, collection: int | None = None) -> list[TagData]:
