@@ -1,5 +1,13 @@
 # Braindrop ChangeLog
 
+## Unreleased
+
+**Released: WiP**
+
+- Fixed the count of collections within a group when there is a hierarchy of
+  collections in that group.
+  ([#86](https://github.com/davep/braindrop/issues/86))
+
 ## v0.5.0
 
 **Released: 2025-01-11**

@@ -5,7 +5,7 @@
 from datetime import datetime
 from json import dumps, loads
 from pathlib import Path
-from typing import Any, Callable, Final
+from typing import Any, Callable, Final, Iterable, Iterator
 
 ##############################################################################
 # pytz imports.
@@ -20,6 +20,7 @@ from typing_extensions import Self
 from ...raindrop import (
     API,
     Collection,
+    Group,
     Raindrop,
     SpecialCollection,
     User,
@@ -201,6 +202,31 @@ class LocalData:
             This is just the list of user-defined collections.
         """
         return list(self._collections.values())
+
+    def collections_within(self, group: Group) -> list[Collection]:
+        """Find all the collections contained within a root.
+
+        Args:
+            group: The group to look within.
+
+        Returns:
+            The collections found within that group.
+
+        Notes:
+            The returned list is a flat list of *all* the collections within
+            the group; no specific order is guaranteed.
+        """
+
+        def _collections(collection_ids: Iterable[int]) -> Iterator[Collection]:
+            for collection in collection_ids:
+                yield self.collection(collection)
+                yield from _collections(
+                    candidate.identity
+                    for candidate in self.collections
+                    if candidate.parent == collection
+                )
+
+        return list(_collections(group.collections))
 
     def mark_downloaded(self) -> Self:
         """Mark the raindrops as having being downloaded at the time of calling."""
