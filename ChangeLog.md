@@ -17,6 +17,8 @@
 - Fixed a problem where groups were showing the total collection count
   rather than the count of collections in that group.
   ([#77](https://github.com/davep/braindrop/issues/77))
+- Fixed a crash after a redownload after a populated collection has been
+  deleted. ([#79](https://github.com/davep/braindrop/issues/79))
 
 ## v0.4.0
 
