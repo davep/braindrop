@@ -73,6 +73,20 @@ main application you can see this by pressing <kbd>F1</kbd>.
 
 ![Braindrop help](https://raw.githubusercontent.com/davep/braindrop/refs/heads/main/.images/braindrop-help.png)
 
+## File locations
+
+Braindrop stores files in a `braindrop` directory within both
+[`$XDG_DATA_HOME` and
+`$XDG_CONFIG_HOME`](https://specifications.freedesktop.org/basedir-spec/latest/).
+If you wish to fully remove anything to do with Braindrop you will need to
+remove those directories too.
+
+Expanding for the common locations, the files normally created are:
+
+- `~/.config/braindrop/configuration.json` -- The configuration file.
+- `~/.local/share/braindrop/.token` -- The file that hold your API token.
+- `~/.local/share/braindrop/raindrops.json` -- The locally-held Raindrop data.
+
 ## Getting help
 
 If you need help, or have any ideas, please feel free to [raise an
