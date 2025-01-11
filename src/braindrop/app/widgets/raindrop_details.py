@@ -296,7 +296,7 @@ class RaindropDetails(VerticalScroll):
 
     def _watch_data(self) -> None:
         """React to the data being changed."""
-        self._refresh_display()
+        self.raindrop = None
 
     def _watch_raindrop(self) -> None:
         """React to the raindrop being changed."""
