@@ -14,6 +14,9 @@
 - Added handling of the Raindrop.IO API rate limit when downloading all the
   data. ([#22](https://github.com/davep/braindrop/issues/22),
   [#72](https://github.com/davep/braindrop/issues/72))
+- Fixed a problem where groups were showing the total collection count
+  rather than the count of collections in that group.
+  ([#77](https://github.com/davep/braindrop/issues/77))
 
 ## v0.4.0
 
