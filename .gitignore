@@ -11,3 +11,6 @@ wheels/
 
 # Testing files.
 .env
+
+# macOS droppings
+.DS_Store
