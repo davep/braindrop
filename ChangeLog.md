@@ -1,8 +1,8 @@
 # Braindrop ChangeLog
 
-## Unreleased
+## v0.5.0
 
-**Released: WiP**
+**Released: 2025-01-11**
 
 - Fixed title and excerpt content not fully showing if there was text
   wrapped in square brackets within them.
