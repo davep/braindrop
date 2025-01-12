@@ -209,6 +209,8 @@ class Raindrop:
             search_text in self.title.casefold()
             or search_text in self.excerpt.casefold()
             or search_text in self.note.casefold()
+            or search_text in self.link.casefold()
+            or search_text in self.domain.casefold()
             or self.is_tagged(Tag(search_text))
         )
 

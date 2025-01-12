@@ -7,6 +7,10 @@
 - Fixed the count of collections within a group when there is a hierarchy of
   collections in that group.
   ([#86](https://github.com/davep/braindrop/issues/86))
+- Free text search now also looks in the link of a raindrop.
+  ([#96](https://github.com/davep/braindrop/pull/96))
+- Free text search now also looks in the domain of a raindrop.
+  ([#96](https://github.com/davep/braindrop/pull/96))
 
 ## v0.5.0
 
