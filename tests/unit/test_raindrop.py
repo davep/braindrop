@@ -102,27 +102,56 @@ def test_is_tagged(
 
 ##############################################################################
 @mark.parametrize(
-    "needle, title, excerpt, note, link, tags, result",
+    "needle, title, excerpt, note, link, domain, tags, result",
     (
-        ("title", "title", "excerpt", "note", "link", ("tag",), True),
-        ("Title", "title", "excerpt", "note", "link", ("tag",), True),
-        ("excerpt", "title", "excerpt", "note", "link", ("tag",), True),
-        ("Excerpt", "title", "excerpt", "note", "link", ("tag",), True),
-        ("note", "title", "excerpt", "note", "link", ("tag",), True),
-        ("Note", "title", "excerpt", "note", "link", ("tag",), True),
-        ("tag", "title", "excerpt", "note", "link", ("tag",), True),
-        ("Tag", "title", "excerpt", "note", "link", ("tag",), True),
-        ("link", "title", "excerpt", "note", "link", ("tag",), True),
-        ("Link", "title", "excerpt", "note", "link", ("tag",), True),
-        ("here", "ishere", "andhere", "alsohere", "herealso", ("heretoo",), True),
+        ("title", "title", "excerpt", "note", "link", "domain", ("tag",), True),
+        ("Title", "title", "excerpt", "note", "link", "domain", ("tag",), True),
+        ("excerpt", "title", "excerpt", "note", "link", "domain", ("tag",), True),
+        ("Excerpt", "title", "excerpt", "note", "link", "domain", ("tag",), True),
+        ("note", "title", "excerpt", "note", "link", "domain", ("tag",), True),
+        ("Note", "title", "excerpt", "note", "link", "domain", ("tag",), True),
+        ("tag", "title", "excerpt", "note", "link", "domain", ("tag",), True),
+        ("Tag", "title", "excerpt", "note", "link", "domain", ("tag",), True),
+        ("link", "title", "excerpt", "note", "link", "domain", ("tag",), True),
+        ("Link", "title", "excerpt", "note", "link", "domain", ("tag",), True),
+        ("domain", "title", "excerpt", "note", "link", "domain", ("tag",), True),
+        ("Domain", "title", "excerpt", "note", "link", "domain", ("tag",), True),
+        (
+            "here",
+            "ishere",
+            "andhere",
+            "alsohere",
+            "herealso",
+            "ohsohere",
+            ("heretoo",),
+            True,
+        ),
         # Originally I was just smushing all the text-like parts of a
         # Raindrop together, which could result in false positives (actually
         # actual positives but they'd seem false to the average user). This
         # tests that I don't make that mistake again.
-        ("excerpt title", "title", "excerpt", "note", "link", ("tag",), False),
-        ("title note", "title", "excerpt", "note", "link", ("tag",), False),
-        ("note tag", "title", "excerpt", "note", "link", ("tag",), False),
-        ("tag1 tag2", "title", "excerpt", "note", "link", ("tag1", "tag2"), False),
+        (
+            "excerpt title",
+            "title",
+            "excerpt",
+            "note",
+            "link",
+            "domain",
+            ("tag",),
+            False,
+        ),
+        ("title note", "title", "excerpt", "note", "link", "domain", ("tag",), False),
+        ("note tag", "title", "excerpt", "note", "link", "domain", ("tag",), False),
+        (
+            "tag1 tag2",
+            "title",
+            "excerpt",
+            "note",
+            "link",
+            "domain",
+            ("tag1", "tag2"),
+            False,
+        ),
     ),
 )
 def test_contains(
@@ -131,6 +160,7 @@ def test_contains(
     excerpt: str,
     note: str,
     link: str,
+    domain: str,
     tags: tuple[str, ...],
     result: bool,
 ) -> None:
@@ -142,6 +172,7 @@ def test_contains(
             excerpt=excerpt,
             note=note,
             link=link,
+            domain=domain,
             tags=[Tag(tag) for tag in tags],
         )
     ) is result
