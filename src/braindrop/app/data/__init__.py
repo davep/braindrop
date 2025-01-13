@@ -10,7 +10,7 @@ from .config import (
 )
 from .exit_state import ExitState
 from .local import LocalData, local_data_file
-from .raindrops import Raindrops
+from .raindrops import Raindrops, TagCount
 from .token import token_file
 
 ##############################################################################
@@ -22,6 +22,7 @@ __all__ = [
     "local_data_file",
     "LocalData",
     "Raindrops",
+    "TagCount",
     "save_configuration",
     "token_file",
     "update_configuration",

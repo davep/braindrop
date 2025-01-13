@@ -23,9 +23,9 @@ from textual.widgets.option_list import Option
 
 ##############################################################################
 # Local imports.
-from ...raindrop import API, Collection, SpecialCollection, Tag, TagData
+from ...raindrop import API, Collection, SpecialCollection, Tag
 from ..commands import ShowAll, ShowUnsorted, ShowUntagged
-from ..data import LocalData, Raindrops
+from ..data import LocalData, Raindrops, TagCount
 from ..messages import ShowCollection, ShowTagged
 from .extended_option_list import OptionListEx
 
@@ -102,7 +102,7 @@ class CollectionView(Option):
 class TagView(Option):
     """Option for showing a tag."""
 
-    def __init__(self, tag: TagData) -> None:
+    def __init__(self, tag: TagCount) -> None:
         """Initialise the object.
 
         Args:
@@ -126,7 +126,7 @@ class TagView(Option):
         return prompt
 
     @property
-    def tag_data(self) -> TagData:
+    def tag_data(self) -> TagCount:
         """The tag data."""
         return self._tag
 
@@ -306,7 +306,7 @@ class Navigation(OptionListEx):
                     )
 
     @staticmethod
-    def _by_name(tags: list[TagData]) -> list[TagData]:
+    def _by_name(tags: list[TagCount]) -> list[TagCount]:
         """Return a given list of tags sorted by tag name.
 
         Args:
@@ -315,10 +315,10 @@ class Navigation(OptionListEx):
         Returns:
             The sorted list of tags.
         """
-        return sorted(tags, key=TagData.the_tag())
+        return sorted(tags, key=TagCount.the_tag())
 
     @staticmethod
-    def _by_count(tags: list[TagData]) -> list[TagData]:
+    def _by_count(tags: list[TagCount]) -> list[TagCount]:
         """Return a given list of tags sorted by count.
 
         Args:
@@ -327,7 +327,7 @@ class Navigation(OptionListEx):
         Returns:
             The sorted list of tags.
         """
-        return sorted(tags, key=TagData.the_count(), reverse=True)
+        return sorted(tags, key=TagCount.the_count(), reverse=True)
 
     def _show_tags_for(self, collection: Raindrops) -> None:
         """Show tags relating a given collection.

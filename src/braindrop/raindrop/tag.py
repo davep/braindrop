@@ -6,9 +6,7 @@ from __future__ import annotations
 
 ##############################################################################
 # Python imports.
-from dataclasses import dataclass
 from functools import total_ordering
-from typing import Any, Callable
 
 
 ##############################################################################
@@ -88,58 +86,6 @@ class Tag:
     def __len__(self) -> int:
         """The length of the tag."""
         return len(self._tag)
-
-
-##############################################################################
-@dataclass(frozen=True)
-class TagData:
-    """Holds details of a tag."""
-
-    tag: Tag
-    """The name of the tag."""
-    count: int
-    """The number of Raindrops using this tag."""
-
-    @staticmethod
-    def from_json(data: dict[str, Any]) -> TagData:
-        """Create a tag from JSON-sourced data.
-
-        Args:
-            data: The data to create the object from.
-
-        Returns:
-            A fresh `TagData` instance.
-        """
-        return TagData(
-            tag=Tag(data["_id"]),
-            count=data.get("count", 0),
-        )
-
-    @staticmethod
-    def the_tag() -> Callable[[TagData], Tag]:
-        """Returns a function for getting the tag from a `TagData` instance.
-
-        Returns:
-            A function to get the tag of a `TagData` instance.
-        """
-
-        def _getter(data: TagData) -> Tag:
-            return data.tag
-
-        return _getter
-
-    @staticmethod
-    def the_count() -> Callable[[TagData], int]:
-        """Returns a function for getting the count from a `TagData` instance.
-
-        Returns:
-            A function to get the count of a `TagData` instance.
-        """
-
-        def _getter(data: TagData) -> int:
-            return data.count
-
-        return _getter
 
 
 ### tag.py ends here
