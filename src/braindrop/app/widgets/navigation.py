@@ -21,12 +21,14 @@ from textual.reactive import var
 from textual.widgets import OptionList
 from textual.widgets.option_list import Option
 
+from braindrop.raindrop.raindrop import RaindropType
+
 ##############################################################################
 # Local imports.
 from ...raindrop import API, Collection, SpecialCollection, Tag
 from ..commands import ShowAll, ShowUnsorted, ShowUntagged
-from ..data import LocalData, Raindrops, TagCount
-from ..messages import ShowCollection, ShowTagged
+from ..data import LocalData, Raindrops, TagCount, TypeCount
+from ..messages import ShowCollection, ShowOfType, ShowTagged
 from .extended_option_list import OptionListEx
 
 
@@ -96,6 +98,41 @@ class CollectionView(Option):
             f"[dim i]{self._count}[/]",
         )
         return prompt
+
+
+##############################################################################
+class TypeView(Option):
+    """Option for showing a raindrop type."""
+
+    def __init__(self, raindrop_type: TypeCount) -> None:
+        """Initialise the object.
+
+        Args:
+           raindrop_type: The type to show.
+        """
+        self._type = raindrop_type
+        """The type being viewed."""
+        super().__init__(self.prompt, id=f"_type_{self._type.type}")
+
+    @property
+    def prompt(self) -> RenderableType:
+        """The prompt for the type.
+
+        Returns:
+            A renderable that is the prompt.
+        """
+        prompt = Table.grid(expand=True)
+        prompt.add_column(ratio=1)
+        prompt.add_column(justify="right")
+        prompt.add_row(
+            str(self._type.type.capitalize()), f"[dim i]{self._type.count}[/]"
+        )
+        return prompt
+
+    @property
+    def type(self) -> RaindropType:
+        """The raindrop type."""
+        return self._type.type
 
 
 ##############################################################################
@@ -329,6 +366,18 @@ class Navigation(OptionListEx):
         """
         return sorted(tags, key=TagCount.the_count(), reverse=True)
 
+    def _show_types_for(self, collection: Raindrops) -> None:
+        """Show types relating to a given collection.
+
+        Args:
+            collection: The collection to show the types for.
+        """
+        with self.preserved_highlight:
+            if self.data is not None and (types := collection.types):
+                self.add_option(Title(f"Types ({len(types)})"))
+                for raindrop_type in sorted(types):
+                    self.add_option(TypeView(raindrop_type))
+
     def _show_tags_for(self, collection: Raindrops) -> None:
         """Show tags relating a given collection.
 
@@ -336,7 +385,6 @@ class Navigation(OptionListEx):
             collection: The collection to show the tags for.
         """
         with self.preserved_highlight:
-            self._main_navigation()
             if self.data is not None and (tags := collection.tags):
                 self.add_option(Title(f"Tags ({len(tags)})"))
                 for tag in (self._by_count if self.tags_by_count else self._by_name)(
@@ -351,7 +399,10 @@ class Navigation(OptionListEx):
 
     def watch_active_collection(self) -> None:
         """React to the currently-active collection being changed."""
-        self._show_tags_for(self.active_collection)
+        with self.preserved_highlight:
+            self._main_navigation()
+            self._show_types_for(self.active_collection)
+            self._show_tags_for(self.active_collection)
         self._refresh_lines()  # https://github.com/Textualize/textual/issues/5431
 
     def watch_tags_by_count(self) -> None:
@@ -370,6 +421,8 @@ class Navigation(OptionListEx):
             self.post_message(ShowCollection(message.option.collection))
         elif isinstance(message.option, TagView):
             self.post_message(ShowTagged(message.option.tag))
+        elif isinstance(message.option, TypeView):
+            self.post_message(ShowOfType(message.option.type))
 
 
 ### navigation.py ends here

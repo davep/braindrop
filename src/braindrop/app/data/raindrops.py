@@ -7,6 +7,7 @@ from __future__ import annotations
 ##############################################################################
 # Python imports.
 from dataclasses import dataclass
+from functools import total_ordering
 from typing import Callable, Counter, Iterable, Iterator
 
 ##############################################################################
@@ -18,6 +19,7 @@ from typing_extensions import Self
 from ...raindrop import (
     Collection,
     Raindrop,
+    RaindropType,
     SpecialCollection,
     Tag,
 )
@@ -61,6 +63,28 @@ class TagCount:
 
 
 ##############################################################################
+@dataclass(frozen=True)
+@total_ordering
+class TypeCount:
+    """Holds the count details of a raindrop type."""
+
+    type: RaindropType
+    """The type."""
+    count: int
+    """The count of raindrops of that type."""
+
+    def __gt__(self, value: object, /) -> bool:
+        if isinstance(value, TypeCount):
+            return self.type > value.type
+        raise NotImplementedError
+
+    def __eq__(self, value: object, /) -> bool:
+        if isinstance(value, TypeCount):
+            return self.type == value.type
+        raise NotImplementedError
+
+
+##############################################################################
 class Filter:
     """Base class for the raindrop filters."""
 
@@ -99,6 +123,29 @@ class Raindrops:
         def __eq__(self, value: object) -> bool:
             if isinstance(value, Raindrops.Tagged):
                 return str(value) == self._tag
+            return super().__eq__(value)
+
+    class IsOfType(Filter):
+        """Filter class to check if a raindrop is of a given type."""
+
+        def __init__(self, raindrop_type: RaindropType) -> None:
+            """Initialise the object.
+
+            Args:
+                raindrop_type: The raindrop type to filter on.
+            """
+            self._type = raindrop_type
+            """The type of raindrop to filter for."""
+
+        def __rand__(self, raindrop: Raindrop) -> bool:
+            return raindrop.type == self._type
+
+        def __str__(self) -> str:
+            return str(self._type)
+
+        def __eq__(self, value: object) -> bool:
+            if isinstance(value, Raindrops.IsOfType):
+                return str(value) == self._type
             return super().__eq__(value)
 
     class Containing(Filter):
@@ -241,6 +288,12 @@ class Raindrops:
     def description(self) -> str:
         """The description of the content of the Raindrop grouping."""
         filters = []
+        if raindrop_types := [
+            f"{raindrop_type}"
+            for raindrop_type in self._filters
+            if isinstance(raindrop_type, self.IsOfType)
+        ]:
+            filters.append(f"type {' and '.join(raindrop_types)}")
         if search_text := [
             f'"{text}"' for text in self._filters if isinstance(text, self.Containing)
         ]:
@@ -256,6 +309,16 @@ class Raindrops:
         for raindrop in self:
             tags.extend(set(raindrop.tags))
         return [TagCount(name, count) for name, count in Counter(tags).items()]
+
+    @property
+    def types(self) -> list[TypeCount]:
+        """The list of types found amongst the Raindrops."""
+        return [
+            TypeCount(name, count)
+            for name, count in Counter[RaindropType](
+                raindrop.type for raindrop in self
+            ).items()
+        ]
 
     def __and__(self, new_filter: Filter) -> Raindrops:
         """Get the raindrops that match a given filter.
@@ -288,6 +351,17 @@ class Raindrops:
             The subset of Raindrops that have the given tag.
         """
         return self & self.Tagged(tag)
+
+    def of_type(self, raindrop_type: RaindropType) -> Raindrops:
+        """Get the raindrops of a given type.
+
+        Args:
+            raindrop_type: The type to look for.
+
+        Returns:
+            The subset of Raindrops that are of the type.
+        """
+        return self & self.IsOfType(raindrop_type)
 
     def containing(self, search_text: str) -> Raindrops:
         """Get the raindrops containing the given text.

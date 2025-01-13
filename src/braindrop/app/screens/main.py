@@ -64,7 +64,7 @@ from ..data import (
     token_file,
     update_configuration,
 )
-from ..messages import ShowCollection, ShowTagged
+from ..messages import ShowCollection, ShowOfType, ShowTagged
 from ..providers import CollectionCommands, CommandsProvider, MainCommands, TagCommands
 from ..widgets import Navigation, RaindropDetails, RaindropsView
 from .confirm import Confirm
@@ -349,6 +349,15 @@ class Main(Screen[None]):
                 f"The '{self.active_collection.title}' collection has no tags",
                 severity="information",
             )
+
+    @on(ShowOfType)
+    def command_show_of_type(self, command: ShowOfType) -> None:
+        """handle the command that requests we show Raindrops of a given type.
+
+        Args:
+            command: The command.
+        """
+        self.active_collection = self.active_collection.of_type(command.raindrop_type)
 
     @on(ShowTagged)
     def command_show_tagged(self, command: ShowTagged) -> None:
