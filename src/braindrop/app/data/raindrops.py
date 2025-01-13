@@ -6,7 +6,8 @@ from __future__ import annotations
 
 ##############################################################################
 # Python imports.
-from typing import Counter, Iterable, Iterator
+from dataclasses import dataclass
+from typing import Callable, Counter, Iterable, Iterator
 
 ##############################################################################
 # Typing extension imports.
@@ -19,8 +20,44 @@ from ...raindrop import (
     Raindrop,
     SpecialCollection,
     Tag,
-    TagData,
 )
+
+
+##############################################################################
+@dataclass(frozen=True)
+class TagCount:
+    """Holds count details of a tag."""
+
+    tag: Tag
+    """The name of the tag."""
+    count: int
+    """The number of Raindrops using this tag."""
+
+    @staticmethod
+    def the_tag() -> Callable[[TagCount], Tag]:
+        """Returns a function for getting the tag from a `TagCount` instance.
+
+        Returns:
+            A function to get the tag of a `TagCount` instance.
+        """
+
+        def _getter(data: TagCount) -> Tag:
+            return data.tag
+
+        return _getter
+
+    @staticmethod
+    def the_count() -> Callable[[TagCount], int]:
+        """Returns a function for getting the count from a `TagCount` instance.
+
+        Returns:
+            A function to get the count of a `TagCount` instance.
+        """
+
+        def _getter(data: TagCount) -> int:
+            return data.count
+
+        return _getter
 
 
 ##############################################################################
@@ -213,12 +250,12 @@ class Raindrops:
         return f"{'; '.join((self._title, *filters))} ({len(self)})"
 
     @property
-    def tags(self) -> list[TagData]:
+    def tags(self) -> list[TagCount]:
         """The list of unique tags found amongst the Raindrops."""
         tags: list[Tag] = []
         for raindrop in self:
             tags.extend(set(raindrop.tags))
-        return [TagData(name, count) for name, count in Counter(tags).items()]
+        return [TagCount(name, count) for name, count in Counter(tags).items()]
 
     def __and__(self, new_filter: Filter) -> Raindrops:
         """Get the raindrops that match a given filter.

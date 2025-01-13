@@ -28,7 +28,6 @@ from httpx import AsyncClient, HTTPStatusError, RequestError, Response
 from .collection import Collection, SpecialCollection
 from .raindrop import Raindrop
 from .suggestions import Suggestions
-from .tag import TagData
 from .user import User
 
 
@@ -345,20 +344,6 @@ class API:
                 break
         count_update(len(raindrops))
         return raindrops
-
-    async def tags(self, collection: int | None = None) -> list[TagData]:
-        """Get a list of tags.
-
-        Args:
-            collection: The optional collection to get the tags for.
-
-        Returns:
-            A list of tags.
-        """
-        _, tags = await self._items_of(
-            self._get, "/tags" if collection is None else f"/tags/{collection}"
-        )
-        return [TagData.from_json(tag) for tag in tags or []]
 
     async def add_raindrop(self, raindrop: Raindrop) -> Raindrop | None:
         """Add a raindrop.

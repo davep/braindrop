@@ -11,14 +11,15 @@ from textual.suggester import Suggester
 
 ##############################################################################
 # Local imports.
-from ...raindrop import Raindrop, Tag, TagData
+from ...raindrop import Raindrop, Tag
+from ..data import TagCount
 
 
 ##############################################################################
 class SuggestTags(Suggester):
     """A Textual `Input` suggester that suggests tags."""
 
-    def __init__(self, tags: Iterable[Tag | TagData], use_cache: bool = True) -> None:
+    def __init__(self, tags: Iterable[Tag | TagCount], use_cache: bool = True) -> None:
         """Initialise the suggester.
 
         Args:
@@ -29,7 +30,7 @@ class SuggestTags(Suggester):
         # being case-sensitive; so here we say we *are* going to be case
         # sensitive and then in get_suggestion we'll handle it ourselves.
         super().__init__(use_cache=use_cache, case_sensitive=True)
-        self._tags = [tag.tag if isinstance(tag, TagData) else tag for tag in tags]
+        self._tags = [tag.tag if isinstance(tag, TagCount) else tag for tag in tags]
         """The tags to take suggestions from."""
 
     _SUGGESTABLE: Final[Pattern[str]] = re.compile(r".*[^,\s]$")

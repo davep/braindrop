@@ -2,8 +2,8 @@
 
 ##############################################################################
 # Local imports.
-from braindrop.app.data import Raindrops
-from braindrop.raindrop import Raindrop, Tag, TagData
+from braindrop.app.data import Raindrops, TagCount
+from braindrop.raindrop import Raindrop, Tag
 
 
 ##############################################################################
@@ -43,7 +43,7 @@ def test_found_tags() -> None:
     repeat = 2
     assert Raindrops(
         raindrops=[Raindrop(tags=[Tag(tag)]) for tag in expecting * repeat]
-    ).tags == list(TagData(Tag(tag), repeat) for tag in expecting)
+    ).tags == list(TagCount(Tag(tag), repeat) for tag in expecting)
 
 
 ##############################################################################
