@@ -6,7 +6,7 @@ from __future__ import annotations
 
 ##############################################################################
 # Python imports.
-from typing import Counter, Iterable, Iterator, Sequence
+from typing import Counter, Iterable, Iterator
 
 ##############################################################################
 # Typing extension imports.
@@ -24,15 +24,74 @@ from ...raindrop import (
 
 
 ##############################################################################
+class Filter:
+    """Base class for the raindrop filters."""
+
+    def __rand__(self, raindrop: Raindrop) -> bool:
+        del raindrop
+        return False
+
+    def __eq__(self, value: object) -> bool:
+        if isinstance(value, Filter):
+            return False
+        raise NotImplementedError
+
+
+##############################################################################
 class Raindrops:
     """Class that holds a group of Raindrops."""
+
+    class Tagged(Filter):
+        """Filter class to check if a raindrop has a particular tag."""
+
+        def __init__(self, tag: Tag | str) -> None:
+            """Initialise the object.
+
+            Args:
+                tag: The tag to filter on.
+            """
+            self._tag = Tag(tag)
+            """The tag to filter on."""
+
+        def __rand__(self, raindrop: Raindrop) -> bool:
+            return raindrop.is_tagged(self._tag)
+
+        def __str__(self) -> str:
+            return str(self._tag)
+
+        def __eq__(self, value: object) -> bool:
+            if isinstance(value, Raindrops.Tagged):
+                return str(value) == self._tag
+            return super().__eq__(value)
+
+    class Containing(Filter):
+        """Filter class to check if a raindrop contains some specific text."""
+
+        def __init__(self, text: str) -> None:
+            """Initialise the object.
+
+            Args:
+                text: The text to filter for.
+            """
+            self._text = text
+            """The text to look for."""
+
+        def __rand__(self, raindrop: Raindrop) -> bool:
+            return self._text in raindrop
+
+        def __str__(self) -> str:
+            return self._text
+
+        def __eq__(self, value: object) -> bool:
+            if isinstance(value, Raindrops.Containing):
+                return str(value).casefold() == self._text.casefold()
+            return super().__eq__(value)
 
     def __init__(
         self,
         title: str = "",
         raindrops: Iterable[Raindrop] | None = None,
-        tags: Sequence[Tag] | None = None,
-        search_text: tuple[str, ...] | None = None,
+        filters: tuple[Filter, ...] | None = None,
         source: Raindrops | None = None,
         root_collection: Collection | None = None,
     ) -> None:
@@ -41,8 +100,7 @@ class Raindrops:
         Args:
             title: The title for the Raindrop grouping.
             raindrops: The raindrops to hold in the group.
-            tags: Any tags associated with the given raindrops.
-            search_text: Any search text associated with the given raindrops.
+            filters: The filters that got to this set of raindrops.
             source: The source data for the raindrops.
             root_collection: The root collection for the raindrops.
         """
@@ -52,10 +110,8 @@ class Raindrops:
         """The raindrops."""
         self._index: dict[int, int] = {}
         """The index of IDs to locations in the list."""
-        self._tags = () if tags is None else tags
-        """The list of tags that resulted in this Raindrop group."""
-        self._search_text = () if search_text is None else search_text
-        """The search text related to this Raindrop group."""
+        self._filters = () if filters is None else filters
+        """The filters that got to this set of raindrops."""
         self._source = source or self
         """The original source for the Raindrops."""
         self._root_collection = (
@@ -137,7 +193,7 @@ class Raindrops:
     @property
     def is_filtered(self) -> bool:
         """Are the Raindrops filtered in some way?"""
-        return bool(self._tags) or bool(self._search_text)
+        return bool(self._filters)
 
     @property
     def unfiltered(self) -> Raindrops:
@@ -148,10 +204,12 @@ class Raindrops:
     def description(self) -> str:
         """The description of the content of the Raindrop grouping."""
         filters = []
-        if search_text := [f'"{text}"' for text in self._search_text]:
+        if search_text := [
+            f'"{text}"' for text in self._filters if isinstance(text, self.Containing)
+        ]:
             filters.append(f"contains {' and '.join(search_text)}")
-        if self._tags:
-            filters.append(f"tagged {', '.join(str(tag) for tag in self._tags)}")
+        if tags := [str(tag) for tag in self._filters if isinstance(tag, self.Tagged)]:
+            filters.append(f"tagged {', '.join(tags)}")
         return f"{'; '.join((self._title, *filters))} ({len(self)})"
 
     @property
@@ -162,23 +220,37 @@ class Raindrops:
             tags.extend(set(raindrop.tags))
         return [TagData(name, count) for name, count in Counter(tags).items()]
 
-    def tagged(self, *tags: Tag) -> Raindrops:
-        """Get the raindrops with the given tags.
+    def __and__(self, new_filter: Filter) -> Raindrops:
+        """Get the raindrops that match a given filter.
 
         Args:
-            tags: The tags to look for.
+            new_filter: The new filter to apply.
 
         Returns:
-            The subset of Raindrops that have the given tags.
+            The subset of Raindrops that match the given filter.
         """
+        # Don't bother applying a filter we already know about.
+        if new_filter in self._filters:
+            return self
+        # Novel filter, apply it.
         return Raindrops(
             self.title,
-            (raindrop for raindrop in self if raindrop.is_tagged(*tags)),
-            tuple(set((*self._tags, *tags))),
-            self._search_text,
+            (raindrop for raindrop in self if raindrop & new_filter),
+            (*self._filters, new_filter),
             self._source,
             self._root_collection,
         )
+
+    def tagged(self, tag: Tag | str) -> Raindrops:
+        """Get the raindrops with the given tags.
+
+        Args:
+            tag: The tag to look for.
+
+        Returns:
+            The subset of Raindrops that have the given tag.
+        """
+        return self & self.Tagged(tag)
 
     def containing(self, search_text: str) -> Raindrops:
         """Get the raindrops containing the given text.
@@ -189,14 +261,7 @@ class Raindrops:
         Returns:
             The subset of Raindrops that contain the given text.
         """
-        return Raindrops(
-            self.title,
-            (raindrop for raindrop in self if search_text in raindrop),
-            self._tags,
-            (*self._search_text, search_text),
-            self._source,
-            self._root_collection,
-        )
+        return self & self.Containing(search_text)
 
     def refilter(self, raindrops: Raindrops | None = None) -> Raindrops:
         """Reapply any filtering.
@@ -207,11 +272,9 @@ class Raindrops:
         Returns:
             The given raindrops with this object's filters applied.
         """
-        raindrops = (self if raindrops is None else raindrops).unfiltered.tagged(
-            *self._tags
-        )
-        for search_text in self._search_text:
-            raindrops = raindrops.containing(search_text)
+        raindrops = (self if raindrops is None else raindrops).unfiltered
+        for next_filter in self._filters:
+            raindrops = raindrops & next_filter
         return raindrops
 
     def __contains__(self, raindrop: Raindrop) -> bool:
