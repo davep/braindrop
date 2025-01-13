@@ -2,12 +2,13 @@
 
 ##############################################################################
 # Local imports.
-from .main import ShowCollection, ShowTagged
+from .main import ShowCollection, ShowOfType, ShowTagged
 
 ##############################################################################
 # Exports.
 __all__ = [
     "ShowCollection",
+    "ShowOfType",
     "ShowTagged",
 ]
 

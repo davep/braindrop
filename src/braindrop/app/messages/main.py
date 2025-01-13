@@ -10,7 +10,7 @@ from textual.message import Message
 
 ##############################################################################
 # Local imports.
-from ...raindrop import Collection, Tag
+from ...raindrop import Collection, RaindropType, Tag
 
 
 ##############################################################################
@@ -20,6 +20,15 @@ class ShowCollection(Message):
 
     collection: Collection
     """The collection to show."""
+
+
+##############################################################################
+@dataclass
+class ShowOfType(Message):
+    """A message that requests that Raindrops of a particular type are shown."""
+
+    raindrop_type: RaindropType
+    """The raindrop type to filter on."""
 
 
 ##############################################################################

@@ -11,6 +11,8 @@
   ([#96](https://github.com/davep/braindrop/pull/96))
 - Free text search now also looks in the domain of a raindrop.
   ([#96](https://github.com/davep/braindrop/pull/96))
+- Added raindrop types to the navigation panel.
+  ([#100](https://github.com/davep/braindrop/pull/100))
 
 ## v0.5.0
 
