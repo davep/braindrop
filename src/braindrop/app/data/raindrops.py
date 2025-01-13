@@ -27,9 +27,14 @@ from ...raindrop import (
 class Filter:
     """Base class for the raindrop filters."""
 
-    def __eq__(self, raindrop: object) -> bool:
+    def __rand__(self, raindrop: Raindrop) -> bool:
         del raindrop
         return False
+
+    def __eq__(self, value: object) -> bool:
+        if isinstance(value, Filter):
+            return False
+        raise NotImplementedError
 
 
 ##############################################################################
@@ -48,13 +53,16 @@ class Raindrops:
             self._tag = Tag(tag)
             """The tag to filter on."""
 
-        def __eq__(self, raindrop: object) -> bool:
-            if isinstance(raindrop, Raindrop):
-                return raindrop.is_tagged(self._tag)
-            raise NotImplementedError
+        def __rand__(self, raindrop: Raindrop) -> bool:
+            return raindrop.is_tagged(self._tag)
 
         def __str__(self) -> str:
             return str(self._tag)
+
+        def __eq__(self, value: object) -> bool:
+            if isinstance(value, Raindrops.Tagged):
+                return str(value) == self._tag
+            return super().__eq__(value)
 
     class Containing(Filter):
         """Filter class to check if a raindrop contains some specific text."""
@@ -68,13 +76,16 @@ class Raindrops:
             self._text = text
             """The text to look for."""
 
-        def __eq__(self, raindrop: object) -> bool:
-            if isinstance(raindrop, Raindrop):
-                return self._text in raindrop
-            raise NotImplementedError
+        def __rand__(self, raindrop: Raindrop) -> bool:
+            return self._text in raindrop
 
         def __str__(self) -> str:
             return self._text
+
+        def __eq__(self, value: object) -> bool:
+            if isinstance(value, Raindrops.Containing):
+                return str(value).casefold() == self._text.casefold()
+            return super().__eq__(value)
 
     def __init__(
         self,
@@ -209,7 +220,7 @@ class Raindrops:
             tags.extend(set(raindrop.tags))
         return [TagData(name, count) for name, count in Counter(tags).items()]
 
-    def filter(self, new_filter: Filter) -> Raindrops:
+    def __and__(self, new_filter: Filter) -> Raindrops:
         """Get the raindrops that match a given filter.
 
         Args:
@@ -218,9 +229,13 @@ class Raindrops:
         Returns:
             The subset of Raindrops that match the given filter.
         """
+        # Don't bother applying a filter we already know about.
+        if new_filter in self._filters:
+            return self
+        # Novel filter, apply it.
         return Raindrops(
             self.title,
-            (raindrop for raindrop in self if raindrop == new_filter),
+            (raindrop for raindrop in self if raindrop & new_filter),
             (*self._filters, new_filter),
             self._source,
             self._root_collection,
@@ -235,7 +250,7 @@ class Raindrops:
         Returns:
             The subset of Raindrops that have the given tag.
         """
-        return self.filter(self.Tagged(tag))
+        return self & self.Tagged(tag)
 
     def containing(self, search_text: str) -> Raindrops:
         """Get the raindrops containing the given text.
@@ -246,7 +261,7 @@ class Raindrops:
         Returns:
             The subset of Raindrops that contain the given text.
         """
-        return self.filter(self.Containing(search_text))
+        return self & self.Containing(search_text)
 
     def refilter(self, raindrops: Raindrops | None = None) -> Raindrops:
         """Reapply any filtering.
@@ -259,7 +274,7 @@ class Raindrops:
         """
         raindrops = (self if raindrops is None else raindrops).unfiltered
         for next_filter in self._filters:
-            raindrops = raindrops.filter(next_filter)
+            raindrops = raindrops & next_filter
         return raindrops
 
     def __contains__(self, raindrop: Raindrop) -> bool:
