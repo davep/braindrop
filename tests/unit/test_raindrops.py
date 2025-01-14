@@ -68,12 +68,16 @@ def test_filter_with_text() -> None:
         Raindrop(excerpt=needle),
         Raindrop(note=needle),
         Raindrop(tags=[Tag(needle)]),
+        Raindrop(link=needle),
+        Raindrop(domain=needle),
     ]
     not_these = [
         Raindrop(title="title"),
         Raindrop(excerpt="excerpt"),
         Raindrop(note="note"),
         Raindrop(tags=[Tag("tag")]),
+        Raindrop(link="link"),
+        Raindrop(domain="domain"),
     ]
     haystack = find_these + not_these
     raindrops = Raindrops(raindrops=haystack)
