@@ -8,7 +8,7 @@ from __future__ import annotations
 # Python imports.
 from dataclasses import dataclass
 from functools import total_ordering
-from typing import Callable, Counter, Iterable, Iterator
+from typing import Callable, Counter, Iterable, Iterator, TypeAlias
 
 ##############################################################################
 # Typing extension imports.
@@ -85,12 +85,19 @@ class TypeCount:
 
 
 ##############################################################################
+Filters: TypeAlias = tuple["Filter", ...]
+"""The type of a collection of filters."""
+
+
+##############################################################################
 class Filter:
     """Base class for the raindrop filters."""
 
-    def __rand__(self, raindrop: Raindrop) -> bool:
-        del raindrop
+    def __rand__(self, _: Raindrop) -> bool:
         return False
+
+    def __radd__(self, filters: Filters) -> Filters:
+        return (*filters, self)
 
     def __eq__(self, value: object) -> bool:
         if isinstance(value, Filter):
@@ -175,7 +182,7 @@ class Raindrops:
         self,
         title: str = "",
         raindrops: Iterable[Raindrop] | None = None,
-        filters: tuple[Filter, ...] | None = None,
+        filters: Filters | None = None,
         source: Raindrops | None = None,
         root_collection: Collection | None = None,
     ) -> None:
@@ -336,7 +343,7 @@ class Raindrops:
         return Raindrops(
             self.title,
             (raindrop for raindrop in self if raindrop & new_filter),
-            (*self._filters, new_filter),
+            self._filters + new_filter,
             self._source,
             self._root_collection,
         )
