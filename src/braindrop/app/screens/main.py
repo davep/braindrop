@@ -60,7 +60,6 @@ from ..data import (
     Raindrops,
     load_configuration,
     local_data_file,
-    save_configuration,
     token_file,
     update_configuration,
 )
