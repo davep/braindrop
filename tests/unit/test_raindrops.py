@@ -3,6 +3,7 @@
 ##############################################################################
 # Local imports.
 from braindrop.app.data import Raindrops, TagCount
+from braindrop.app.data.raindrops import Filters
 from braindrop.raindrop import Raindrop, Tag
 
 
@@ -61,24 +62,41 @@ def test_filter_with_tags() -> None:
 
 ##############################################################################
 def test_filter_with_text() -> None:
-    """Applying a test filter should have the expected result."""
+    """Applying a text filter should have the expected result."""
     needle = "needle"
     find_these = [
         Raindrop(title=needle),
         Raindrop(excerpt=needle),
         Raindrop(note=needle),
         Raindrop(tags=[Tag(needle)]),
+        Raindrop(link=needle),
+        Raindrop(domain=needle),
     ]
     not_these = [
         Raindrop(title="title"),
         Raindrop(excerpt="excerpt"),
         Raindrop(note="note"),
         Raindrop(tags=[Tag("tag")]),
+        Raindrop(link="link"),
+        Raindrop(domain="domain"),
     ]
     haystack = find_these + not_these
     raindrops = Raindrops(raindrops=haystack)
     assert len(raindrops) == len(haystack)
     assert list(raindrops.containing(needle)) == find_these
+
+
+##############################################################################
+def test_filter_with_type() -> None:
+    """Applying a type filter should have the expected result."""
+    raindrop_a = Raindrop(type="article")
+    raindrop_b = Raindrop(type="link")
+    raindrops = Raindrops(raindrops=[raindrop_a, raindrop_b])
+    assert len(raindrops) == 2
+    assert len(raindrops.of_type("article")) == 1
+    assert next(iter(raindrops.of_type("article"))) == raindrop_a
+    assert len(raindrops.of_type("link")) == 1
+    assert next(iter(raindrops.of_type("link"))) == raindrop_b
 
 
 ##############################################################################
@@ -113,6 +131,22 @@ def test_raindrop_in_raindrops() -> None:
     )
     assert raindrop in is_in
     assert raindrop not in is_not_in
+
+
+##############################################################################
+def test_filters() -> None:
+    """We should be able to create a collection of filters."""
+    text_filter = Raindrops.Containing("test")
+    type_filter = Raindrops.IsOfType("link")
+    tag_filter = Raindrops.Tagged("tag")
+    filters: Filters = ()
+    filters += text_filter
+    assert len(filters) == 1
+    filters += type_filter
+    assert len(filters) == 2
+    filters += tag_filter
+    assert len(filters) == 3
+    assert filters == (text_filter, type_filter, tag_filter)
 
 
 ### test_raindrops.py ends here
