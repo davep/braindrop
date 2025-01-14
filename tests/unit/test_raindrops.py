@@ -82,6 +82,19 @@ def test_filter_with_text() -> None:
 
 
 ##############################################################################
+def test_filter_with_type() -> None:
+    """Applying a type filter should have the expected result."""
+    raindrop_a = Raindrop(type="article")
+    raindrop_b = Raindrop(type="link")
+    raindrops = Raindrops(raindrops=[raindrop_a, raindrop_b])
+    assert len(raindrops) == 2
+    assert len(raindrops.of_type("article")) == 1
+    assert next(iter(raindrops.of_type("article"))) == raindrop_a
+    assert len(raindrops.of_type("link")) == 1
+    assert next(iter(raindrops.of_type("link"))) == raindrop_b
+
+
+##############################################################################
 def test_unfiltering() -> None:
     """We should be able to unfilter a Raidrops."""
     filter_down_to = [
