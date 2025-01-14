@@ -201,7 +201,9 @@ class LocalData:
                 else self._collections[identity]
             )
         except KeyError:
-            raise self.UnknonwCollection(f"Unknown collection identity: {identity}")
+            raise self.UnknonwCollection(
+                f"Unknown collection identity: {identity}"
+            ) from None
 
     @property
     def collections(self) -> list[Collection]:
