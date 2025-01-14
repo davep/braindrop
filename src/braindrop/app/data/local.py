@@ -179,6 +179,9 @@ class LocalData:
         # can work it out).
         return collection.count or len(self.in_collection(collection))
 
+    class UnknonwCollection(Exception):
+        """Exception raised if we encounter a collection ID we don't know about."""
+
     def collection(self, identity: int) -> Collection:
         """Get a collection from its ID.
 
@@ -187,12 +190,18 @@ class LocalData:
 
         Returns:
             The collection with that identity.
+
+        Raises:
+            UnknownCollection: When a collection isn't known.
         """
-        return (
-            SpecialCollection(identity)()
-            if identity in SpecialCollection
-            else self._collections[identity]
-        )
+        try:
+            return (
+                SpecialCollection(identity)()
+                if identity in SpecialCollection
+                else self._collections[identity]
+            )
+        except KeyError:
+            raise self.UnknonwCollection(f"Unknown collection identity: {identity}")
 
     @property
     def collections(self) -> list[Collection]:
