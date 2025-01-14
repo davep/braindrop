@@ -15,7 +15,6 @@ from ..raindrop import API
 from .data import (
     ExitState,
     load_configuration,
-    save_configuration,
     token_file,
     update_configuration,
 )
