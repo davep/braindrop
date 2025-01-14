@@ -3,6 +3,7 @@
 ##############################################################################
 # Local imports.
 from braindrop.app.data import Raindrops, TagCount
+from braindrop.app.data.raindrops import Filters
 from braindrop.raindrop import Raindrop, Tag
 
 
@@ -130,6 +131,22 @@ def test_raindrop_in_raindrops() -> None:
     )
     assert raindrop in is_in
     assert raindrop not in is_not_in
+
+
+##############################################################################
+def test_filters() -> None:
+    """We should be able to create a collection of filters."""
+    text_filter = Raindrops.Containing("test")
+    type_filter = Raindrops.IsOfType("link")
+    tag_filter = Raindrops.Tagged("tag")
+    filters: Filters = ()
+    filters += text_filter
+    assert len(filters) == 1
+    filters += type_filter
+    assert len(filters) == 2
+    filters += tag_filter
+    assert len(filters) == 3
+    assert filters == (text_filter, type_filter, tag_filter)
 
 
 ### test_raindrops.py ends here
