@@ -61,7 +61,7 @@ def test_filter_with_tags() -> None:
 
 ##############################################################################
 def test_filter_with_text() -> None:
-    """Applying a test filter should have the expected result."""
+    """Applying a text filter should have the expected result."""
     needle = "needle"
     find_these = [
         Raindrop(title=needle),
