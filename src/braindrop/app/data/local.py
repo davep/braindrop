@@ -224,16 +224,23 @@ class LocalData:
         Notes:
             The returned list is a flat list of *all* the collections within
             the group; no specific order is guaranteed.
+
+            The Raindrop API has been known to apparently include IDs for
+            collections, within a group, where the collection no longer
+            exists. With this in mind any unknown collections are pruned.
         """
 
         def _collections(collection_ids: Iterable[int]) -> Iterator[Collection]:
             for collection in collection_ids:
-                yield self.collection(collection)
-                yield from _collections(
-                    candidate.identity
-                    for candidate in self.collections
-                    if candidate.parent == collection
-                )
+                try:
+                    yield self.collection(collection)
+                    yield from _collections(
+                        candidate.identity
+                        for candidate in self.collections
+                        if candidate.parent == collection
+                    )
+                except self.UnknonwCollection:
+                    pass
 
         return list(_collections(group.collections))
 
