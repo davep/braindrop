@@ -1,5 +1,13 @@
 # Braindrop ChangeLog
 
+## Unreleased
+
+**Released: WiP**
+
+- Made the code that loads a group's collections more defensive, hopefully
+  to fix a crash one person was reporting.
+  ([#106](https://github.com/davep/braindrop/pull/106))
+
 ## v0.6.0
 
 **Released: 2025-01-14**

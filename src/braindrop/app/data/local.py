@@ -179,6 +179,9 @@ class LocalData:
         # can work it out).
         return collection.count or len(self.in_collection(collection))
 
+    class UnknonwCollection(Exception):
+        """Exception raised if we encounter a collection ID we don't know about."""
+
     def collection(self, identity: int) -> Collection:
         """Get a collection from its ID.
 
@@ -187,12 +190,20 @@ class LocalData:
 
         Returns:
             The collection with that identity.
+
+        Raises:
+            UnknownCollection: When a collection isn't known.
         """
-        return (
-            SpecialCollection(identity)()
-            if identity in SpecialCollection
-            else self._collections[identity]
-        )
+        try:
+            return (
+                SpecialCollection(identity)()
+                if identity in SpecialCollection
+                else self._collections[identity]
+            )
+        except KeyError:
+            raise self.UnknonwCollection(
+                f"Unknown collection identity: {identity}"
+            ) from None
 
     @property
     def collections(self) -> list[Collection]:
@@ -215,16 +226,23 @@ class LocalData:
         Notes:
             The returned list is a flat list of *all* the collections within
             the group; no specific order is guaranteed.
+
+            The Raindrop API has been known to apparently include IDs for
+            collections, within a group, where the collection no longer
+            exists. With this in mind any unknown collections are pruned.
         """
 
         def _collections(collection_ids: Iterable[int]) -> Iterator[Collection]:
             for collection in collection_ids:
-                yield self.collection(collection)
-                yield from _collections(
-                    candidate.identity
-                    for candidate in self.collections
-                    if candidate.parent == collection
-                )
+                try:
+                    yield self.collection(collection)
+                    yield from _collections(
+                        candidate.identity
+                        for candidate in self.collections
+                        if candidate.parent == collection
+                    )
+                except self.UnknonwCollection:
+                    pass
 
         return list(_collections(group.collections))
 

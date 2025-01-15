@@ -338,9 +338,18 @@ class Navigation(OptionListEx):
                     Title(f"{group.title} ({len(self.data.collections_within(group))})")
                 )
                 for collection in group.collections:
-                    self._add_children_for(
-                        self._add_collection(self.data.collection(collection))
-                    )
+                    try:
+                        self._add_children_for(
+                            self._add_collection(self.data.collection(collection))
+                        )
+                    except self.data.UnknonwCollection:
+                        # It seems that the Raindrop API can sometimes say
+                        # there's a collection ID in a group where the
+                        # collection ID isn't in the actual collections the
+                        # API gives us. So here we just ignore it.
+                        #
+                        # https://github.com/davep/braindrop/issues/104
+                        pass
 
     @staticmethod
     def _by_name(tags: list[TagCount]) -> list[TagCount]:
