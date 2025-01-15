@@ -60,7 +60,7 @@ for this token:
 
 ![Raindrop API token entry dialog](https://raw.githubusercontent.com/davep/braindrop/refs/heads/main/.images/raindrop-token-entry.png)
 
-Paste the token into the input field and select `Conttect`. Braindrop will
+Paste the token into the input field and select `Connect`. Braindrop will
 then download your data and you will be good to go.
 
 *NOTE: if it's your preference, you can set the token in an environment
