@@ -21,11 +21,9 @@ from textual.reactive import var
 from textual.widgets import OptionList
 from textual.widgets.option_list import Option
 
-from braindrop.raindrop.raindrop import RaindropType
-
 ##############################################################################
 # Local imports.
-from ...raindrop import API, Collection, SpecialCollection, Tag
+from ...raindrop import API, Collection, RaindropType, SpecialCollection, Tag
 from ..commands import ShowAll, ShowUnsorted, ShowUntagged
 from ..data import LocalData, Raindrops, TagCount, TypeCount
 from ..messages import ShowCollection, ShowOfType, ShowTagged
