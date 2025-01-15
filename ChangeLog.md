@@ -1,8 +1,8 @@
 # Braindrop ChangeLog
 
-## Unreleased
+## v0.6.1
 
-**Released: WiP**
+**Released: 2025-01-15**
 
 - Made the code that loads a group's collections more defensive, hopefully
   to fix a crash one person was reporting.
