@@ -17,13 +17,14 @@ from rich.table import Table
 ##############################################################################
 # Textual imports.
 from textual import on
+from textual.message import Message
 from textual.reactive import var
 from textual.widgets import OptionList
 from textual.widgets.option_list import Option
 
 ##############################################################################
 # Local imports.
-from ...raindrop import API, Collection, RaindropType, SpecialCollection, Tag
+from ...raindrop import API, Collection, SpecialCollection
 from ..commands import ShowAll, ShowUnsorted, ShowUntagged
 from ..data import LocalData, Raindrops, TagCount, TypeCount
 from ..messages import ShowCollection, ShowOfType, ShowTagged
@@ -31,7 +32,63 @@ from .extended_option_list import OptionListEx
 
 
 ##############################################################################
-class CollectionView(Option):
+class Title(Option):
+    """Option for showing a title."""
+
+    def __init__(self, title: str) -> None:
+        """Initialise the object.
+
+        Args:
+            title: The title to show.
+        """
+        super().__init__(
+            Group("", Rule(title, style="bold dim")),
+            disabled=True,
+            id=f"_title_{title}",
+        )
+
+
+##############################################################################
+class NavigationView(Option):
+    """Base class for navigation options."""
+
+    @property
+    def message(self) -> Message:
+        """The message for this option."""
+        raise NotImplementedError
+
+    def build_prompt(
+        self,
+        title: str,
+        count: int,
+        indent: int = 0,
+        key: str | None = None,
+        key_colour: str | None = None,
+    ) -> RenderableType:
+        """The prompt for the option.
+
+        Args:
+            title: The title for the prompt.
+            count: The count for the prompt.
+            key: The optional key for the prompt.
+            key_colour: The optional colour for the key.
+
+        Returns:
+            A renderable that is the prompt.
+        """
+        prompt = Table.grid(expand=True)
+        prompt.add_column(ratio=1)
+        prompt.add_column(justify="right")
+        prompt.add_row(
+            f"{'[dim]>[/dim] ' * indent}{title}"
+            + (f" [{key_colour or 'dim'}]\\[{key or ''}][/]" if key else ""),
+            f"[dim i]{count}[/]",
+        )
+        return prompt
+
+
+##############################################################################
+class CollectionView(NavigationView):
     """Class that holds details of the collection to view."""
 
     @staticmethod
@@ -65,41 +122,25 @@ class CollectionView(Option):
         """
         self._collection = collection
         """The collection being viewed."""
-        self._indent = indent
-        """The indent level for the collection."""
-        self._key = key
-        """The key associated with this collection, if any."""
-        self._key_colour = key_colour or "dim"
-        """The colour to show the key in."""
-        self._count = count or collection.count
-        """The count of raindrops in this collection."""
-        super().__init__(self.prompt, id=self.id_of(collection))
-
-    @property
-    def collection(self) -> Collection:
-        """The collection."""
-        return self._collection
-
-    @property
-    def prompt(self) -> RenderableType:
-        """The prompt for the collection.
-
-        Returns:
-            A renderable that is the prompt.
-        """
-        prompt = Table.grid(expand=True)
-        prompt.add_column(ratio=1)
-        prompt.add_column(justify="right")
-        prompt.add_row(
-            f"{'[dim]>[/dim] ' * self._indent}{self._collection.title}"
-            + (f" [{self._key_colour}]\\[{self._key or ''}][/]" if self._key else ""),
-            f"[dim i]{self._count}[/]",
+        super().__init__(
+            self.build_prompt(
+                collection.title,
+                count or collection.count,
+                indent,
+                key,
+                key_colour,
+            ),
+            id=self.id_of(collection),
         )
-        return prompt
+
+    @property
+    def message(self) -> Message:
+        """The message for this option."""
+        return ShowCollection(self._collection)
 
 
 ##############################################################################
-class TypeView(Option):
+class TypeView(NavigationView):
     """Option for showing a raindrop type."""
 
     def __init__(self, raindrop_type: TypeCount) -> None:
@@ -110,31 +151,22 @@ class TypeView(Option):
         """
         self._type = raindrop_type
         """The type being viewed."""
-        super().__init__(self.prompt, id=f"_type_{self._type.type}")
-
-    @property
-    def prompt(self) -> RenderableType:
-        """The prompt for the type.
-
-        Returns:
-            A renderable that is the prompt.
-        """
-        prompt = Table.grid(expand=True)
-        prompt.add_column(ratio=1)
-        prompt.add_column(justify="right")
-        prompt.add_row(
-            str(self._type.type.capitalize()), f"[dim i]{self._type.count}[/]"
+        super().__init__(
+            self.build_prompt(
+                raindrop_type.type.capitalize(),
+                raindrop_type.count,
+            ),
+            id=f"_type_{self._type.type}",
         )
-        return prompt
 
     @property
-    def type(self) -> RaindropType:
-        """The raindrop type."""
-        return self._type.type
+    def message(self) -> Message:
+        """The message for this option."""
+        return ShowOfType(self._type.type)
 
 
 ##############################################################################
-class TagView(Option):
+class TagView(NavigationView):
     """Option for showing a tag."""
 
     def __init__(self, tag: TagCount) -> None:
@@ -145,47 +177,14 @@ class TagView(Option):
         """
         self._tag = tag
         """The tag being viewed."""
-        super().__init__(self.prompt, id=f"_tag_{tag.tag}")
-
-    @property
-    def prompt(self) -> RenderableType:
-        """The prompt for the tag.
-
-        Returns:
-            A renderable that is the prompt.
-        """
-        prompt = Table.grid(expand=True)
-        prompt.add_column(ratio=1)
-        prompt.add_column(justify="right")
-        prompt.add_row(str(self._tag.tag), f"[dim i]{self._tag.count}[/]")
-        return prompt
-
-    @property
-    def tag_data(self) -> TagCount:
-        """The tag data."""
-        return self._tag
-
-    @property
-    def tag(self) -> Tag:
-        """The tag."""
-        return self.tag_data.tag
-
-
-##############################################################################
-class Title(Option):
-    """Option for showing a title."""
-
-    def __init__(self, title: str) -> None:
-        """Initialise the object.
-
-        Args:
-            title: The title to show.
-        """
         super().__init__(
-            Group("", Rule(title, style="bold dim")),
-            disabled=True,
-            id=f"_title_{title}",
+            self.build_prompt(str(tag.tag), tag.count), id=f"_tag_{tag.tag}"
         )
+
+    @property
+    def message(self) -> Message:
+        """The message for this option."""
+        return ShowTagged(self._tag.tag)
 
 
 ##############################################################################
@@ -424,12 +423,8 @@ class Navigation(OptionListEx):
             message: The message associated with the request.
         """
         message.stop()
-        if isinstance(message.option, CollectionView):
-            self.post_message(ShowCollection(message.option.collection))
-        elif isinstance(message.option, TagView):
-            self.post_message(ShowTagged(message.option.tag))
-        elif isinstance(message.option, TypeView):
-            self.post_message(ShowOfType(message.option.type))
+        assert isinstance(message.option, NavigationView)
+        self.post_message(message.option.message)
 
 
 ### navigation.py ends here
