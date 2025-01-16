@@ -57,6 +57,35 @@ class NavigationView(Option):
         """The message for this option."""
         raise NotImplementedError
 
+    def build_prompt(
+        self,
+        title: str,
+        count: int,
+        indent: int = 0,
+        key: str | None = None,
+        key_colour: str | None = None,
+    ) -> RenderableType:
+        """The prompt for the option.
+
+        Args:
+            title: The title for the prompt.
+            count: The count for the prompt.
+            key: The optional key for the prompt.
+            key_colour: The optional colour for the key.
+
+        Returns:
+            A renderable that is the prompt.
+        """
+        prompt = Table.grid(expand=True)
+        prompt.add_column(ratio=1)
+        prompt.add_column(justify="right")
+        prompt.add_row(
+            f"{'[dim]>[/dim] ' * indent}{title}"
+            + (f" [{key_colour or 'dim'}]\\[{key or ''}][/]" if key else ""),
+            f"[dim i]{count}[/]",
+        )
+        return prompt
+
 
 ##############################################################################
 class CollectionView(NavigationView):
@@ -93,37 +122,21 @@ class CollectionView(NavigationView):
         """
         self._collection = collection
         """The collection being viewed."""
-        self._indent = indent
-        """The indent level for the collection."""
-        self._key = key
-        """The key associated with this collection, if any."""
-        self._key_colour = key_colour or "dim"
-        """The colour to show the key in."""
-        self._count = count or collection.count
-        """The count of raindrops in this collection."""
-        super().__init__(self.prompt, id=self.id_of(collection))
+        super().__init__(
+            self.build_prompt(
+                collection.title,
+                count or collection.count,
+                indent,
+                key,
+                key_colour,
+            ),
+            id=self.id_of(collection),
+        )
 
     @property
     def message(self) -> Message:
         """The message for this option."""
         return ShowCollection(self._collection)
-
-    @property
-    def prompt(self) -> RenderableType:
-        """The prompt for the collection.
-
-        Returns:
-            A renderable that is the prompt.
-        """
-        prompt = Table.grid(expand=True)
-        prompt.add_column(ratio=1)
-        prompt.add_column(justify="right")
-        prompt.add_row(
-            f"{'[dim]>[/dim] ' * self._indent}{self._collection.title}"
-            + (f" [{self._key_colour}]\\[{self._key or ''}][/]" if self._key else ""),
-            f"[dim i]{self._count}[/]",
-        )
-        return prompt
 
 
 ##############################################################################
@@ -138,22 +151,13 @@ class TypeView(NavigationView):
         """
         self._type = raindrop_type
         """The type being viewed."""
-        super().__init__(self.prompt, id=f"_type_{self._type.type}")
-
-    @property
-    def prompt(self) -> RenderableType:
-        """The prompt for the type.
-
-        Returns:
-            A renderable that is the prompt.
-        """
-        prompt = Table.grid(expand=True)
-        prompt.add_column(ratio=1)
-        prompt.add_column(justify="right")
-        prompt.add_row(
-            str(self._type.type.capitalize()), f"[dim i]{self._type.count}[/]"
+        super().__init__(
+            self.build_prompt(
+                raindrop_type.type.capitalize(),
+                raindrop_type.count,
+            ),
+            id=f"_type_{self._type.type}",
         )
-        return prompt
 
     @property
     def message(self) -> Message:
@@ -173,20 +177,9 @@ class TagView(NavigationView):
         """
         self._tag = tag
         """The tag being viewed."""
-        super().__init__(self.prompt, id=f"_tag_{tag.tag}")
-
-    @property
-    def prompt(self) -> RenderableType:
-        """The prompt for the tag.
-
-        Returns:
-            A renderable that is the prompt.
-        """
-        prompt = Table.grid(expand=True)
-        prompt.add_column(ratio=1)
-        prompt.add_column(justify="right")
-        prompt.add_row(str(self._tag.tag), f"[dim i]{self._tag.count}[/]")
-        return prompt
+        super().__init__(
+            self.build_prompt(str(tag.tag), tag.count), id=f"_tag_{tag.tag}"
+        )
 
     @property
     def message(self) -> Message:
