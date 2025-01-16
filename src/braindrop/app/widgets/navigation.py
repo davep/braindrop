@@ -17,6 +17,7 @@ from rich.table import Table
 ##############################################################################
 # Textual imports.
 from textual import on
+from textual.message import Message
 from textual.reactive import var
 from textual.widgets import OptionList
 from textual.widgets.option_list import Option
@@ -24,14 +25,41 @@ from textual.widgets.option_list import Option
 ##############################################################################
 # Local imports.
 from ...raindrop import API, Collection, RaindropType, SpecialCollection, Tag
-from ..commands import ShowAll, ShowUnsorted, ShowUntagged
+from ..commands import Command, ShowAll, ShowUnsorted, ShowUntagged
 from ..data import LocalData, Raindrops, TagCount, TypeCount
 from ..messages import ShowCollection, ShowOfType, ShowTagged
 from .extended_option_list import OptionListEx
 
 
 ##############################################################################
-class CollectionView(Option):
+class Title(Option):
+    """Option for showing a title."""
+
+    def __init__(self, title: str) -> None:
+        """Initialise the object.
+
+        Args:
+            title: The title to show.
+        """
+        super().__init__(
+            Group("", Rule(title, style="bold dim")),
+            disabled=True,
+            id=f"_title_{title}",
+        )
+
+
+##############################################################################
+class NavigationView(Option):
+    """Base class for navigation options."""
+
+    @property
+    def message(self) -> Message:
+        """The message for this option."""
+        raise NotImplementedError
+
+
+##############################################################################
+class CollectionView(NavigationView):
     """Class that holds details of the collection to view."""
 
     @staticmethod
@@ -76,9 +104,9 @@ class CollectionView(Option):
         super().__init__(self.prompt, id=self.id_of(collection))
 
     @property
-    def collection(self) -> Collection:
-        """The collection."""
-        return self._collection
+    def message(self) -> Message:
+        """The message for this option."""
+        return ShowCollection(self._collection)
 
     @property
     def prompt(self) -> RenderableType:
@@ -99,7 +127,7 @@ class CollectionView(Option):
 
 
 ##############################################################################
-class TypeView(Option):
+class TypeView(NavigationView):
     """Option for showing a raindrop type."""
 
     def __init__(self, raindrop_type: TypeCount) -> None:
@@ -128,13 +156,13 @@ class TypeView(Option):
         return prompt
 
     @property
-    def type(self) -> RaindropType:
-        """The raindrop type."""
-        return self._type.type
+    def message(self) -> Message:
+        """The message for this option."""
+        return ShowOfType(self._type.type)
 
 
 ##############################################################################
-class TagView(Option):
+class TagView(NavigationView):
     """Option for showing a tag."""
 
     def __init__(self, tag: TagCount) -> None:
@@ -161,31 +189,9 @@ class TagView(Option):
         return prompt
 
     @property
-    def tag_data(self) -> TagCount:
-        """The tag data."""
-        return self._tag
-
-    @property
-    def tag(self) -> Tag:
-        """The tag."""
-        return self.tag_data.tag
-
-
-##############################################################################
-class Title(Option):
-    """Option for showing a title."""
-
-    def __init__(self, title: str) -> None:
-        """Initialise the object.
-
-        Args:
-            title: The title to show.
-        """
-        super().__init__(
-            Group("", Rule(title, style="bold dim")),
-            disabled=True,
-            id=f"_title_{title}",
-        )
+    def message(self) -> Message:
+        """The message for this option."""
+        return ShowTagged(self._tag.tag)
 
 
 ##############################################################################
@@ -424,12 +430,8 @@ class Navigation(OptionListEx):
             message: The message associated with the request.
         """
         message.stop()
-        if isinstance(message.option, CollectionView):
-            self.post_message(ShowCollection(message.option.collection))
-        elif isinstance(message.option, TagView):
-            self.post_message(ShowTagged(message.option.tag))
-        elif isinstance(message.option, TypeView):
-            self.post_message(ShowOfType(message.option.type))
+        assert isinstance(message.option, NavigationView)
+        self.post_message(message.option.message)
 
 
 ### navigation.py ends here
