@@ -74,7 +74,7 @@ class HelpScreen(ModalScreen[None]):
 
         Markdown, MarkdownTable {
             padding: 0 1 0 1;
-            background: $panel;
+            background: transparent;
         }
 
         MarkdownH1 {
