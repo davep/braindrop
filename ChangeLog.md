@@ -7,6 +7,7 @@
 - Tag suggestions displayed below the tag input field in the raindrop
   editing dialog now style locally-known tags differently from suggestions
   that haven't ever been used by the user.
+  ([#115](https://github.com/davep/braindrop/pull/115))
 
 ## v0.6.1
 
