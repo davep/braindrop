@@ -439,10 +439,7 @@ class Main(Screen[None]):
         if (
             hidden := self.has_class("details-hidden")
             and self.focused is not None
-            and (
-                self.focused is self.query_one(RaindropDetails)
-                or self.focused.parent is self.query_one(RaindropDetails)
-            )
+            and self.query_one(RaindropDetails) in (self.focused, self.focused.parent)
         ):
             # Focus was on the details, or within, so let's ensure it heads
             # back to the list of raindrops as that feels like the most
