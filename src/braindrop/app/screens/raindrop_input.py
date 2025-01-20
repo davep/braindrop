@@ -25,7 +25,7 @@ from textual.widgets import Button, Input, Label, Select, TextArea
 
 ##############################################################################
 # Local imports.
-from ...raindrop import API, Collection, Raindrop, SpecialCollection
+from ...raindrop import API, Collection, Raindrop, SpecialCollection, Suggestions, Tag
 from ..data import LocalData
 from ..suggestions import SuggestTags
 
@@ -207,6 +207,24 @@ class RaindropInput(ModalScreen[Raindrop | None]):
             except KeyError:
                 yield f"Unknown#{collection})"
 
+    def _format_tag_suggestions(self, suggestions: Suggestions) -> list[str]:
+        """Format the list of tag suggestions.
+
+        Args:
+            suggestions: The suggestions to get the tags from.
+
+        Returns:
+            A `str`ified list of tags for use in a `Label`. Tags that
+            already list locally will be styled differently from novel
+            suggestions so it's easier for the user to know which are part
+            of their tag scheme, and which aren't.
+        """
+        local_tags = {tag.tag for tag in self._data.all.tags}
+        return [
+            f"{tag}" if tag in local_tags else f"[dim i]{tag}[/]"
+            for tag in suggestions.tags
+        ]
+
     @work(exclusive=True)
     async def _get_suggestions(self) -> None:
         """Load up fresh suggestions based on the URL."""
@@ -228,7 +246,7 @@ class RaindropInput(ModalScreen[Raindrop | None]):
             f"[b]Suggested:[/] {', '.join(self._collection_names(suggestions.collections))}"
         )
         self.query_one("#tag-suggestions", Label).update(
-            f"[b]Suggested:[/] {Raindrop.tags_to_string(suggestions.tags)}"
+            f"[b]Suggested:[/] {', '.join(self._format_tag_suggestions(suggestions))}"
         )
         self.query_one("#collection-suggestions").set_class(
             bool(suggestions.collections), "got-suggestions"
