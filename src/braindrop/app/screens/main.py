@@ -436,8 +436,17 @@ class Main(Screen[None]):
     def action_details_command(self) -> None:
         """Toggle the details of the raindrop details view."""
         self.toggle_class("details-hidden")
+        if (
+            hidden := self.has_class("details-hidden")
+            and self.focused is not None
+            and self.query_one(RaindropDetails) in (self.focused, self.focused.parent)
+        ):
+            # Focus was on the details, or within, so let's ensure it heads
+            # back to the list of raindrops as that feels like the most
+            # logical landing point.
+            self.set_focus(self.query_one(RaindropsView))
         with update_configuration() as config:
-            config.details_visible = not self.has_class("details-hidden")
+            config.details_visible = not hidden
 
     @on(CompactMode)
     def action_compact_mode_command(self) -> None:

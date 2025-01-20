@@ -8,6 +8,9 @@
   editing dialog now style locally-known tags differently from suggestions
   that haven't ever been used by the user.
   ([#115](https://github.com/davep/braindrop/pull/115))
+- Fixed focus getting lost for a moment if it was within the details panel
+  and the details panel was closed.
+  ([#114](https://github.com/davep/braindrop/issues/114))
 
 ## v0.6.1
 
