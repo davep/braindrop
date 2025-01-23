@@ -51,7 +51,7 @@ class Command(Message):
     keys and also an overriding display value, or `None`.
     """
 
-    _SPLITTER: Final[Pattern[str]] = compile("[A-Z][^A-Z]*")
+    _SPLITTER: Final[Pattern[str]] = compile("[A-Z]?[a-z]+|[A-Z]+(?=[A-Z]|$)")
     """Regular expression for splitting up a command name."""
 
     @classmethod
