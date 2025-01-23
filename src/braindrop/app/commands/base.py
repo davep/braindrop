@@ -51,7 +51,7 @@ class Command(Message):
     keys and also an overriding display value, or `None`.
     """
 
-    _SPLITTER: Final[Pattern[str]] = compile("[A-Z][^A-Z]*")
+    _SPLITTER: Final[Pattern[str]] = compile("[A-Z]?[a-z]+|[A-Z]+(?=[A-Z]|$)")
     """Regular expression for splitting up a command name."""
 
     @classmethod
@@ -92,8 +92,8 @@ class Command(Message):
         if isinstance(key := cls.BINDING_KEY, tuple):
             key, *_ = key
         if isinstance(key, str):
-            key, _, _ = (binding := cls.binding()).key.partition(",")
-        return key or ""
+            key, _, _ = cls.binding().key.partition(",")
+        return (key or "").strip()
 
     @classmethod
     def action_name(cls) -> str:
