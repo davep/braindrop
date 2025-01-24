@@ -24,8 +24,7 @@ class CollectionCommands(CommandsProvider):
         """Provide collection-based command data for the command palette.
 
         Yields:
-            A tuple of the command, the command description and a command
-                message to jump to that collection.
+            The commands for the command palette.
         """
         if self.data is None or self.data.user is None:
             return
