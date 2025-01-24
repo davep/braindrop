@@ -2,6 +2,7 @@
 
 ##############################################################################
 # Python imports.
+from dataclasses import dataclass
 from typing import Final, cast
 
 ##############################################################################
@@ -17,7 +18,9 @@ from rich.table import Table
 
 ##############################################################################
 # Textual imports.
+from textual import on
 from textual.binding import Binding
+from textual.message import Message
 from textual.reactive import var
 from textual.widgets.option_list import Option, OptionDoesNotExist
 
@@ -140,6 +143,9 @@ class RaindropsView(OptionListEx):
     compact: var[bool] = var(False)
     """Toggle to say if we should use a compact view or not."""
 
+    class Empty(Message):
+        """A message sent if the view becomes empty."""
+
     def _add_raindrops(self) -> None:
         """Add the current raindrops to the display."""
         with self.preserved_highlight:
@@ -149,6 +155,8 @@ class RaindropsView(OptionListEx):
                     for raindrop in self.raindrops
                 ]
             )
+        if not self.option_count:
+            self.post_message(self.Empty())
 
     def watch_data(self) -> None:
         """React to the data being changed."""
@@ -162,24 +170,23 @@ class RaindropsView(OptionListEx):
         """React to the compact setting being toggled."""
         self._add_raindrops()
 
-    @property
-    def highlighted_raindrop(self) -> Raindrop | None:
-        """The currently-highlighted Raindrop, if there is one, or `None`."""
-        if self.highlighted is not None:
-            return cast(
-                RaindropView, self.get_option_at_index(self.highlighted)
-            ).raindrop
-        return None
+    @dataclass
+    class Highlighted(Message):
+        """Message sent when a new Raindrop is highlighted."""
 
-    @highlighted_raindrop.setter
-    def highlighted_raindrop(self, raindrop: Raindrop | None) -> None:
-        if raindrop is None:
-            self.highlighted = None
-        else:
-            try:
-                self.highlighted = self.get_option_index(RaindropView.id_of(raindrop))
-            except OptionDoesNotExist:
-                pass
+        raindrop: Raindrop
+        """The raindrop that was highlighted."""
+
+    @on(OptionListEx.OptionHighlighted)
+    def raindrop_highlighted(self, message: OptionListEx.OptionHighlighted) -> None:
+        """Handle a raindrop being highlighted.
+
+        Args:
+            message: The message to handle.
+        """
+        message.stop()
+        assert isinstance(message.option, RaindropView)
+        self.post_message(self.Highlighted(message.option.raindrop))
 
     def action_visit(self) -> None:
         """Action that visits the currently-selected raindrop link, if there is one."""
