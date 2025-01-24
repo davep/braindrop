@@ -176,6 +176,9 @@ class Main(Screen[None]):
     active_collection: var[Raindrops] = var(Raindrops, always_update=True)
     """The currently-active collection."""
 
+    highlighted_raindrop: var[Raindrop | None] = var(None)
+    """The currently-highlighted raindrop."""
+
     def __init__(self, api: API) -> None:
         """Initialise the main screen.
 
@@ -205,7 +208,9 @@ class Main(Screen[None]):
             yield RaindropsView(classes="focus").data_bind(
                 raindrops=Main.active_collection
             )
-            yield RaindropDetails(classes="focus")
+            yield RaindropDetails(classes="focus").data_bind(
+                raindrop=Main.highlighted_raindrop
+            )
         yield Footer()
 
     @work
@@ -367,12 +372,15 @@ class Main(Screen[None]):
         """
         self.active_collection = self.active_collection.tagged(command.tag)
 
-    @on(RaindropsView.OptionHighlighted)
-    def update_details(self) -> None:
-        """Update the details panel to show the current raindrop."""
-        self.query_one(RaindropDetails).raindrop = self.query_one(
-            RaindropsView
-        ).highlighted_raindrop
+    @on(RaindropsView.Empty)
+    def deselect_raindrop(self) -> None:
+        """Handle that there is no selected Raindrop."""
+        self.highlighted_raindrop = None
+
+    @on(RaindropsView.Highlighted)
+    def highlight_raindrop(self, message: RaindropsView.Highlighted) -> None:
+        """Handle the highlighted raindrop changing."""
+        self.highlighted_raindrop = message.raindrop
 
     @on(Redownload)
     def action_redownload_command(self) -> None:
@@ -502,7 +510,7 @@ class Main(Screen[None]):
         Returns:
             The highlighted raindrop, or `None`.
         """
-        if (raindrop := self.query_one(RaindropsView).highlighted_raindrop) is None:
+        if (raindrop := self.highlighted_raindrop) is None:
             self.notify(
                 f"No Raindrop is highlighted, there is nothing to {action}!",
                 title="No Raindrop",
