@@ -92,7 +92,7 @@ class Command(Message):
         if isinstance(key := cls.BINDING_KEY, tuple):
             key, *_ = key
         if isinstance(key, str):
-            key, _, _ = cls.binding().key.partition(",")
+            key, *_ = cls.binding().key.partition(",")
         return (key or "").strip()
 
     @classmethod
