@@ -1,8 +1,8 @@
 # Braindrop ChangeLog
 
-## Unreleased
+## v0.7.0
 
-**Released: WiP**
+**Released: 2025-01-27**
 
 - Tag suggestions displayed below the tag input field in the raindrop
   editing dialog now style locally-known tags differently from suggestions
