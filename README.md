@@ -12,6 +12,15 @@ Braindrop is and generally always will be fairly opinionated about the
 "best" way to make use of Raindrop (AKA how I like to use it); but where
 possible I want to keep it quite general so it will be useful to anyone.
 
+> [!NOTE]
+> Braindrop isn't designed as a thin client for the Raindrop API; it isn't a
+> terminal-based browser that does all the work on the server. It is
+> designed to download your data if it looks like it's newer on the server,
+> and then work locally, sending updates back to the server.
+>
+> If you have a *huge* Raindrop collection then this might not be the tool
+> for you.
+
 ## Installing
 
 ### pipx
