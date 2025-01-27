@@ -11,6 +11,8 @@
 - Fixed focus getting lost for a moment if it was within the details panel
   and the details panel was closed.
   ([#114](https://github.com/davep/braindrop/issues/114))
+- Temporarily disabled the ability to edit a Raindrop that is an uploaded
+  image type. ([#123](https://github.com/davep/braindrop/issues/123))
 
 ## v0.6.1
 

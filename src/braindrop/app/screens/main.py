@@ -672,6 +672,19 @@ class Main(Screen[None]):
         if (raindrop := self._current_raindrop("edit")) is None:
             return
 
+        # For the moment, don't allow editing of uploaded images.
+        # https://github.com/davep/braindrop/issues/123
+        if raindrop.type == "image":
+            self.notify(
+                "Editing of Raindrops that are images can cause the image to be lost. "
+                "While I investigate why this is I'm disabling the editing of any "
+                "Raindrop that is an image type.",
+                title="Editing if images is disabled",
+                severity="warning",
+                timeout=8,
+            )
+            return
+
         # If we've got a draft, and it's for the current raindrop...
         if (
             self._draft_raindrop is not None
