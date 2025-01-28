@@ -21,7 +21,7 @@
   and the details panel was closed.
   ([#114](https://github.com/davep/braindrop/issues/114))
 - Temporarily disabled the ability to edit a Raindrop that is an uploaded
-  image type. ([#123](https://github.com/davep/braindrop/pull/124) in
+  image type. ([#124](https://github.com/davep/braindrop/pull/124) in
   support of [#123](https://github.com/davep/braindrop/issues/123))
 
 ## v0.6.1
