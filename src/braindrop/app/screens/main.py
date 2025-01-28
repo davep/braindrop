@@ -674,12 +674,13 @@ class Main(Screen[None]):
 
         # For the moment, don't allow editing of uploaded images.
         # https://github.com/davep/braindrop/issues/123
-        if raindrop.type == "image":
+        if raindrop.domain == "up.raindrop.io":
             self.notify(
-                "Editing of Raindrops that are images can cause the image to be lost. "
-                "While I investigate why this is I'm disabling the editing of any "
-                "Raindrop that is an image type.",
-                title="Editing if images is disabled",
+                "There seems to be a problem with the Raindrop API where, "
+                "if you modify a Raindrop associated with an uploaded file, "
+                "the uploaded file is lost.\n\n"
+                "To ensure your file isn't lost this edit is not permitted.",
+                title="Editing of uploads disabled",
                 severity="warning",
                 timeout=8,
             )

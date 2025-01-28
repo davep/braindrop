@@ -1,5 +1,14 @@
 # Braindrop ChangeLog
 
+## Unreleased
+
+**Released: WiP**
+
+- Extended the disabling of edits to any Raindrop associated with a file
+  that has been uploaded to `raindrop.io`. In testing it seems the data loss
+  happens with any Raindrop with an `up.raindrop.io` domain.
+  ([#123](https://github.com/davep/braindrop/issues/123))
+
 ## v0.7.0
 
 **Released: 2025-01-27**
