@@ -88,6 +88,8 @@ class Main(Screen[None]):
 
     DEFAULT_CSS = """
     Main {
+        layout: horizontal;
+
         Navigation {
             width: 2fr;
             height: 1fr;
@@ -201,16 +203,11 @@ class Main(Screen[None]):
     def compose(self) -> ComposeResult:
         """Compose the content of the screen."""
         yield Header()
-        with Horizontal():
-            yield Navigation(self._api, classes="focus").data_bind(
-                Main.active_collection
-            )
-            yield RaindropsView(classes="focus").data_bind(
-                raindrops=Main.active_collection
-            )
-            yield RaindropDetails(classes="focus").data_bind(
-                raindrop=Main.highlighted_raindrop
-            )
+        yield Navigation(self._api, classes="focus").data_bind(Main.active_collection)
+        yield RaindropsView(classes="focus").data_bind(raindrops=Main.active_collection)
+        yield RaindropDetails(classes="focus").data_bind(
+            raindrop=Main.highlighted_raindrop
+        )
         yield Footer()
 
     @work
