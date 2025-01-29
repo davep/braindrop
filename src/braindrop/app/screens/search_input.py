@@ -9,7 +9,7 @@ from textual.widgets import Input
 
 
 ##############################################################################
-class SearchInput(ModalScreen[str]):
+class SearchInput(ModalScreen[str | None]):
     """A modal screen to get search text from the user."""
 
     CSS = """
@@ -38,7 +38,7 @@ class SearchInput(ModalScreen[str]):
 
     def action_escape(self) -> None:
         """Escape out without searching."""
-        self.app.pop_screen()
+        self.dismiss(None)
 
 
 ### search_input.py ends here
