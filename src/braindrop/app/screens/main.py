@@ -15,7 +15,6 @@ from pyperclip import copy as to_clipboard
 from textual import on, work
 from textual.app import ComposeResult
 from textual.command import CommandPalette
-from textual.containers import Horizontal
 from textual.reactive import var
 from textual.screen import Screen
 from textual.widgets import Footer, Header
@@ -90,28 +89,8 @@ class Main(Screen[None]):
     Main {
         layout: horizontal;
 
-        Navigation {
-            width: 2fr;
+        .panel {
             height: 1fr;
-            &> .option-list--option {
-                padding: 0 1;
-            }
-        }
-
-        RaindropsView {
-            width: 5fr;
-            height: 1fr;
-            &> .option-list--option {
-                padding: 0 1;
-            }
-        }
-
-        RaindropDetails {
-            width: 3fr;
-            height: 1fr;
-        }
-
-        .focus {
             padding-right: 0;
             border: none;
             border-left: round $border 50%;
@@ -128,6 +107,22 @@ class Main(Screen[None]):
                 scrollbar-background-hover: $panel;
                 scrollbar-background-active: $panel;
             }
+            &> .option-list--option {
+                padding: 0 1;
+            }
+        }
+
+        Navigation {
+            width: 2fr;
+        }
+
+        RaindropsView {
+            width: 5fr;
+            scrollbar-gutter: stable;
+        }
+
+        RaindropDetails {
+            width: 3fr;
         }
 
         /* For when the details are hidden. */
@@ -203,9 +198,9 @@ class Main(Screen[None]):
     def compose(self) -> ComposeResult:
         """Compose the content of the screen."""
         yield Header()
-        yield Navigation(self._api, classes="focus").data_bind(Main.active_collection)
-        yield RaindropsView(classes="focus").data_bind(raindrops=Main.active_collection)
-        yield RaindropDetails(classes="focus").data_bind(
+        yield Navigation(self._api, classes="panel").data_bind(Main.active_collection)
+        yield RaindropsView(classes="panel").data_bind(raindrops=Main.active_collection)
+        yield RaindropDetails(classes="panel").data_bind(
             raindrop=Main.highlighted_raindrop
         )
         yield Footer()
