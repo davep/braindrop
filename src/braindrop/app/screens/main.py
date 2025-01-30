@@ -118,6 +118,7 @@ class Main(Screen[None]):
 
         RaindropsView {
             width: 5fr;
+            scrollbar-gutter: stable;
         }
 
         RaindropDetails {
