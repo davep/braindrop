@@ -15,7 +15,6 @@ from pyperclip import copy as to_clipboard
 from textual import on, work
 from textual.app import ComposeResult
 from textual.command import CommandPalette
-from textual.containers import Horizontal
 from textual.reactive import var
 from textual.screen import Screen
 from textual.widgets import Footer, Header
