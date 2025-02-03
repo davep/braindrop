@@ -10,9 +10,9 @@
 #   universal: false
 
 -e file:.
-anyio==4.7.0
+anyio==4.8.0
     # via httpx
-certifi==2024.12.14
+certifi==2025.1.31
     # via httpcore
     # via httpx
 h11==0.14.0
@@ -38,11 +38,11 @@ mdurl==0.1.2
     # via markdown-it-py
 platformdirs==4.3.6
     # via textual
-pygments==2.18.0
+pygments==2.19.1
     # via rich
 pyperclip==1.9.0
     # via braindrop
-pytz==2024.2
+pytz==2025.1
     # via braindrop
 rich==13.9.4
     # via textual
