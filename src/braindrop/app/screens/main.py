@@ -20,6 +20,10 @@ from textual.screen import Screen
 from textual.widgets import Footer, Header
 
 ##############################################################################
+# Textual enhanced imports.
+from textual_enhanced.dialogs import Confirm
+
+##############################################################################
 # Typing extension imports.
 from typing_extensions import TypeIs
 
@@ -65,7 +69,6 @@ from ..data import (
 from ..messages import ShowCollection, ShowOfType, ShowTagged
 from ..providers import CollectionCommands, CommandsProvider, MainCommands, TagCommands
 from ..widgets import Navigation, RaindropDetails, RaindropsView
-from .confirm import Confirm
 from .downloading import Downloading
 from .help import HelpScreen
 from .raindrop_input import RaindropInput
