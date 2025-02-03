@@ -14,15 +14,14 @@ from pyperclip import copy as to_clipboard
 # Textual imports.
 from textual import on, work
 from textual.app import ComposeResult
-from textual.command import CommandPalette
 from textual.reactive import var
-from textual.screen import Screen
 from textual.widgets import Footer, Header
-from textual_enhanced.commands import Command, CommandsProvider, Help, Quit
+from textual_enhanced.commands import Command, Help, Quit
 
 ##############################################################################
 # Textual enhanced imports.
 from textual_enhanced.dialogs import Confirm, HelpScreen, ModalInput
+from textual_enhanced.screen import EnhancedScreen
 
 ##############################################################################
 # Typing extension imports.
@@ -73,7 +72,7 @@ from .wayback_checker import WaybackChecker
 
 
 ##############################################################################
-class Main(Screen[None]):
+class Main(EnhancedScreen[None]):
     """The main screen of the application."""
 
     TITLE = f"Braindrop v{__version__}"
@@ -306,19 +305,6 @@ class Main(Screen[None]):
         self.active_collection = self._data.all
         self.query_one(Navigation).highlight_collection(SpecialCollection.ALL())
 
-    def _show_palette(self, provider: type[CommandsProvider]) -> None:
-        """Show a particular command palette.
-
-        Args:
-            provider: The commands provider for the palette.
-        """
-        self.app.push_screen(
-            CommandPalette(
-                providers=(provider,),
-                placeholder=provider.prompt(),
-            )
-        )
-
     @on(ShowCollection)
     def command_show_collection(self, command: ShowCollection) -> None:
         """Handle the command that requests we show a collection.
@@ -332,13 +318,13 @@ class Main(Screen[None]):
     @on(SearchCollections)
     def action_search_collections_command(self) -> None:
         """Show the collection-based command palette."""
-        self._show_palette(CollectionCommands)
+        self.show_palette(CollectionCommands)
 
     @on(SearchTags)
     def action_search_tags_command(self) -> None:
         """Show the tags-based command palette."""
         if self.active_collection.tags:
-            self._show_palette(TagCommands)
+            self.show_palette(TagCommands)
         else:
             self.notify(
                 f"The '{self.active_collection.title}' collection has no tags",
