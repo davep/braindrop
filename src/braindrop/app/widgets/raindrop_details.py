@@ -25,17 +25,20 @@ from textual.widgets import Label, Markdown
 from textual.widgets.option_list import Option
 
 ##############################################################################
+# Textual enhanced imports.
+from textual_enhanced.widgets import EnhancedOptionList
+
+##############################################################################
 # Local imports.
 from ...raindrop import Raindrop, Tag
 from ..commands import VisitLink
 from ..data import LocalData
 from ..messages import ShowTagged
-from .extended_option_list import OptionListEx
 from .icons import PRIVATE_ICON, PUBLIC_ICON
 
 
 ##############################################################################
-class Tags(OptionListEx):
+class Tags(EnhancedOptionList):
     """Show the tags for a Raindrop."""
 
     _ICON: Final[str] = Emoji.replace(":bookmark: ")
@@ -60,8 +63,8 @@ class Tags(OptionListEx):
         )
         self.set_class(not bool(self.option_count), "empty")
 
-    @on(OptionListEx.OptionSelected)
-    def show_tag(self, message: OptionListEx.OptionSelected) -> None:
+    @on(EnhancedOptionList.OptionSelected)
+    def show_tag(self, message: EnhancedOptionList.OptionSelected) -> None:
         """Filter on a given tag when one is selected."""
         if message.option_id is not None:
             self.post_message(ShowTagged(Tag(message.option_id)))
