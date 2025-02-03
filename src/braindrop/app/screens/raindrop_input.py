@@ -24,6 +24,10 @@ from textual.validation import Length, ValidationResult
 from textual.widgets import Button, Input, Label, Select, TextArea
 
 ##############################################################################
+# Textual enhanced imports.
+from textual_enhanced.tools import add_key
+
+##############################################################################
 # Local imports.
 from ...raindrop import API, Collection, Raindrop, SpecialCollection, Suggestions
 from ..data import LocalData
@@ -189,8 +193,8 @@ class RaindropInput(ModalScreen[Raindrop | None]):
             )
             yield Label(id="tag-suggestions", classes="suggestions")
             with Horizontal(id="buttons"):
-                yield Button("Save [dim]\\[F2][/]", id="save", variant="success")
-                yield Button("Cancel [dim]\\[Esc][/]", id="cancel", variant="error")
+                yield Button(add_key("Save", "F2"), id="save", variant="success")
+                yield Button(add_key("Cancel", "Esc"), id="cancel", variant="error")
 
     def _collection_names(self, collections: list[int]) -> Iterator[str]:
         """Turn a list of collection IDs into their names.
