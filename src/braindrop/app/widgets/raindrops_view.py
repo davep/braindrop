@@ -3,7 +3,7 @@
 ##############################################################################
 # Python imports.
 from dataclasses import dataclass
-from typing import Final, cast
+from typing import Final
 
 ##############################################################################
 # Humanize imports.
@@ -22,7 +22,7 @@ from textual import on
 from textual.binding import Binding
 from textual.message import Message
 from textual.reactive import var
-from textual.widgets.option_list import Option, OptionDoesNotExist
+from textual.widgets.option_list import Option
 
 ##############################################################################
 # Textual enhanced imports.

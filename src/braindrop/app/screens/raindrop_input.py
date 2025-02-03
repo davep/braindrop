@@ -25,7 +25,7 @@ from textual.widgets import Button, Input, Label, Select, TextArea
 
 ##############################################################################
 # Local imports.
-from ...raindrop import API, Collection, Raindrop, SpecialCollection, Suggestions, Tag
+from ...raindrop import API, Collection, Raindrop, SpecialCollection, Suggestions
 from ..data import LocalData
 from ..suggestions import SuggestTags
 
