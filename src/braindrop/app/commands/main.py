@@ -1,8 +1,8 @@
 """The main commands used within the application."""
 
 ##############################################################################
-# Local imports.
-from .base import Command
+# Textual enhanced imports.
+from textual_enhanced.commands import Command
 
 
 ##############################################################################
@@ -36,25 +36,11 @@ class Escape(Command):
 
 
 ##############################################################################
-class Help(Command):
-    """Show help for and information about the application"""
-
-    BINDING_KEY = "f1, ?"
-
-
-##############################################################################
 class Logout(Command):
     """Forget your API token and remove the local raindrop cache"""
 
     BINDING_KEY = "f12"
     SHOW_IN_FOOTER = False
-
-
-##############################################################################
-class Quit(Command):
-    """Quit the application"""
-
-    BINDING_KEY = "f10, ctrl+q"
 
 
 ##############################################################################

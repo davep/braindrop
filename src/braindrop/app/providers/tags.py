@@ -2,9 +2,12 @@
 
 ##############################################################################
 # Local imports.
+##############################################################################
+# Textual enhanced imports.
+from textual_enhanced.commands import CommandHit, CommandHits, CommandsProvider
+
 from ..data import Raindrops, TagCount
 from ..messages import ShowTagged
-from .commands_provider import CommandHit, CommandHits, CommandsProvider
 
 
 ##############################################################################

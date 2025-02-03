@@ -18,10 +18,11 @@ from textual.command import CommandPalette
 from textual.reactive import var
 from textual.screen import Screen
 from textual.widgets import Footer, Header
+from textual_enhanced.commands import Command, CommandsProvider, Help, Quit
 
 ##############################################################################
 # Textual enhanced imports.
-from textual_enhanced.dialogs import Confirm
+from textual_enhanced.dialogs import Confirm, HelpScreen
 
 ##############################################################################
 # Typing extension imports.
@@ -36,16 +37,13 @@ from ..commands import (
     ChangeTheme,
     CheckTheWaybackMachine,
     ClearFilters,
-    Command,
     CompactMode,
     CopyLinkToClipboard,
     DeleteRaindrop,
     Details,
     EditRaindrop,
     Escape,
-    Help,
     Logout,
-    Quit,
     Redownload,
     Search,
     SearchCollections,
@@ -67,10 +65,9 @@ from ..data import (
     update_configuration,
 )
 from ..messages import ShowCollection, ShowOfType, ShowTagged
-from ..providers import CollectionCommands, CommandsProvider, MainCommands, TagCommands
+from ..providers import CollectionCommands, MainCommands, TagCommands
 from ..widgets import Navigation, RaindropDetails, RaindropsView
 from .downloading import Downloading
-from .help import HelpScreen
 from .raindrop_input import RaindropInput
 from .search_input import SearchInput
 from .wayback_checker import WaybackChecker
