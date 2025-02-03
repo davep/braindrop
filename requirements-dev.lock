@@ -109,8 +109,11 @@ sniffio==1.3.1
 textual==1.0.0
     # via braindrop
     # via textual-dev
+    # via textual-enhanced
     # via textual-serve
 textual-dev==1.7.0
+textual-enhanced==0.3.0
+    # via braindrop
 textual-serve==1.1.1
     # via textual-dev
 types-pytz==2024.2.0.20241221
