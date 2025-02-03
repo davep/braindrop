@@ -22,7 +22,7 @@ from textual_enhanced.commands import Command, CommandsProvider, Help, Quit
 
 ##############################################################################
 # Textual enhanced imports.
-from textual_enhanced.dialogs import Confirm, HelpScreen
+from textual_enhanced.dialogs import Confirm, HelpScreen, ModalInput
 
 ##############################################################################
 # Typing extension imports.
@@ -69,7 +69,6 @@ from ..providers import CollectionCommands, MainCommands, TagCommands
 from ..widgets import Navigation, RaindropDetails, RaindropsView
 from .downloading import Downloading
 from .raindrop_input import RaindropInput
-from .search_input import SearchInput
 from .wayback_checker import WaybackChecker
 
 
@@ -461,7 +460,9 @@ class Main(Screen[None]):
     @work
     async def action_search_command(self) -> None:
         """Free-text search within the Raindrops."""
-        if search_text := await self.app.push_screen_wait(SearchInput()):
+        if search_text := await self.app.push_screen_wait(
+            ModalInput("Case-insensitive text to look for in the Raindrops")
+        ):
             self.active_collection = self.active_collection.containing(search_text)
 
     @on(Logout)
