@@ -1,8 +1,8 @@
 """Provides command-oriented messages that relate to the collections."""
 
 ##############################################################################
-# Local imports.
-from .base import Command
+# Textual enhanced imports.
+from textual_enhanced.commands import Command
 
 
 ##############################################################################

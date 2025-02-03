@@ -7,7 +7,6 @@ information, etc.
 
 ##############################################################################
 # Local imports.
-from .base import Command
 from .collection import (
     SearchCollections,
     ShowAll,
@@ -24,9 +23,7 @@ from .main import (
     CompactMode,
     Details,
     Escape,
-    Help,
     Logout,
-    Quit,
     Redownload,
     TagOrder,
     VisitRaindrop,
@@ -43,7 +40,6 @@ from .raindrop import (
 ##############################################################################
 # Exports.
 __all__ = [
-    "Command",
     "AddRaindrop",
     "ChangeTheme",
     "CheckTheWaybackMachine",
@@ -54,9 +50,7 @@ __all__ = [
     "Details",
     "EditRaindrop",
     "Escape",
-    "Help",
     "Logout",
-    "Quit",
     "Redownload",
     "Search",
     "SearchCollections",

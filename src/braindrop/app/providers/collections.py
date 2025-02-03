@@ -2,10 +2,13 @@
 
 ##############################################################################
 # Local imports.
+##############################################################################
+# Textual enhanced imports.
+from textual_enhanced.commands import CommandHit, CommandHits, CommandsProvider
+
 from ...raindrop import Collection, SpecialCollection
 from ..data import LocalData
 from ..messages import ShowCollection
-from .commands_provider import CommandHit, CommandHits, CommandsProvider
 
 
 ##############################################################################

@@ -3,7 +3,7 @@
 ##############################################################################
 # Python imports.
 from dataclasses import dataclass
-from typing import Final, cast
+from typing import Final
 
 ##############################################################################
 # Humanize imports.
@@ -22,14 +22,17 @@ from textual import on
 from textual.binding import Binding
 from textual.message import Message
 from textual.reactive import var
-from textual.widgets.option_list import Option, OptionDoesNotExist
+from textual.widgets.option_list import Option
+
+##############################################################################
+# Textual enhanced imports.
+from textual_enhanced.widgets import EnhancedOptionList
 
 ##############################################################################
 # Local imports.
 from ...raindrop import Raindrop
 from ..commands import VisitLink
 from ..data import LocalData, Raindrops
-from .extended_option_list import OptionListEx
 from .icons import BROKEN_ICON, PRIVATE_ICON, PUBLIC_ICON, UNSORTED_ICON
 
 
@@ -108,7 +111,7 @@ class RaindropView(Option):
 
 
 ##############################################################################
-class RaindropsView(OptionListEx):
+class RaindropsView(EnhancedOptionList):
     """A widget for viewing a collection of Raindrops."""
 
     BINDINGS = [
@@ -177,8 +180,10 @@ class RaindropsView(OptionListEx):
         raindrop: Raindrop
         """The raindrop that was highlighted."""
 
-    @on(OptionListEx.OptionHighlighted)
-    def raindrop_highlighted(self, message: OptionListEx.OptionHighlighted) -> None:
+    @on(EnhancedOptionList.OptionHighlighted)
+    def raindrop_highlighted(
+        self, message: EnhancedOptionList.OptionHighlighted
+    ) -> None:
         """Handle a raindrop being highlighted.
 
         Args:

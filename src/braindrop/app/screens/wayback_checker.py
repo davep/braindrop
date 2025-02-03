@@ -37,10 +37,6 @@ class WaybackChecker(ModalScreen[None]):
             background: $panel;
             border: hkey $border;
 
-            LoadingIndicator {
-                background: transparent;
-            }
-
             Label {
                 height: auto;
                 padding: 1 1 0 1;

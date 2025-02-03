@@ -34,9 +34,6 @@ class Downloading(ModalScreen[None]):
                 height: 1;
                 width: 100%;
             }
-            LoadingIndicator {
-                background: transparent;
-            }
             #status {
                 width: 100%;
                 text-align: center;

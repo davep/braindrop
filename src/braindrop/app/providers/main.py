@@ -1,6 +1,15 @@
 """Provides the main application commands for the command palette."""
 
 ##############################################################################
+# Textual enhanced imports.
+from textual_enhanced.commands import (
+    CommandHits,
+    CommandsProvider,
+    Help,
+    Quit,
+)
+
+##############################################################################
 # Local imports.
 from ..commands import (
     AddRaindrop,
@@ -13,9 +22,7 @@ from ..commands import (
     Details,
     EditRaindrop,
     Escape,
-    Help,
     Logout,
-    Quit,
     Redownload,
     Search,
     SearchCollections,
@@ -28,7 +35,6 @@ from ..commands import (
     VisitRaindrop,
 )
 from ..data import Raindrops
-from .commands_provider import CommandHits, CommandsProvider
 
 
 ##############################################################################

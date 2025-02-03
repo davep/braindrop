@@ -5,9 +5,12 @@
 from dataclasses import dataclass
 
 ##############################################################################
+# Textual enhanced imports.
+from textual_enhanced.commands import Command
+
+##############################################################################
 # Local imports.
 from ..data import Raindrops
-from .base import Command
 
 
 ##############################################################################

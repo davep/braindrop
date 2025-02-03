@@ -6,11 +6,15 @@ import os
 
 ##############################################################################
 # Textual imports.
-from textual.app import App, InvalidThemeError
-from textual.binding import Binding
+from textual.app import InvalidThemeError
+
+##############################################################################
+# Textual enhanced imports.
+from textual_enhanced.app import EnhancedApp
 
 ##############################################################################
 # Local imports.
+from .. import __version__
 from ..raindrop import API
 from .data import (
     ExitState,
@@ -22,53 +26,32 @@ from .screens import Main, TokenInput
 
 
 ##############################################################################
-class Braindrop(App[ExitState]):
+class Braindrop(EnhancedApp[ExitState]):
     """The Braindrop application class."""
 
-    CSS = """
-    CommandPalette > Vertical {
-        width: 75%; /* Full-width command palette looks like garbage. Fix that. */
-        background: $panel;
-        SearchIcon {
-            display: none;
-        }
-        OptionList {
-            /* Make the scrollbar less gross. */
-            scrollbar-background: $panel;
-            scrollbar-background-hover: $panel;
-            scrollbar-background-active: $panel;
-        }
-    }
-
-    /* Remove cruft from the Header. */
-    Header {
-        /* The header icon is ugly and pointless. Remove it. */
-        HeaderIcon {
-            visibility: hidden;
-        }
-
-        /* The tall version of the header is utterly useless. Nuke that. */
-        &.-tall {
-            height: 1 !important;
-        }
-    }
-
-    /* General style tweaks that affect all widgets. */
-    * {
-        /* Let's make scrollbars a wee bit thinner. */
-        scrollbar-size-vertical: 1;
-    }
+    HELP_TITLE = f"Braindrop v{__version__}"
+    HELP_ABOUT = """
+    `Braindrop` is a terminal-based client for
+    [raindrop.io](https://raindrop.io/); it was created by and is maintained
+    by [Dave Pearson](https://www.davep.org/); it is Free Software and can
+    be [found on GitHub](https://github.com/davep/braindrop).
     """
+    HELP_LICENSE = """
+    Braindrop - A client for the Raindrop bookmarking service.  \n    Copyright (C) 2024-2025 Dave Pearson
 
-    BINDINGS = [
-        Binding(
-            "ctrl+p, super+x, :",
-            "command_palette",
-            "Commands",
-            show=False,
-            tooltip="Show the command palette",
-        ),
-    ]
+    This program is free software: you can redistribute it and/or modify it
+    under the terms of the GNU General Public License as published by the Free
+    Software Foundation, either version 3 of the License, or (at your option)
+    any later version.
+
+    This program is distributed in the hope that it will be useful, but WITHOUT
+    ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+    FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+    more details.
+
+    You should have received a copy of the GNU General Public License along with
+    this program. If not, see <https://www.gnu.org/licenses/>.
+    """
 
     COMMANDS = set()
 

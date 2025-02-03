@@ -23,12 +23,15 @@ from textual.widgets import OptionList
 from textual.widgets.option_list import Option
 
 ##############################################################################
+# Textual enhanced imports.
+from textual_enhanced.widgets import EnhancedOptionList
+
+##############################################################################
 # Local imports.
 from ...raindrop import API, Collection, SpecialCollection
 from ..commands import ShowAll, ShowUnsorted, ShowUntagged
 from ..data import LocalData, Raindrops, TagCount, TypeCount
 from ..messages import ShowCollection, ShowOfType, ShowTagged
-from .extended_option_list import OptionListEx
 
 
 ##############################################################################
@@ -188,7 +191,7 @@ class TagView(NavigationView):
 
 
 ##############################################################################
-class Navigation(OptionListEx):
+class Navigation(EnhancedOptionList):
     """The main application navigation widget."""
 
     HELP = """
