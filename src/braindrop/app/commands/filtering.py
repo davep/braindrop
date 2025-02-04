@@ -18,7 +18,6 @@ class ClearFilters(Command):
     """Clear all tags and other filters"""
 
     BINDING_KEY = "f"
-    SHOW_IN_FOOTER = False
 
 
 ##############################################################################
@@ -26,7 +25,6 @@ class Search(Command):
     """Search for text anywhere in the raindrops"""
 
     BINDING_KEY = "/"
-    SHOW_IN_FOOTER = False
 
 
 ##############################################################################
@@ -35,7 +33,6 @@ class SearchTags(Command):
     """Search for a tag and then filter with it"""
 
     BINDING_KEY = "t, #"
-    SHOW_IN_FOOTER = False
 
     active_collection: Raindrops = Raindrops()
     """The active collection to search within."""
