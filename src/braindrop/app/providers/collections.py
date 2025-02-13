@@ -1,11 +1,11 @@
 """Collection-oriented commands for the command palette."""
 
 ##############################################################################
-# Local imports.
-##############################################################################
 # Textual enhanced imports.
 from textual_enhanced.commands import CommandHit, CommandHits, CommandsProvider
 
+##############################################################################
+# Local imports.
 from ...raindrop import Collection, SpecialCollection
 from ..data import LocalData
 from ..messages import ShowCollection

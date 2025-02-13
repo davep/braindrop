@@ -1,11 +1,11 @@
 """Tag filtering commands for the command palette."""
 
 ##############################################################################
-# Local imports.
-##############################################################################
 # Textual enhanced imports.
 from textual_enhanced.commands import CommandHit, CommandHits, CommandsProvider
 
+##############################################################################
+# Local imports.
 from ..data import Raindrops, TagCount
 from ..messages import ShowTagged
 
