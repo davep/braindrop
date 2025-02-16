@@ -3,7 +3,7 @@
 ##############################################################################
 # Python imports.
 from datetime import datetime
-from typing import Any, Callable, Final, cast
+from typing import Any, Callable, Final
 
 ##############################################################################
 # Humanize imports.
@@ -225,7 +225,7 @@ class RaindropDetails(VerticalScroll):
             widget: The ID of the widget to set.
             value: The value to set.
         """
-        cast(Label | Markdown, self.query_one(f"#{widget}", widget_type)).update(value)
+        self.query_one(f"#{widget}", widget_type).update(value)
         self.query_one(f"#{widget}").set_class(not bool(value), "empty")
 
     @staticmethod
