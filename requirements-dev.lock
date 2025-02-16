@@ -10,9 +10,9 @@
 #   universal: false
 
 -e file:.
-aiohappyeyeballs==2.4.4
+aiohappyeyeballs==2.4.6
     # via aiohttp
-aiohttp==3.11.11
+aiohttp==3.11.12
     # via aiohttp-jinja2
     # via textual-dev
     # via textual-serve
@@ -44,9 +44,9 @@ httpcore==1.0.7
     # via httpx
 httpx==0.28.1
     # via braindrop
-humanize==4.11.0
+humanize==4.12.0
     # via braindrop
-identify==2.6.6
+identify==2.6.7
     # via pre-commit
 idna==3.10
     # via anyio
@@ -74,7 +74,7 @@ msgpack==1.1.0
 multidict==6.1.0
     # via aiohttp
     # via yarl
-mypy==1.14.1
+mypy==1.15.0
 mypy-extensions==1.0.0
     # via mypy
 nodeenv==1.9.1
@@ -112,11 +112,11 @@ textual==1.0.0
     # via textual-enhanced
     # via textual-serve
 textual-dev==1.7.0
-textual-enhanced==0.4.0
+textual-enhanced==0.6.0
     # via braindrop
 textual-serve==1.1.1
     # via textual-dev
-types-pytz==2024.2.0.20241221
+types-pytz==2025.1.0.20250204
 typing-extensions==4.12.2
     # via braindrop
     # via mypy
@@ -124,7 +124,7 @@ typing-extensions==4.12.2
     # via textual-dev
 uc-micro-py==1.0.3
     # via linkify-it-py
-virtualenv==20.29.1
+virtualenv==20.29.2
     # via pre-commit
 xdg-base-dirs==6.0.2
     # via braindrop

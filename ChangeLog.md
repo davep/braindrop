@@ -1,5 +1,11 @@
 # Braindrop ChangeLog
 
+## v0.7.2
+
+**Released: 2025-02-16**
+
+- Pinned Textual to v1.0.0 for now; as v2.x has introduced some instability.
+
 ## v0.7.1
 
 **Released: 2025-01-28**
