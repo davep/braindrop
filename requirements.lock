@@ -21,7 +21,7 @@ httpcore==1.0.7
     # via httpx
 httpx==0.28.1
     # via braindrop
-humanize==4.12.0
+humanize==4.12.1
     # via braindrop
 idna==3.10
     # via anyio
