@@ -44,9 +44,9 @@ httpcore==1.0.7
     # via httpx
 httpx==0.28.1
     # via braindrop
-humanize==4.12.0
+humanize==4.12.1
     # via braindrop
-identify==2.6.7
+identify==2.6.8
     # via pre-commit
 idna==3.10
     # via anyio
@@ -87,7 +87,7 @@ platformdirs==4.3.6
 pluggy==1.5.0
     # via pytest
 pre-commit==4.1.0
-propcache==0.2.1
+propcache==0.3.0
     # via aiohttp
     # via yarl
 pygments==2.19.1
