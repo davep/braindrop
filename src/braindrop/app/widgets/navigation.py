@@ -342,7 +342,7 @@ class Navigation(EnhancedOptionList):
                         self._add_children_for(
                             self._add_collection(self.data.collection(collection))
                         )
-                    except self.data.UnknonwCollection:
+                    except self.data.UnknownCollection:
                         # It seems that the Raindrop API can sometimes say
                         # there's a collection ID in a group where the
                         # collection ID isn't in the actual collections the

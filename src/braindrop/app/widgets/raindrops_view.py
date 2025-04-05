@@ -126,7 +126,7 @@ class RaindropsView(EnhancedOptionList):
     ## The Raindrop collection view
 
     This panel shows the currently-selected collection of Raindrops,
-    filtered by any tag ans search text you may have applied.
+    filtered by any tag and search text you may have applied.
 
     Each Raindrop may have one or more icons showing to the right, these
     include:

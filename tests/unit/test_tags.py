@@ -62,7 +62,7 @@ def test_sort_tags() -> None:
 
 ##############################################################################
 @mark.parametrize("string", ("", "1"))
-def test_tag_langth(string: str) -> None:
+def test_tag_length(string: str) -> None:
     """We should be able to get the len of a tag."""
     assert len(Tag(string)) == len(string)
 

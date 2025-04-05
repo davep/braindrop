@@ -17,7 +17,7 @@ like something that makes sense for Braindrop I'll turn it into an issue
 from there.
 
 Be sure to [have a look over the TODO
-isues](https://github.com/davep/braindrop/issues?q=is%3Aissue+is%3Aopen+label%3ATODO)
+issues](https://github.com/davep/braindrop/issues?q=is%3Aissue+is%3Aopen+label%3ATODO)
 before leaving a request, it might be I'm already planning on implementing
 whatever it is you're asking for.
 
