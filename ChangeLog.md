@@ -1,5 +1,12 @@
 # Braindrop ChangeLog
 
+## Unreleased
+
+**Released: WiP**
+
+- Fixed some typos (with thanks to [@kianmeng](https://github.com/kianmeng):
+  [#141](https://github.com/davep/braindrop/pull/141))
+
 ## v0.7.2
 
 **Released: 2025-02-16**
