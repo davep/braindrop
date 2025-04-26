@@ -16,11 +16,11 @@ from textual import on, work
 from textual.app import ComposeResult
 from textual.reactive import var
 from textual.widgets import Footer, Header
-from textual_enhanced.commands import Command, Help, Quit
+from textual_enhanced.commands import ChangeTheme, Command, Help, Quit
 
 ##############################################################################
 # Textual enhanced imports.
-from textual_enhanced.dialogs import Confirm, HelpScreen, ModalInput
+from textual_enhanced.dialogs import Confirm, ModalInput
 from textual_enhanced.screen import EnhancedScreen
 
 ##############################################################################
@@ -33,7 +33,6 @@ from ... import __version__
 from ...raindrop import API, Raindrop, SpecialCollection, User
 from ..commands import (
     AddRaindrop,
-    ChangeTheme,
     CheckTheWaybackMachine,
     ClearFilters,
     CompactMode,
@@ -451,17 +450,6 @@ class Main(EnhancedScreen[None]):
             local_data_file().unlink(True)
             self.app.exit(ExitState.TOKEN_FORGOTTEN)
 
-    @on(Help)
-    def action_help_command(self) -> None:
-        """Toggle the display of the help panel."""
-        self.app.push_screen(HelpScreen(self))
-
-    @on(ChangeTheme)
-    def action_change_theme_command(self) -> None:
-        """Show the theme picker."""
-        self.app.search_themes()
-
-    @on(Quit)
     def action_quit_command(self) -> None:
         """Quit the application."""
         self.app.exit(ExitState.OKAY)
