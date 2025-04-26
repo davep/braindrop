@@ -315,12 +315,10 @@ class Main(EnhancedScreen[None]):
         self.active_collection = self._data.in_collection(command.collection)
         self.query_one(Navigation).highlight_collection(command.collection)
 
-    @on(SearchCollections)
     def action_search_collections_command(self) -> None:
         """Show the collection-based command palette."""
         self.show_palette(CollectionCommands)
 
-    @on(SearchTags)
     def action_search_tags_command(self) -> None:
         """Show the tags-based command palette."""
         if self.active_collection.tags:
@@ -359,17 +357,14 @@ class Main(EnhancedScreen[None]):
         """Handle the highlighted raindrop changing."""
         self.highlighted_raindrop = message.raindrop
 
-    @on(Redownload)
     def action_redownload_command(self) -> None:
         """Redownload data from the server."""
         self.download_data()
 
-    @on(VisitRaindrop)
     def action_visit_raindrop_command(self) -> None:
         """Open the Raindrop application in the browser."""
         open_url("https://app.raindrop.io/")
 
-    @on(TagOrder)
     def action_tag_order_command(self) -> None:
         """Toggle the ordering of tags."""
         self.query_one(Navigation).tags_by_count = (
@@ -378,27 +373,22 @@ class Main(EnhancedScreen[None]):
         with update_configuration() as config:
             config.show_tags_by_count = by_count
 
-    @on(ShowAll)
     def action_show_all_command(self) -> None:
         """Select the collection that shows all Raindrops."""
         self.query_one(Navigation).show_all()
 
-    @on(ShowUnsorted)
     def action_show_unsorted_command(self) -> None:
         """Select the collection that shows all unsorted Raindrops."""
         self.query_one(Navigation).show_unsorted()
 
-    @on(ShowUntagged)
     def action_show_untagged_command(self) -> None:
         """Select the collection that shows all untagged Raindrops."""
         self.query_one(Navigation).show_untagged()
 
-    @on(ClearFilters)
     def action_clear_filters_command(self) -> None:
         """Remove any filtering from the active collection."""
         self.active_collection = self.active_collection.unfiltered
 
-    @on(Escape)
     def action_escape_command(self) -> None:
         """Handle escaping.
 
@@ -417,7 +407,6 @@ class Main(EnhancedScreen[None]):
         else:
             self.app.exit()
 
-    @on(Details)
     def action_details_command(self) -> None:
         """Toggle the details of the raindrop details view."""
         self.toggle_class("details-hidden")
@@ -433,7 +422,6 @@ class Main(EnhancedScreen[None]):
         with update_configuration() as config:
             config.details_visible = not hidden
 
-    @on(CompactMode)
     def action_compact_mode_command(self) -> None:
         """Toggle the compact mode for the list of raindrops."""
         self.query_one(RaindropsView).compact = not self.query_one(
@@ -442,7 +430,6 @@ class Main(EnhancedScreen[None]):
         with update_configuration() as config:
             config.compact_mode = self.query_one(RaindropsView).compact
 
-    @on(Search)
     @work
     async def action_search_command(self) -> None:
         """Free-text search within the Raindrops."""
@@ -451,7 +438,6 @@ class Main(EnhancedScreen[None]):
         ):
             self.active_collection = self.active_collection.containing(search_text)
 
-    @on(Logout)
     @work
     async def action_logout_command(self) -> None:
         """Perform the logout action."""
@@ -518,14 +504,12 @@ class Main(EnhancedScreen[None]):
             return None
         return raindrop.link
 
-    @on(VisitLink)
     def action_visit_link_command(self) -> None:
         """Visit the currently-highlighted link."""
         if (link := self._current_link("visit")) is None:
             return
         open_url(link)
 
-    @on(CopyLinkToClipboard)
     def action_copy_link_to_clipboard_command(self) -> None:
         """Copy the currently-highlighted link to the clipboard."""
 
@@ -552,7 +536,6 @@ class Main(EnhancedScreen[None]):
         else:
             self.notify("The link has been copied to the clipboard")
 
-    @on(CheckTheWaybackMachine)
     def action_check_the_wayback_machine_command(self) -> None:
         """Check if the current raindrop is on the Wayback Machine."""
         if (link := self._current_link("check")) is None:
@@ -605,7 +588,6 @@ class Main(EnhancedScreen[None]):
             # Let the user know what happened.
             self.notify(confirmation)
 
-    @on(AddRaindrop)
     @work
     async def action_add_raindrop_command(self) -> None:
         """Add a new Raindrop."""
@@ -641,7 +623,6 @@ class Main(EnhancedScreen[None]):
         # We're safe to drop the draft now.
         self._draft_raindrop = None
 
-    @on(EditRaindrop)
     @work
     async def action_edit_raindrop_command(self) -> None:
         """Edit the currently-highlighted raindrop."""
@@ -702,7 +683,6 @@ class Main(EnhancedScreen[None]):
         # We're safe to drop the draft now.
         self._draft_raindrop = None
 
-    @on(DeleteRaindrop)
     @work
     async def action_delete_raindrop_command(self) -> None:
         """Delete the currently-highlighted raindrop."""
