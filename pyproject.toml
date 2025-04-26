@@ -13,7 +13,7 @@ dependencies = [
     "humanize>=4.11.0",
     "pyperclip>=1.9.0",
     "typing-extensions>=4.12.2",
-    "textual-enhanced>=0.4.0",
+    "textual-enhanced>=0.13.0",
 ]
 readme = "README.md"
 requires-python = ">= 3.10"
