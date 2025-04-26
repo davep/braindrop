@@ -412,7 +412,6 @@ class Navigation(EnhancedOptionList):
             self._main_navigation()
             self._show_types_for(self.active_collection)
             self._show_tags_for(self.active_collection)
-        self._refresh_lines()  # https://github.com/Textualize/textual/issues/5431
 
     def watch_tags_by_count(self) -> None:
         """React to the tags sort ordering being changed."""
