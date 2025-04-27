@@ -1,8 +1,8 @@
 # Braindrop ChangeLog
 
-## Unreleased
+## v0.7.3
 
-**Released: WiP**
+**Released: 2025-04-27**
 
 - Fixed some typos (with thanks to [@kianmeng](https://github.com/kianmeng):
   [#141](https://github.com/davep/braindrop/pull/141))
