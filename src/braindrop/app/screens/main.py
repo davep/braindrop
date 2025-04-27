@@ -356,6 +356,7 @@ class Main(EnhancedScreen[None]):
         """Handle the highlighted raindrop changing."""
         self.highlighted_raindrop = message.raindrop
 
+    @on(Redownload)
     def action_redownload_command(self) -> None:
         """Redownload data from the server."""
         self.download_data()
