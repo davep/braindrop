@@ -6,6 +6,9 @@
 
 - Fixed some typos (with thanks to [@kianmeng](https://github.com/kianmeng):
   [#141](https://github.com/davep/braindrop/pull/141))
+- Unpinned Textual. ([#145](https://github.com/davep/braindrop/pull/145))
+- Fixed the raindrop details panel going empty on a redownload.
+  ([#138](https://github.com/davep/braindrop/issues/138))
 
 ## v0.7.2
 
