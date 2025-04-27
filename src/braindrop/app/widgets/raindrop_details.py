@@ -297,10 +297,6 @@ class RaindropDetails(VerticalScroll):
                 not (bool(self.data) and bool(self.raindrop)), "hidden"
             )
 
-    def _watch_data(self) -> None:
-        """React to the data being changed."""
-        self.raindrop = None
-
     def _watch_raindrop(self) -> None:
         """React to the raindrop being changed."""
         self._refresh_display()
