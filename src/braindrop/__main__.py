@@ -7,6 +7,10 @@ from inspect import cleandoc
 from operator import attrgetter
 
 ##############################################################################
+# Textual enhanced imports.
+from textual_enhanced.commands import Command
+
+##############################################################################
 # Local imports.
 from . import __doc__, __version__
 from .app import Braindrop
@@ -66,6 +70,7 @@ def show_bindable_commands() -> None:
     from .app.screens import Main
 
     console = Console(highlight=False)
+    command: type[Command]
     for command in sorted(Main.COMMAND_MESSAGES, key=attrgetter("__name__")):
         if command().has_binding:
             console.print(
