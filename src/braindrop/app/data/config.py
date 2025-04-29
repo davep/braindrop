@@ -3,7 +3,7 @@
 ##############################################################################
 # Python imports.
 from contextlib import contextmanager
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, field
 from functools import lru_cache
 from json import dumps, loads
 from pathlib import Path
@@ -30,6 +30,9 @@ class Configuration:
 
     compact_mode: bool = False
     """Use compact mode?"""
+
+    bindings: dict[str, str] = field(default_factory=dict)
+    """Command keyboard binding overrides."""
 
 
 ##############################################################################
