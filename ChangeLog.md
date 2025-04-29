@@ -1,5 +1,20 @@
 # Braindrop ChangeLog
 
+## Unreleased
+
+**Released: WiP**
+
+- Added support for rebinding the keys for application commands.
+  ([#152](https://github.com/davep/braindrop/pull/152))
+- Added `--bindings` as a command line switch.
+  ([#152](https://github.com/davep/braindrop/pull/152))
+- Added `--help` as a command line switch.
+  ([#152](https://github.com/davep/braindrop/pull/152))
+- Added `--license` as a command line switch.
+  ([#152](https://github.com/davep/braindrop/pull/152))
+- Added `--version` as a command line switch.
+  ([#152](https://github.com/davep/braindrop/pull/152))
+
 ## v0.7.3
 
 **Released: 2025-04-27**
