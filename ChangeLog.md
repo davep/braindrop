@@ -1,8 +1,8 @@
 # Braindrop ChangeLog
 
-## Unreleased
+## v0.8.0
 
-**Released: WiP**
+**Released: 2025-05-01**
 
 - Added support for rebinding the keys for application commands.
   ([#152](https://github.com/davep/braindrop/pull/152))
