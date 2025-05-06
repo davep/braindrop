@@ -1,5 +1,11 @@
 # Braindrop ChangeLog
 
+## v0.8.1
+
+**Released: 2025-05-06**
+
+- Fixed <kbd>Enter</kbd> not visiting the raindrop link any more.
+
 ## v0.8.0
 
 **Released: 2025-05-01**

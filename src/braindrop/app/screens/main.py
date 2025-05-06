@@ -493,6 +493,7 @@ class Main(EnhancedScreen[None]):
             return None
         return raindrop.link
 
+    @on(VisitLink)
     def action_visit_link_command(self) -> None:
         """Visit the currently-highlighted link."""
         if (link := self._current_link("visit")) is None:
