@@ -5,6 +5,7 @@
 **Released: 2025-05-06**
 
 - Fixed <kbd>Enter</kbd> not visiting the raindrop link any more.
+  ([#154](https://github.com/davep/braindrop/pull/154))
 
 ## v0.8.0
 
