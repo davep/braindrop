@@ -1,5 +1,12 @@
 # Braindrop ChangeLog
 
+## v0.8.2
+
+**Released: 2025-05-09**
+
+- Fixed clash with Textual's newly-introduced `compact` reactive.
+  ([#156](https://github.com/davep/braindrop/pull/156))
+
 ## v0.8.1
 
 **Released: 2025-05-06**
