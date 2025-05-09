@@ -1,6 +1,6 @@
 [project]
 name = "braindrop"
-version = "0.8.1"
+version = "0.8.2"
 description = "A terminal-based client for raindrop.io."
 authors = [
     { name = "Dave Pearson", email = "davep@davep.org" }
