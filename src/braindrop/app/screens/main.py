@@ -284,7 +284,7 @@ class Main(EnhancedScreen[None]):
         config = load_configuration()
         self.set_class(not config.details_visible, "details-hidden")
         self.query_one(Navigation).tags_by_count = config.show_tags_by_count
-        self.query_one(RaindropsView).compact = config.compact_mode
+        self.query_one(RaindropsView).compact_view = config.compact_mode
         self.load_data()
 
     def watch_active_collection(self) -> None:
@@ -424,11 +424,11 @@ class Main(EnhancedScreen[None]):
 
     def action_compact_mode_command(self) -> None:
         """Toggle the compact mode for the list of raindrops."""
-        self.query_one(RaindropsView).compact = not self.query_one(
+        self.query_one(RaindropsView).compact_view = not self.query_one(
             RaindropsView
-        ).compact
+        ).compact_view
         with update_configuration() as config:
-            config.compact_mode = self.query_one(RaindropsView).compact
+            config.compact_mode = self.query_one(RaindropsView).compact_view
 
     @work
     async def action_search_command(self) -> None:

@@ -143,7 +143,7 @@ class RaindropsView(EnhancedOptionList):
     raindrops: var[Raindrops] = var(Raindrops)
     """The list of raindrops being shown."""
 
-    compact: var[bool] = var(False)
+    compact_view: var[bool] = var(False)
     """Toggle to say if we should use a compact view or not."""
 
     class Empty(Message):
@@ -154,7 +154,7 @@ class RaindropsView(EnhancedOptionList):
         with self.preserved_highlight:
             self.clear_options().add_options(
                 [
-                    RaindropView(raindrop, self.data, self.compact)
+                    RaindropView(raindrop, self.data, self.compact_view)
                     for raindrop in self.raindrops
                 ]
             )
@@ -169,7 +169,7 @@ class RaindropsView(EnhancedOptionList):
         """React to the raindrops being changed."""
         self._add_raindrops()
 
-    def watch_compact(self) -> None:
+    def watch_compact_view(self) -> None:
         """React to the compact setting being toggled."""
         self._add_raindrops()
 
