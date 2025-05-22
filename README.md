@@ -93,7 +93,7 @@ remove those directories too.
 Expanding for the common locations, the files normally created are:
 
 - `~/.config/braindrop/configuration.json` -- The configuration file.
-- `~/.local/share/braindrop/.token` -- The file that hold your API token.
+- `~/.local/share/braindrop/.token` -- The file that holds your API token.
 - `~/.local/share/braindrop/raindrops.json` -- The locally-held Raindrop data.
 
 ## Getting help
