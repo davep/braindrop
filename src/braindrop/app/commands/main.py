@@ -6,13 +6,6 @@ from textual_enhanced.commands import Command
 
 
 ##############################################################################
-class ChangeTheme(Command):
-    """Change the application's theme"""
-
-    BINDING_KEY = "f9"
-
-
-##############################################################################
 class CompactMode(Command):
     "Toggle the compact mode for the Raindrop list"
 

@@ -3,6 +3,7 @@
 ##############################################################################
 # Textual enhanced imports.
 from textual_enhanced.commands import (
+    ChangeTheme,
     CommandHits,
     CommandsProvider,
     Help,
@@ -13,7 +14,6 @@ from textual_enhanced.commands import (
 # Local imports.
 from ..commands import (
     AddRaindrop,
-    ChangeTheme,
     CheckTheWaybackMachine,
     ClearFilters,
     CompactMode,
