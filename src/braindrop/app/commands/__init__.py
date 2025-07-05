@@ -19,7 +19,6 @@ from .filtering import (
     SearchTags,
 )
 from .main import (
-    ChangeTheme,
     CompactMode,
     Details,
     Escape,
@@ -41,7 +40,6 @@ from .raindrop import (
 # Exports.
 __all__ = [
     "AddRaindrop",
-    "ChangeTheme",
     "CheckTheWaybackMachine",
     "ClearFilters",
     "CompactMode",
