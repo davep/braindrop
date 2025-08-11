@@ -5,6 +5,7 @@
 **Released: WiP**
 
 - Pinned to Python 3.12 or later.
+  ([#160](https://github.com/davep/braindrop/pull/160))
 
 ## v0.8.2
 
