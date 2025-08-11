@@ -1,5 +1,11 @@
 # Braindrop ChangeLog
 
+## Unreleased
+
+**Released: WiP**
+
+- Pinned to Python 3.12 or later.
+
 ## v0.8.2
 
 **Released: 2025-05-09**
