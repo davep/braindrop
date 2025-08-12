@@ -8,11 +8,7 @@ from __future__ import annotations
 # Python imports.
 from dataclasses import dataclass
 from functools import total_ordering
-from typing import Callable, Counter, Iterable, Iterator, TypeAlias
-
-##############################################################################
-# Typing extension imports.
-from typing_extensions import Self
+from typing import Callable, Counter, Iterable, Iterator, Self, TypeAlias
 
 ##############################################################################
 # Local imports.

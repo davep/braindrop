@@ -5,15 +5,11 @@
 from datetime import datetime
 from json import dumps, loads
 from pathlib import Path
-from typing import Any, Callable, Final, Iterable, Iterator
+from typing import Any, Callable, Final, Iterable, Iterator, Self
 
 ##############################################################################
 # pytz imports.
 from pytz import UTC
-
-##############################################################################
-# Typing extension imports.
-from typing_extensions import Self
 
 ##############################################################################
 # Local imports.
