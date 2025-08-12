@@ -38,7 +38,7 @@ Once installed run the `braindrop` command.
 The package can be install using [`uv`](https://docs.astral.sh/uv/getting-started/installation/):
 
 ```sh
-uv tool install braindrop
+uv tool install --python 3.13 braindrop
 ```
 
 ### Homebrew
