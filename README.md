@@ -33,6 +33,14 @@ $ pipx install braindrop
 
 Once installed run the `braindrop` command.
 
+### uv
+
+The package can be install using [`uv`](https://docs.astral.sh/uv/getting-started/installation/):
+
+```sh
+uv tool install braindrop
+```
+
 ### Homebrew
 
 The package is available via Homebrew. Use the following commands to install:
