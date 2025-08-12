@@ -1,8 +1,8 @@
 # Braindrop ChangeLog
 
-## Unreleased
+## v0.9.0
 
-**Released: WiP**
+**Released: 2025-08-12**
 
 - Pinned to Python 3.12 or later.
   ([#160](https://github.com/davep/braindrop/pull/160))
