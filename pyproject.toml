@@ -56,12 +56,10 @@ Discussions = "https://github.com/davep/braindrop/discussions"
 braindrop = "braindrop.__main__:main"
 
 [build-system]
-# https://github.com/astral-sh/rye/issues/1446
-requires = ["hatchling==1.26.3", "hatch-vcs"]
-# requires = ["hatchling"]
-build-backend = "hatchling.build"
+requires = ["uv_build>=0.8.11,<0.9.0"]
+build-backend = "uv_build"
 
-[tool.rye]
+[tool.uv]
 managed = true
 dev-dependencies = [
     "mypy>=1.13.0",
@@ -71,13 +69,14 @@ dev-dependencies = [
     "pytest>=8.3.4",
     "pytest-asyncio>=0.25.1",
     "codespell>=2.4.1",
+    "ruff>=0.12.9",
 ]
 
-[tool.hatch.metadata]
-allow-direct-references = true
-
-[tool.hatch.build.targets.wheel]
-packages = ["src/braindrop"]
+[[tool.uv.index]]
+name = "testpypi"
+url = "https://test.pypi.org/simple/"
+publish-url = "https://test.pypi.org/legacy/"
+explicit = true
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
