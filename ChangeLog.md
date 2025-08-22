@@ -5,6 +5,7 @@
 **Released: WiP**
 
 - Migrated from `rye` to `uv` for development management.
+- Added Python 3.14 as a tested/supported Python version.
 
 ## v0.9.0
 
