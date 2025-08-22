@@ -1,5 +1,11 @@
 # Braindrop ChangeLog
 
+## Unreleased
+
+**Released: WiP**
+
+- Migrated from `rye` to `uv` for development management.
+
 ## v0.9.0
 
 **Released: 2025-08-12**
