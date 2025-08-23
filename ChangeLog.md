@@ -5,6 +5,7 @@
 **Released: WiP**
 
 - Migrated from `rye` to `uv` for development management.
+  ([#166](https://github.com/davep/braindrop/pull/166))
 - Added Python 3.14 as a tested/supported Python version.
   ([#168](https://github.com/davep/braindrop/pull/168))
 
