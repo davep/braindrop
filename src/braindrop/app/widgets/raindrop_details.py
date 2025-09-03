@@ -265,7 +265,7 @@ class RaindropDetails(VerticalScroll):
             self._set(
                 "collection",
                 f"{PUBLIC_ICON if self.data.collection(self.raindrop.collection).public else PRIVATE_ICON}"
-                f" {self.data.collection(self.raindrop.collection).title}",
+                f" {escape(self.data.collection(self.raindrop.collection).title)}",
             )
             self._set("note", self.raindrop.note, Markdown)
             self._set(
