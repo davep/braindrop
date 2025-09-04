@@ -14,7 +14,7 @@
   [#172](https://github.com/davep/braindrop/pull/172))
 - Changed compact mode so that it only shows the first physical line of the
   excerpt, unwrapped, in the list, as opposed to each physical line
-  unwrapped.
+  unwrapped. ([#175](https://github.com/davep/braindrop/pull/175))
 
 ## v0.9.0
 
