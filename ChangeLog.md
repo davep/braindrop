@@ -1,8 +1,8 @@
 # Braindrop ChangeLog
 
-## Unreleased
+## v0.10.0
 
-**Released: WiP**
+**Released: 2025-09-04**
 
 - Migrated from `rye` to `uv` for development management.
   ([#166](https://github.com/davep/braindrop/pull/166))
