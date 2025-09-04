@@ -8,6 +8,10 @@
   ([#166](https://github.com/davep/braindrop/pull/166))
 - Added Python 3.14 as a tested/supported Python version.
   ([#168](https://github.com/davep/braindrop/pull/168))
+- Fixed a bug where collection titles weren't being escaped to make them
+  Textual-friendly. (with thanks to
+  [@anuarkaliyev23](https://github.com/anuarkaliyev23):
+  [#172](https://github.com/davep/braindrop/pull/172))
 
 ## v0.9.0
 
