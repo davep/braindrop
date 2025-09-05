@@ -145,7 +145,7 @@ requires-dist = [
     { name = "pyperclip", specifier = ">=1.9.0" },
     { name = "pytz", specifier = ">=2024.2" },
     { name = "textual", specifier = ">=3.1" },
-    { name = "textual-enhanced", specifier = ">=0.13.0" },
+    { name = "textual-enhanced", specifier = ">=1.0.0" },
     { name = "typing-extensions", specifier = ">=4.12.2" },
     { name = "xdg-base-dirs", specifier = ">=6.0.2" },
 ]
@@ -875,14 +875,14 @@ wheels = [
 
 [[package]]
 name = "textual-enhanced"
-version = "0.13.0"
+version = "1.0.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "textual" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/83/ba/5faa1a27c7d19a3fdf1abd1657a0fdcaeb1aed043f29bad705205b4c5259/textual_enhanced-0.13.0.tar.gz", hash = "sha256:fcc63a43400de6057ce1906088c2323ca7853c09f34b6c242a5b3f72e8d4c11c", size = 22947, upload-time = "2025-04-24T06:39:29.439Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/68/4a/31e14a619a3030eca07fde8301f3ff708b687c068813a428d51586a2b35d/textual_enhanced-1.0.0.tar.gz", hash = "sha256:d2cfd128e5c0bae7a6b5c510a82b7cba4f6555bcedf8e75c6e3ea7949dd86d49", size = 14833, upload-time = "2025-09-05T10:53:24.837Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/c0/b5/dd834debd60670d4612c2c3bda826b9fa5e48809f35d494dc9c992800960/textual_enhanced-0.13.0-py3-none-any.whl", hash = "sha256:998d823d38a24c037f87e22155072f2c64be11845a96a8f935f11cb37698152b", size = 23114, upload-time = "2025-04-24T06:39:27.982Z" },
+    { url = "https://files.pythonhosted.org/packages/61/5f/7f3ece3187a568b40791888e7c849d62dc045402a5488b3b576d0dcc8519/textual_enhanced-1.0.0-py3-none-any.whl", hash = "sha256:e3dee5b18f5a377fda3644ffe83b5b6f80c266b0adc05cacbfe4fe10d903f742", size = 23041, upload-time = "2025-09-05T10:53:23.63Z" },
 ]
 
 [[package]]
