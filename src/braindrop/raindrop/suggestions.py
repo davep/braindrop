@@ -43,7 +43,11 @@ class Suggestions:
                 for collection in data.get("collections", [])
                 if collection.get("$id", None) is not None
             ],
-            tags=[Tag(tag) for tag in data.get("tags", []) if tag],
+            tags=[
+                Tag(tag)
+                for tag in data.get("tags", []) + data.get("new_tags", [])
+                if tag
+            ],
         )
 
 
