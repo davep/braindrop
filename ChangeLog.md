@@ -1,8 +1,8 @@
 # Braindrop ChangeLog
 
-## Unreleased
+## v0.11.0
 
-**Released: WiP**
+**Released: 2025-09-23**
 
 - Expanded the tag suggestions to ensure that the "new" suggestions from
   `raindrop.io` are shown.
