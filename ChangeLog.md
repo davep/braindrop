@@ -1,5 +1,13 @@
 # Braindrop ChangeLog
 
+## Unreleased
+
+**Released: WiP**
+
+- Expanded the tag suggestions to ensure that the "new" suggestions from
+  `raindrop.io` are shown.
+  ([#180](https://github.com/davep/braindrop/pull/180))
+
 ## v0.10.0
 
 **Released: 2025-09-04**
