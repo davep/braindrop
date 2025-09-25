@@ -14,7 +14,7 @@ make api
 
 Of course you will also have to have Posting itself installed. You will also
 need to have a `.env` file in the root of the repository directory, with
-`API_TOKEN` set it it -- this will be your own Raindrop API token.
+`API_TOKEN` set -- this will be your own Raindrop API token.
 
 Eg:
 
