@@ -1,5 +1,16 @@
 # Braindrop ChangeLog
 
+## Unrealised
+
+**Released: WiP**
+
+- Sorted tag suggestions in the raindrop editing dialog.
+  ([#185](https://github.com/davep/braindrop/pull/185))
+- Added some colour to the tat suggestions to better emphasise the
+  difference between suggestions from tags used by the user before and
+  never-before-used tags.
+  ([#185](https://github.com/davep/braindrop/pull/185))
+
 ## v0.11.0
 
 **Released: 2025-09-23**

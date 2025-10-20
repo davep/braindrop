@@ -225,8 +225,10 @@ class RaindropInput(ModalScreen[Raindrop | None]):
         """
         local_tags = {tag.tag for tag in self._data.all.tags}
         return [
-            f"{tag}" if tag in local_tags else f"[dim i]{tag}[/]"
-            for tag in suggestions.tags
+            f"[$text-primary]{tag}[/]"
+            if tag in local_tags
+            else f"[dim i $text-secondary]{tag}[/]"
+            for tag in sorted(suggestions.tags)
         ]
 
     @work(exclusive=True)
