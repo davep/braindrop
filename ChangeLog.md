@@ -4,7 +4,7 @@
 
 **Released: WiP**
 
-- Sort tag suggestions in the raindrop editing dialog.
+- Sorted tag suggestions in the raindrop editing dialog.
 
 ## v0.11.0
 
