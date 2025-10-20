@@ -1,5 +1,11 @@
 # Braindrop ChangeLog
 
+## Unrealised
+
+**Released: WiP**
+
+- Sort tag suggestions in the raindrop editing dialog.
+
 ## v0.11.0
 
 **Released: 2025-09-23**
