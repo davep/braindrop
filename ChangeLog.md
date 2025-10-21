@@ -1,8 +1,8 @@
 # Braindrop ChangeLog
 
-## Unrealised
+## v0.12.0
 
-**Released: WiP**
+**Released: 2025-10-21**
 
 - Sorted tag suggestions in the raindrop editing dialog.
   ([#185](https://github.com/davep/braindrop/pull/185))
