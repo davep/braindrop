@@ -1,5 +1,11 @@
 # Braindrop ChangeLog
 
+## Unreleased
+
+**Released: 2025-10-21**
+
+- Added `--theme` as a command line switch.
+
 ## v0.12.0
 
 **Released: 2025-10-21**

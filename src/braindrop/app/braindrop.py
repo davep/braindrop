@@ -2,7 +2,8 @@
 
 ##############################################################################
 # Python imports.
-import os
+from argparse import Namespace
+from os import environ
 
 ##############################################################################
 # Textual imports.
@@ -55,13 +56,17 @@ class Braindrop(EnhancedApp[ExitState]):
 
     COMMANDS = set()
 
-    def __init__(self) -> None:
-        """Initialise the application."""
+    def __init__(self, arguments: Namespace) -> None:
+        """Initialise the application.
+
+        Args:
+            arguments: The command line arguments passed to the application.
+        """
         super().__init__()
         configuration = load_configuration()
         if configuration.theme is not None:
             try:
-                self.theme = configuration.theme
+                self.theme = arguments.theme or configuration.theme
             except InvalidThemeError:
                 pass
         self.update_keymap(configuration.bindings)
@@ -78,7 +83,7 @@ class Braindrop(EnhancedApp[ExitState]):
         Returns:
            An API token found in the environment, or `None` if one wasn't found.
         """
-        return os.environ.get("BRAINDROP_API_TOKEN")
+        return environ.get("BRAINDROP_API_TOKEN")
 
     @property
     def api_token(self) -> str | None:

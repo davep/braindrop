@@ -57,6 +57,13 @@ def get_args() -> Namespace:
         action="store_true",
     )
 
+    # Add --theme
+    parser.add_argument(
+        "-t",
+        "--theme",
+        help="Set the theme for the application (set to ? to list available themes)",
+    )
+
     # Finally, parse the command line.
     return parser.parse_args()
 
@@ -82,6 +89,14 @@ def show_bindable_commands() -> None:
 
 
 ##############################################################################
+def show_themes() -> None:
+    """Show the available themes."""
+    for theme in sorted(Braindrop(Namespace(theme=None)).available_themes):
+        if theme != "textual-ansi":
+            print(theme)
+
+
+##############################################################################
 def main() -> None:
     """Main entry point."""
     args = get_args()
@@ -89,8 +104,10 @@ def main() -> None:
         print(cleandoc(Braindrop.HELP_LICENSE))
     elif args.bindings:
         show_bindable_commands()
+    elif args.theme == "?":
+        show_themes()
     else:
-        match Braindrop().run():
+        match Braindrop(args).run():
             case ExitState.TOKEN_FORGOTTEN:
                 if Braindrop.environmental_token():
                     print(
