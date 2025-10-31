@@ -5,6 +5,7 @@
 **Released: 2025-10-21**
 
 - Added `--theme` as a command line switch.
+  ([#190](https://github.com/davep/braindrop/pull/190))
 
 ## v0.12.0
 
