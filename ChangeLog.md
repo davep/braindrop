@@ -1,8 +1,8 @@
 # Braindrop ChangeLog
 
-## Unreleased
+## v0.13.0
 
-**Released: 2025-10-21**
+**Released: 2025-11-03**
 
 - Added `--theme` as a command line switch.
   ([#190](https://github.com/davep/braindrop/pull/190))
