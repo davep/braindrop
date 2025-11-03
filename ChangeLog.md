@@ -6,6 +6,8 @@
 
 - Added `--theme` as a command line switch.
   ([#190](https://github.com/davep/braindrop/pull/190))
+- Deduplicated tag suggestions in the raindrop editor dialog (so now things
+  like `AI` vs `ai` won't be seen as different suggestions).
 
 ## v0.12.0
 

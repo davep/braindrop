@@ -228,7 +228,7 @@ class RaindropInput(ModalScreen[Raindrop | None]):
             f"[$text-primary]{tag}[/]"
             if tag in local_tags
             else f"[dim i $text-secondary]{tag}[/]"
-            for tag in sorted(suggestions.tags)
+            for tag in sorted(set(suggestions.tags))
         ]
 
     @work(exclusive=True)
