@@ -5,6 +5,7 @@
 **Released: WiP**
 
 - Made some cosmetic changes to the raindrop input dialog.
+  ([#194](https://github.com/davep/braindrop/pull/194))
 
 ## v0.13.0
 
