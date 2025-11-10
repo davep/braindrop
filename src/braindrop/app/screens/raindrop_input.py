@@ -173,9 +173,9 @@ class RaindropInput(ModalScreen[Raindrop | None]):
                 validators=[Length(1, failure_description="A title is required")],
             )
             yield Label("Excerpt:")
-            yield TextArea(id="excerpt")
+            yield TextArea(id="excerpt", highlight_cursor_line=False)
             yield Label("Note:")
-            yield TextArea(id="note", language="markdown")
+            yield TextArea(id="note", language="markdown", highlight_cursor_line=False)
             yield Label("URL:")
             yield Input(
                 placeholder="The URL of the link for the Raindrop",
