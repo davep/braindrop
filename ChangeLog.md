@@ -1,5 +1,11 @@
 # Braindrop ChangeLog
 
+## Unreleased
+
+**Released: WiP**
+
+- Made some cosmetic changes to the raindrop input dialog.
+
 ## v0.13.0
 
 **Released: 2025-11-03**

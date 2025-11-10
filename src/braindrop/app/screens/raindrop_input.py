@@ -95,6 +95,11 @@ class RaindropInput(ModalScreen[Raindrop | None]):
                 display: block;
             }
         }
+
+        /* Have the TextAreas' text better align with other input widgets. */
+        TextArea {
+            padding: 0 2;
+        }
     }
     """
 
