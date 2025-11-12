@@ -5,10 +5,6 @@
 from __future__ import annotations
 
 ##############################################################################
-# Python imports.
-from typing import Any
-
-##############################################################################
 # Rich imports.
 from rich.console import Group, RenderableType
 from rich.rule import Rule
@@ -17,6 +13,7 @@ from rich.table import Table
 ##############################################################################
 # Textual imports.
 from textual import on
+from textual.content import Content
 from textual.message import Message
 from textual.reactive import var
 from textual.widgets import OptionList
@@ -66,7 +63,6 @@ class NavigationView(Option):
         count: int,
         indent: int = 0,
         key: str | None = None,
-        key_colour: str | None = None,
     ) -> RenderableType:
         """The prompt for the option.
 
@@ -74,7 +70,6 @@ class NavigationView(Option):
             title: The title for the prompt.
             count: The count for the prompt.
             key: The optional key for the prompt.
-            key_colour: The optional colour for the key.
 
         Returns:
             A renderable that is the prompt.
@@ -83,8 +78,10 @@ class NavigationView(Option):
         prompt.add_column(ratio=1)
         prompt.add_column(justify="right")
         prompt.add_row(
-            f"{'[dim]>[/dim] ' * indent}{title}"
-            + (f" [{key_colour or 'dim'}]\\[{key or ''}][/]" if key else ""),
+            Content.from_markup(
+                f"{'[dim]>[/dim] ' * indent}{title}"
+                + (f" [$footer-key-foreground]\\[{key or ''}][/]" if key else "")
+            ),
             f"[dim i]{count}[/]",
         )
         return prompt
@@ -111,7 +108,6 @@ class CollectionView(NavigationView):
         collection: Collection,
         indent: int = 0,
         key: str | None = None,
-        key_colour: str | None = None,
         count: int = 0,
     ) -> None:
         """Initialise the object.
@@ -120,7 +116,6 @@ class CollectionView(NavigationView):
             collection: The collection to show.
             indent: The indent level for the collection.
             key: The associated with the collection.
-            key_colour: The colour to show the key in.
             count: The count of raindrops in the collection.
         """
         self._collection = collection
@@ -131,7 +126,6 @@ class CollectionView(NavigationView):
                 count or collection.count,
                 indent,
                 key,
-                key_colour,
             ),
             id=self.id_of(collection),
         )
@@ -229,19 +223,6 @@ class Navigation(EnhancedOptionList):
         self._api = api
         """The API client object."""
 
-    def on_mount(self) -> None:
-        """Configure the widget once the DIM is ready."""
-
-        def redraw(*_: Any) -> None:
-            """Force a redraw of the content of the widget."""
-            self.active_collection = self.active_collection
-
-        # While the user will almost never notice, if the theme changes the
-        # accent colour for the keys will go out of sync, so here we watch
-        # for a theme change and then force a redraw of the content so we do
-        # keep in sync.
-        self.app.theme_changed_signal.subscribe(self, redraw)
-
     def highlight_collection(self, collection: Collection) -> None:
         """Ensure the given collection is highlighted.
 
@@ -285,9 +266,6 @@ class Navigation(EnhancedOptionList):
                 collection,
                 indent,
                 key,
-                None
-                if self.app.current_theme is None
-                else self.app.current_theme.accent,
                 0 if self.data is None else self.data.collection_size(collection),
             )
         )
