@@ -1,8 +1,8 @@
 # Braindrop ChangeLog
 
-## Unreleased
+## v1.0.0
 
-**Released: WiP**
+**Released: 2025-12-16**
 
 - Made some cosmetic changes to the raindrop input dialog.
   ([#194](https://github.com/davep/braindrop/pull/194))
