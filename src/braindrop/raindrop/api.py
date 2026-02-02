@@ -13,11 +13,12 @@ Again, for now, this is good enough for my needs.
 ##############################################################################
 # Python imports.
 from asyncio import sleep
+from collections.abc import Awaitable, Callable
 from dataclasses import dataclass
 from http import HTTPStatus
 from json import loads
 from ssl import SSLCertVerificationError
-from typing import Any, Awaitable, Callable, Final, Literal
+from typing import Any, Final, Literal
 
 ##############################################################################
 # HTTPX imports.

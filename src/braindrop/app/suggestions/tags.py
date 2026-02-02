@@ -2,8 +2,9 @@
 
 ##############################################################################
 # Python imports.
-import re
-from typing import Final, Iterable, Pattern
+from collections.abc import Iterable
+from re import Pattern, compile
+from typing import Final
 
 ##############################################################################
 # Textual imports.
@@ -33,7 +34,7 @@ class SuggestTags(Suggester):
         self._tags = [tag.tag if isinstance(tag, TagCount) else tag for tag in tags]
         """The tags to take suggestions from."""
 
-    _SUGGESTABLE: Final[Pattern[str]] = re.compile(r".*[^,\s]$")
+    _SUGGESTABLE: Final[Pattern[str]] = compile(r".*[^,\s]$")
     """Regular expression to test if a value deserves a suggestion."""
 
     async def get_suggestion(self, value: str) -> str | None:

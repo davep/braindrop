@@ -2,8 +2,9 @@
 
 ##############################################################################
 # Python imports.
+from collections.abc import Callable
 from datetime import datetime
-from typing import Any, Callable, Final
+from typing import Any, Final
 
 ##############################################################################
 # Humanize imports.
