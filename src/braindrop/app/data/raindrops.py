@@ -10,7 +10,7 @@ from collections import Counter
 from collections.abc import Callable, Iterable, Iterator
 from dataclasses import dataclass
 from functools import total_ordering
-from typing import Self, TypeAlias
+from typing import Self
 
 ##############################################################################
 # Local imports.
@@ -83,7 +83,7 @@ class TypeCount:
 
 
 ##############################################################################
-Filters: TypeAlias = tuple["Filter", ...]
+type Filters = tuple["Filter", ...]
 """The type of a collection of filters."""
 
 
