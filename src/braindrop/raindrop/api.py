@@ -13,11 +13,12 @@ Again, for now, this is good enough for my needs.
 ##############################################################################
 # Python imports.
 from asyncio import sleep
+from collections.abc import Awaitable, Callable
 from dataclasses import dataclass
 from http import HTTPStatus
 from json import loads
 from ssl import SSLCertVerificationError
-from typing import Any, Awaitable, Callable, Final, Literal
+from typing import Any, Final, Literal
 
 ##############################################################################
 # HTTPX imports.
@@ -140,7 +141,7 @@ class API:
                     int(error.response.headers["Retry-After"])
                     if "Retry-After" in error.response.headers
                     else None
-                )
+                ) from None
             else:
                 raise self.RequestError(str(error)) from None
 
@@ -332,7 +333,7 @@ class API:
                 if limit.retry_after is None:
                     raise self.RequestError(
                         "Raindrop.io API limit exceeded with no option to retry"
-                    )
+                    ) from None
                 count_update(-len(raindrops))
                 await sleep(limit.retry_after)
                 continue

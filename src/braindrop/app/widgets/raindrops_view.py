@@ -96,9 +96,12 @@ class RaindropView(Option):
         if self._raindrop.excerpt:
             excerpt = Table.grid()
             excerpt.add_column(ratio=1, no_wrap=self._compact)
-            excerpt.add_row(
-                f"[dim]{escape(self._raindrop.excerpt.splitlines()[0] if self._compact else self._raindrop.excerpt)}[/dim]"
+            content = escape(
+                self._raindrop.excerpt.splitlines()[0]
+                if self._compact
+                else self._raindrop.excerpt
             )
+            excerpt.add_row(f"[dim]{content}[/dim]")
             body.append(excerpt)
 
         details = Table.grid(expand=True)

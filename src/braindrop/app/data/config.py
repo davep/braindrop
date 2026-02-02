@@ -2,12 +2,12 @@
 
 ##############################################################################
 # Python imports.
+from collections.abc import Iterator
 from contextlib import contextmanager
 from dataclasses import asdict, dataclass, field
-from functools import lru_cache
+from functools import cache
 from json import dumps, loads
 from pathlib import Path
-from typing import Iterator
 
 ##############################################################################
 # Local imports.
@@ -63,7 +63,7 @@ def save_configuration(configuration: Configuration) -> Configuration:
 
 
 ##############################################################################
-@lru_cache(maxsize=None)
+@cache
 def load_configuration() -> Configuration:
     """Load the configuration.
 

@@ -2,7 +2,7 @@
 
 ##############################################################################
 # Python imports.
-from typing import Callable
+from collections.abc import Callable
 from webbrowser import open as open_url
 
 ##############################################################################

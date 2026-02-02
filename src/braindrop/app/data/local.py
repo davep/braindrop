@@ -2,10 +2,11 @@
 
 ##############################################################################
 # Python imports.
+from collections.abc import Callable, Iterable, Iterator
 from datetime import datetime
 from json import dumps, loads
 from pathlib import Path
-from typing import Any, Callable, Final, Iterable, Iterator, Self
+from typing import Any, Final, Self
 
 ##############################################################################
 # pytz imports.

@@ -97,7 +97,7 @@ class Braindrop(EnhancedApp[ExitState]):
             return self.environmental_token() or token_file().read_text(
                 encoding="utf-8"
             )
-        except IOError:
+        except OSError:
             pass
         return None
 

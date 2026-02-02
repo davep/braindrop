@@ -89,3 +89,26 @@ asyncio_default_fixture_loop_scope = "function"
 venvPath="."
 venv=".venv"
 exclude=[".venv"]
+
+[tool.ruff.lint]
+select = [
+    # pycodestyle
+    "E",
+    # Pyflakes
+    "F",
+    # pyupgrade
+    "UP",
+    # flake8-bugbear
+    "B",
+    # flake8-simplify
+    "SIM",
+    # isort
+    "I",
+]
+ignore = [
+    # I think try...expect...pass reads far better.
+    "SIM105",
+]
+
+[tool.ruff.lint.pycodestyle]
+max-line-length = 120

@@ -6,9 +6,10 @@ from __future__ import annotations
 
 ##############################################################################
 # Python imports.
+from collections.abc import Iterable
 from dataclasses import dataclass, field, replace
 from datetime import datetime
-from typing import Any, Final, Iterable, Literal, TypeAlias
+from typing import Any, Final, Literal
 
 ##############################################################################
 # Local imports.
@@ -17,9 +18,7 @@ from .tag import Tag
 from .time_tools import get_time, json_time
 
 ##############################################################################
-RaindropType: TypeAlias = Literal[
-    "link", "article", "image", "video", "document", "audio"
-]
+type RaindropType = Literal["link", "article", "image", "video", "document", "audio"]
 """The type of a Raindrop."""
 
 
