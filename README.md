@@ -41,13 +41,17 @@ The package can be install using [`uv`](https://docs.astral.sh/uv/getting-starte
 uv tool install --python 3.13 braindrop
 ```
 
-### Homebrew
-
-The package is available via Homebrew. Use the following commands to install:
+If you don't have `uv` installed you can use [uvx.sh](https://uvx.sh) to
+perform the installation. For GNU/Linux or macOS or similar:
 
 ```sh
-$ brew tap davep/homebrew
-$ brew install braindrop
+curl -LsSf uvx.sh/braindrop/install.sh | sh
+```
+
+or on Windows:
+
+```sh
+powershell -ExecutionPolicy ByPass -c "irm https://uvx.sh/braindrop/install.ps1 | iex"
 ```
 
 Once installed run the `braindrop` command.
