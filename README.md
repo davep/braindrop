@@ -2,6 +2,14 @@
 
 ![Braindrop](https://raw.githubusercontent.com/davep/braindrop/refs/heads/main/.images/braindrop-social-banner.png)
 
+[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/davep/braindrop/style-lint-and-test.yaml)](https://github.com/davep/braindrop/actions)
+[![GitHub commits since latest release](https://img.shields.io/github/commits-since/davep/braindrop/latest)](https://github.com/davep/braindrop/commits/main/)
+[![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/davep/braindrop)](https://github.com/davep/braindrop/issues)
+[![GitHub Release Date](https://img.shields.io/github/release-date/davep/braindrop)](https://github.com/davep/braindrop/releases)
+[![PyPI - License](https://img.shields.io/pypi/l/braindrop)](https://github.com/davep/braindrop/blob/main/LICENSE)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/braindrop)](https://github.com/davep/braindrop/blob/main/pyproject.toml)
+[![PyPI - Version](https://img.shields.io/pypi/v/braindrop)](https://pypi.org/project/braindrop/)
+
 ## Introduction
 
 Braindrop is a terminal-based client application for the [raindrop.io
