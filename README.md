@@ -2,6 +2,14 @@
 
 ![Braindrop](https://raw.githubusercontent.com/davep/braindrop/refs/heads/main/.images/braindrop-social-banner.png)
 
+[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/davep/braindrop/style-lint-and-test.yaml)](https://github.com/davep/braindrop/actions)
+[![GitHub commits since latest release](https://img.shields.io/github/commits-since/davep/braindrop/latest)](https://github.com/davep/braindrop/commits/main/)
+[![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/davep/braindrop)](https://github.com/davep/braindrop/issues)
+[![GitHub Release Date](https://img.shields.io/github/release-date/davep/braindrop)](https://github.com/davep/braindrop/releases)
+[![PyPI - License](https://img.shields.io/pypi/l/braindrop)](https://github.com/davep/braindrop/blob/main/LICENSE)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/braindrop)](https://github.com/davep/braindrop/blob/main/pyproject.toml)
+[![PyPI - Version](https://img.shields.io/pypi/v/braindrop)](https://pypi.org/project/braindrop/)
+
 ## Introduction
 
 Braindrop is a terminal-based client application for the [raindrop.io
@@ -41,13 +49,17 @@ The package can be install using [`uv`](https://docs.astral.sh/uv/getting-starte
 uv tool install --python 3.13 braindrop
 ```
 
-### Homebrew
-
-The package is available via Homebrew. Use the following commands to install:
+If you don't have `uv` installed you can use [uvx.sh](https://uvx.sh) to
+perform the installation. For GNU/Linux or macOS or similar:
 
 ```sh
-$ brew tap davep/homebrew
-$ brew install braindrop
+curl -LsSf uvx.sh/braindrop/install.sh | sh
+```
+
+or on Windows:
+
+```sh
+powershell -ExecutionPolicy ByPass -c "irm https://uvx.sh/braindrop/install.ps1 | iex"
 ```
 
 Once installed run the `braindrop` command.
