@@ -41,6 +41,9 @@ from ..commands import (
     Details,
     EditRaindrop,
     Escape,
+    JumpToDetails,
+    JumpToNavigation,
+    JumpToRaindrops,
     Logout,
     Redownload,
     Search,
@@ -161,6 +164,9 @@ class Main(EnhancedScreen[None]):
         ShowUnsorted,
         ShowUntagged,
         VisitLink,
+        JumpToDetails,
+        JumpToNavigation,
+        JumpToRaindrops,
     )
 
     BINDINGS = Command.bindings(*COMMAND_MESSAGES)
@@ -303,6 +309,27 @@ class Main(EnhancedScreen[None]):
         self.query_one(RaindropDetails).data = self._data
         self.active_collection = self._data.all
         self.query_one(Navigation).highlight_collection(SpecialCollection.ALL())
+
+    def check_action(self, action: str, parameters: tuple[object, ...]) -> bool | None:
+        """Check if an action is possible to perform right now.
+
+        Args:
+            action: The action to perform.
+            parameters: The parameters of the action.
+
+        Returns:
+            `True` if it can perform, `False` or `None` if not.
+        """
+        if not self.is_mounted:
+            # Surprisingly it seems that Textual's "dynamic bindings" can
+            # cause this method to be called before the DOM is up and
+            # running. This breaks the rule of least astonishment, I'd say,
+            # but okay let's be defensive... (when I can come up with a nice
+            # little MRE I'll report it).
+            return True
+        if action == JumpToDetails.action_name():
+            return not self.has_class("details-hidden")
+        return True
 
     @on(ShowCollection)
     def command_show_collection(self, command: ShowCollection) -> None:
@@ -714,6 +741,19 @@ class Main(EnhancedScreen[None]):
                 severity="error",
                 timeout=8,
             )
+
+    def action_jump_to_navigation_command(self) -> None:
+        """Jump to the navigation pane."""
+        self.set_focus(self.query_one(Navigation))
+
+    def action_jump_to_raindrops_command(self) -> None:
+        """Jump to the raindrops pane."""
+        self.set_focus(self.query_one(RaindropsView))
+
+    def action_jump_to_details_command(self) -> None:
+        """Jump to the details pane."""
+        if not self.has_class("details-hidden"):
+            self.set_focus(self.query_one(RaindropDetails))
 
 
 ### main.py ends here

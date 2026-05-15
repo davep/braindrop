@@ -22,6 +22,9 @@ from ..commands import (
     Details,
     EditRaindrop,
     Escape,
+    JumpToDetails,
+    JumpToNavigation,
+    JumpToRaindrops,
     Logout,
     Redownload,
     Search,
@@ -74,6 +77,9 @@ class MainCommands(CommandsProvider):
         yield TagOrder()
         yield VisitLink()
         yield VisitRaindrop()
+        yield from self.maybe(JumpToDetails)
+        yield from self.maybe(JumpToNavigation)
+        yield from self.maybe(JumpToRaindrops)
 
 
 ### main.py ends here

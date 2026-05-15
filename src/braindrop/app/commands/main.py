@@ -60,4 +60,25 @@ class VisitRaindrop(Command):
     SHOW_IN_FOOTER = True
 
 
+##############################################################################
+class JumpToNavigation(Command):
+    "Move focus to the navigation pane"
+
+    BINDING_KEY = "1"
+
+
+##############################################################################
+class JumpToRaindrops(Command):
+    "Move focus to the raindrops pane"
+
+    BINDING_KEY = "2"
+
+
+##############################################################################
+class JumpToDetails(Command):
+    "Move focus to the details pane"
+
+    BINDING_KEY = "3"
+
+
 ### main.py ends here
