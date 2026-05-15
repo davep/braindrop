@@ -1,8 +1,8 @@
 # Braindrop ChangeLog
 
-## Unreleased
+## v1.1.0
 
-**Released: WiP**
+**Released: 2026-05-15**
 
 - Added `JumpToNavigation`, `JumpToRaindrops` and `JumpToDetails` commands
   for quickly jumping between the 3 main panels.
