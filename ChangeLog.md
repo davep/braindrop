@@ -6,6 +6,7 @@
 
 - Added `JumpToNavigation`, `JumpToRaindrops` and `JumpToDetails` commands
   for quickly jumping between the 3 main panels.
+  ([#201](https://github.com/davep/braindrop/pull/201))
 
 ## v1.0.0
 
