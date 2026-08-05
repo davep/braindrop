@@ -17,6 +17,7 @@ from textual.containers import Horizontal, Vertical
 from textual.reactive import var
 from textual.screen import ModalScreen
 from textual.widgets import Button, Label
+from textual.worker import get_current_worker
 
 ##############################################################################
 # Local imports.
@@ -130,8 +131,9 @@ class WaybackChecker(ModalScreen[None]):
         except WaybackError as error:
             self._wayback_data = error
         finally:
-            self.set_class(False, "loading")
-            self.query_one("#dialog").loading = False
+            if not get_current_worker().is_cancelled:
+                self.set_class(False, "loading")
+                self.query_one("#dialog").loading = False
 
     def _watch__wayback_data(self) -> None:
         """React to the data coming back from the Wayback Machine."""
