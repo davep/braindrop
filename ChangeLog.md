@@ -1,8 +1,8 @@
 # Braindrop ChangeLog
 
-## Unreleased
+## v1.1.1
 
-**Released: WiP**
+**Released: 2026-08-06**
 
 - Fixed a crash when cancelling the Wayback lookup.
   ([#204](https://github.com/davep/braindrop/pull/204))
