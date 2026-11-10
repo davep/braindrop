@@ -92,4 +92,16 @@ def test_tag_startswith(tag: str, startswith: str, expected: bool) -> None:
     assert Tag(tag).startswith(Tag(startswith)) is expected
 
 
+##############################################################################
+def test_tag_compared_against_other_types() -> None:
+    """A `Tag` compared against something that isn't a `Tag` or a `str`.
+
+    Equality should simply be `False` rather than raising.
+    """
+    assert (Tag("test") == 123) is False
+    assert (Tag("test") != 123) is True
+    assert (Tag("test") == ["test"]) is False
+    assert (Tag("test") != ["test"]) is True
+
+
 ### test_tags.py ends here

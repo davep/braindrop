@@ -46,15 +46,16 @@ class Tag:
         Returns:
             `True` if the tag is the same, `False` if not.
 
-        Raises:
-            NotImplemented: If compared against anything that isn't a `str`
-                or a `Tag`.
+        Note:
+            If compared against anything that isn't a `str` or a `Tag`,
+            `NotImplemented` is returned so Python can fall back to the
+            default comparison behaviour (e.g. `TypeError` for ordering).
         """
         if isinstance(value, Tag):
             return self > str(value)
         if isinstance(value, str):
             return self._tag.casefold() > value.casefold()
-        raise NotImplementedError
+        return NotImplemented
 
     def __eq__(self, value: object, /) -> bool:
         """Is the tag equal to another value.
@@ -65,15 +66,16 @@ class Tag:
         Returns:
             `True` if the tag is the same, `False` if not.
 
-        Raises:
-            NotImplemented: If compared against anything that isn't a `str`
-                or a `Tag`.
+        Note:
+            If compared against anything that isn't a `str` or a `Tag`,
+            `NotImplemented` is returned so Python can fall back to the
+            default comparison behaviour (equality falls back to `False`).
         """
         if isinstance(value, Tag):
             return self == str(value)
         if isinstance(value, str):
             return self._tag.casefold() == value.casefold()
-        raise NotImplementedError
+        return NotImplemented
 
     def __hash__(self) -> int:
         """Ensure that Tag objects hash case-insensitive.
