@@ -343,7 +343,9 @@ class LocalData:
                 # let's pretend it doesn't exist.
                 return self
             self._last_downloaded = get_time(data, "last_downloaded")
-            self._user = User.from_json(data.get("user", {}))
+            self._user = (
+                User.from_json(data["user"]) if data.get("user") else None
+            )
             self._all.set_to(
                 Raindrop.from_json(raindrop) for raindrop in data.get("all", [])
             )

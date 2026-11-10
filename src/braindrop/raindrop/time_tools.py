@@ -24,7 +24,7 @@ def parse_time(text: str) -> datetime:
 
 
 ##############################################################################
-def get_time(data: dict[str, str], name: str) -> datetime | None:
+def get_time(data: dict[str, str | None], name: str) -> datetime | None:
     """Get a datetime value from a given dictionary.
 
     Args:
@@ -32,10 +32,11 @@ def get_time(data: dict[str, str], name: str) -> datetime | None:
         name: The name of the value to get from the data.
 
     Returns:
-        A `datetime` parsed from the `str` value if it exists, otherwise
-        `None`.
+        A `datetime` parsed from the `str` value if it exists and isn't
+        `None`, otherwise `None`.
     """
-    return parse_time(data[name]) if name in data else None
+    value = data.get(name)
+    return parse_time(value) if value else None
 
 
 ##############################################################################
